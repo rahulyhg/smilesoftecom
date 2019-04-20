@@ -1,5 +1,22 @@
 @extends('admin.layout')
 @section('content')
+    <style>
+        .myheading {
+            border-bottom: 1px solid #00000038;
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        .mybg {
+            padding: 20px 25px;
+            background: white;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.16);
+        }
+
+        .errorClass {
+            border: red 1px solid;
+        }
+    </style>
     <div class="content-wrapper" style="background: #3c8dbc">
         <div class="container">
             <div class="wrapper wrapper-content animated fadeInRight">
