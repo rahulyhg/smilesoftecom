@@ -62,6 +62,17 @@
                                       {{ trans('labels.Product Type Text') }}.</span>
                                                 </div>
                                             </div>
+                                                <div class="form-group">
+                                                <label for="barcode"
+                                                       class="col-sm-2 col-md-3 control-label">Product Barcode</label>
+                                                <div class="col-sm-10 col-md-4">
+                                                    <input type="text"
+                                                           placeholder="Enter Barcode Number"
+                                                           name="barcode"
+                                                           class="form-control field-validate">
+                                                    <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">Please Enter the Barcode Number</span>
+                                                </div>
+                                            </div>
 
                                             <hr>
                                             <div class="form-group">
