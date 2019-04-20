@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< .merge_file_a00672
     "content-hash": "4714bfd5b2e948cbbb4724d9544ce576",
+=======
+    "content-hash": "523fe221ae6cc1e96d3be6e9f8bdbb2e",
+>>>>>>> .merge_file_a05772
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -4172,6 +4176,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2017-06-30T09:13:00+00:00"
         },
         {

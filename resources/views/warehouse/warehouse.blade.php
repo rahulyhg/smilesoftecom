@@ -3,8 +3,8 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1> {{ trans('labels.Manufacturers') }}
-                <small>{{ trans('labels.ListingAllManufacturers') }}...</small>
+            <h1> Warehouse
+                <small>Warehouse List...</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ URL::to('admin/dashboard/this_month') }}"><i
@@ -23,10 +23,10 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">{{ trans('labels.ListingAllManufacturers') }} </h3>
+                            <h3 class="box-title">Listing All Warehouse's </h3>
                             <div class="box-tools pull-right">
-                                <a href="{{ URL::to('admin/addmanufacturer') }}" type="button"
-                                   class="btn btn-block btn-primary">{{ trans('labels.AddNewManufacturer') }}</a>
+                                <a href="{{ URL::to('admin/addwarehouse') }}" type="button"
+                                   class="btn btn-block btn-primary">Add New Warehouse</a>
                             </div>
                         </div>
 
@@ -51,34 +51,30 @@
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
-                                            <th>{{ trans('labels.ID') }}</th>
-                                            <th>{{ trans('labels.Name') }}</th>
-                                            <th>{{ trans('labels.Image') }}</th>
-                                            <th>{{ trans('labels.OtherInfo') }}</th>
-                                            <th>{{ trans('labels.Action') }}</th>
+                                            <th>#</th>
+                                            <th>Warehouse Name</th>
+                                            <th>Username</th>
+                                            <th>Password</th>
+                                            <th>Location</th>
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @if(count($manufacturers)>0)
-                                            @foreach ($manufacturers  as $key=>$manufacturer)
+                                        @if(count($warehouselist)>0)
+                                            @foreach ($warehouselist  as $key=>$warehouselists)
                                                 <tr>
-                                                    <td>{{ $manufacturer->id }}</td>
-                                                    <td>{{ $manufacturer->name }}</td>
-                                                    <td><img src="{{asset('').'/'.$manufacturer->image}}" alt=""
-                                                             width=" 100px"></td>
-                                                    <td>
-                                                    <!--<strong>{{ trans('labels.ClickDate') }}: </strong> {{ $manufacturer->clik_date }}<br>-->
-                                                        <strong>{{ trans('labels.URL') }}
-                                                            : </strong>{{ $manufacturer->url }} <br>
-                                                    <!--<strong>{{ trans('labels.Clicked') }}: </strong>{{ $manufacturer->url_clicked }}-->
-                                                    </td>
+                                                    <td>{{ ++$key }}</td>
+                                                    <td>{{ $warehouselists->name }}</td>
+                                                    <td>{{ $warehouselists->username }}</td>
+                                                    <td>{{ $warehouselists->password }}</td>
+                                                    <td>{{ $warehouselists->location }}</td>
                                                     <td>
                                                         <a data-toggle="tooltip" data-placement="bottom" title="Edit"
-                                                           href="editmanufacturer/{{ $manufacturer->id }}"
+                                                           href="editWarehouse/{{ $warehouselists->id }}"
                                                            class="badge bg-light-blue"><i class="fa fa-pencil-square-o"
                                                                                           aria-hidden="true"></i></a>
                                                         <a id="manufacturerFrom"
-                                                           manufacturers_id='{{ $manufacturer->id }}'
+                                                           warehouse_id='{{ $warehouselists->id }}'
                                                            data-toggle="tooltip" data-placement="bottom" title="Delete"
                                                            href="#" class="badge bg-red"><i class="fa fa-trash"
                                                                                             aria-hidden="true"></i></a>
@@ -93,9 +89,6 @@
                                         @endif
                                         </tbody>
                                     </table>
-                                    <div class="col-xs-12 text-right">
-                                        {{$manufacturers->links('vendor.pagination.default')}}
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -118,26 +111,27 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                         aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title"
-                                id="deleteManufacturerModalLabel">{{ trans('labels.DeleteManufacturer') }}</h4>
+                                id="deleteManufacturerModalLabel">Delete Warehouse</h4>
                         </div>
-                        {!! Form::open(array('url' =>'admin/deletemanufacturer', 'name'=>'deleteManufacturer', 'id'=>'deleteManufacturer', 'method'=>'post', 'class' => 'form-horizontal', 'enctype'=>'multipart/form-data')) !!}
-                        {!! Form::hidden('action',  'delete', array('class'=>'form-control')) !!}
-                        {!! Form::hidden('manufacturers_id',  '', array('class'=>'form-control', 'id'=>'manufacturers_id')) !!}
-                        <div class="modal-body">
-                            <p>{{ trans('labels.DeleteManufacturerText') }}</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default"
-                                    data-dismiss="modal">{{ trans('labels.Close') }}</button>
-                            <button type="submit" class="btn btn-primary">{{ trans('labels.Delete') }}</button>
-                        </div>
-                        {!! Form::close() !!}
+                        <form action="{{url('admin/deletewarehouse')}}" name="deletewarehouse" method="post"
+                              class="form-horizontal">
+
+                            <input type="hidden" name="delete" id="delete" class="form-control" value="Delete">
+                            <input type="hidden" name="warehouse_id" id="warehouse_id" class="form-control">
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete this Warehouse?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default"
+                                        data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Delete</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-
             <!-- /.row -->
         </section>
         <!-- /.content -->
     </div>
-@endsection 
+@endsection

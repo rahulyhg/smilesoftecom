@@ -22,6 +22,13 @@
                     </a>
                 </li>
             @endif
+            @if(session('dashboard_view')==1 or auth()->guard('admin')->user()->adminType=='1')
+                <li class="treeview {{ Request::is('admin/dashboard/this_month') ? 'active' : '' }}">
+                    <a href="{{ URL::to('admin/warehouse')}}">
+                        <i class="fa fa-home"></i> <span>Warehouse</span>
+                    </a>
+                </li>
+            @endif
             @if(session('language_view')==1  or auth()->guard('admin')->user()->adminType=='1')
                 <li class="treeview {{ Request::is('admin/languages') ? 'active' : '' }} {{ Request::is('admin/addlanguages') ? 'active' : '' }} {{ Request::is('admin/editlanguages/*') ? 'active' : '' }} ">
                     <a href="{{ URL::to('admin/languages')}}">

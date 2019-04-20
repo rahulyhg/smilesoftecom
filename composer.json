@@ -9,9 +9,13 @@
         "karlomikus/theme": "^1.0",
         "laravel/framework": "5.5.*",
         "laravel/socialite": "^3.0",
+        "barryvdh/laravel-dompdf": "^0.8.4",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4.0",
+<<<<<<< .merge_file_a01384
         "barryvdh/laravel-dompdf": "^0.8.4",
+=======
+>>>>>>> .merge_file_a06756
         "milon/barcode": "^5.3"
     },
     "require-dev": {
