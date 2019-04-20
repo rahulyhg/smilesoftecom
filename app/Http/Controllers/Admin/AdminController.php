@@ -5,29 +5,26 @@ Project Name: IonicEcommerce
 Project URI: http://ionicecommerce.com
 Author: VectorCoder Team
 Author URI: http://vectorcoder.com/
-*/
+ */
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-
-use Validator;
 use App;
-use Lang;
-
 use App\Admin;
-
+use App\Http\Controllers\Controller;
+use Auth;
 use DB;
-//for password encryption or hash protected
 use Hash;
+//for password encryption or hash protected
+use Illuminate\Http\Request;
 
 //use App\Administrator;
 
 //for authenitcate login data
-use Auth;
+use Lang;
 use Session;
-//for requesting a value 
-use Illuminate\Http\Request;
+//for requesting a value
+use Validator;
 
 class AdminController extends Controller
 {
@@ -46,7 +43,6 @@ class AdminController extends Controller
             ->orderBy('date_purchased', 'DESC')
             ->get();
 
-
         $index = 0;
         $total_price = 0;
         $cost = 0;
@@ -58,13 +54,11 @@ class AdminController extends Controller
                 ->groupBy('final_price')
                 ->get();
 
-
             if (count($orders_products) > 0 and !empty($orders_products[0]->total_price)) {
                 $orders[$index]->total_price = $orders_products[0]->total_price;
                 //$related_product = DB::table('products')->where('products_id',$orders_products[0]->products_id)->get();
 
                 $cost += DB::table('inventory')->where('products_id', $orders_products[0]->products_id)->sum('purchase_price');
-
 
             } else {
                 $orders[$index]->total_price = 0;
@@ -93,7 +87,6 @@ class AdminController extends Controller
                 $pending_orders++;
             }
         }
-
 
         $result['orders'] = $orders->chunk(10);
         $result['pending_orders'] = $pending_orders;
@@ -185,7 +178,6 @@ class AdminController extends Controller
         return view("admin.dashboard", $title)->with('result', $result);
     }
 
-
     public function login()
     {
         if (Auth::check()) {
@@ -208,7 +200,7 @@ class AdminController extends Controller
         $validator = Validator::make(
             array(
                 'email' => $request->email,
-                'password' => $request->password
+                'password' => $request->password,
             ),
             array(
                 'email' => 'required | email',
@@ -232,8 +224,8 @@ class AdminController extends Controller
 
                         if (count($roles) > 0) {
                             $dashboard_view = $roles[0]->dashboard_view;
-
                             $manufacturer_view = $roles[0]->manufacturer_view;
+                            $supplier_view = $roles[0]->supplier_view;
                             $manufacturer_create = $roles[0]->manufacturer_create;
                             $manufacturer_update = $roles[0]->manufacturer_update;
                             $manufacturer_delete = $roles[0]->manufacturer_delete;
@@ -288,7 +280,6 @@ class AdminController extends Controller
                             $application_setting_view = $roles[0]->application_setting_view;
                             $application_setting_update = $roles[0]->application_setting_update;
 
-
                             $general_setting_view = $roles[0]->general_setting_view;
                             $general_setting_update = $roles[0]->general_setting_update;
 
@@ -296,7 +287,6 @@ class AdminController extends Controller
                             $manage_admins_create = $roles[0]->manage_admins_create;
                             $manage_admins_update = $roles[0]->manage_admins_update;
                             $manage_admins_delete = $roles[0]->manage_admins_delete;
-
 
                             $language_view = $roles[0]->language_view;
                             $language_create = $roles[0]->language_create;
@@ -319,6 +309,11 @@ class AdminController extends Controller
                             $manufacturer_create = '0';
                             $manufacturer_update = '0';
                             $manufacturer_delete = '0';
+
+                            $supplier_view = '0';
+                            $supplier_create = '0';
+                            $supplier_update = '0';
+                            $supplier_delete = '0';
 
                             $categories_view = '0';
                             $categories_create = '0';
@@ -401,6 +396,11 @@ class AdminController extends Controller
                         $manufacturer_update = '1';
                         $manufacturer_delete = '1';
 
+                        $supplier_view = '1';
+                        $supplier_create = '1';
+                        $supplier_update = '1';
+                        $supplier_delete = '1';
+
                         $categories_view = '1';
                         $categories_create = '1';
                         $categories_update = '1';
@@ -432,7 +432,7 @@ class AdminController extends Controller
                         $coupons_delete = '1';
 
                         $notifications_view = '1';
-                        $notifications_send = '1';;
+                        $notifications_send = '1';
 
                         $orders_view = '1';
                         $orders_confirm = '1';
@@ -484,6 +484,11 @@ class AdminController extends Controller
                 session(['manufacturer_create' => $manufacturer_create]);
                 session(['manufacturer_update' => $manufacturer_update]);
                 session(['manufacturer_delete' => $manufacturer_delete]);
+
+                session(['supplier_view' => $supplier_view]);
+                session(['supplier_create' => $supplier_create]);
+                session(['supplier_update' => $supplier_update]);
+                session(['supplier_delete' => $supplier_delete]);
 
                 session(['categories_view' => $categories_view]);
                 session(['categories_create' => $categories_create]);
@@ -578,7 +583,6 @@ class AdminController extends Controller
 
     }
 
-
     //logout
     public function logout()
     {
@@ -641,7 +645,7 @@ class AdminController extends Controller
                 'country' => $request->country,
                 'phone' => $request->phone,
                 'image' => $uploadImage,
-                'updated_at' => $updated_at
+                'updated_at' => $updated_at,
             ]);
 
             $message = Lang::get("labels.ProfileUpdateMessage");
@@ -656,7 +660,7 @@ class AdminController extends Controller
             print Lang::get("labels.You do not have to access this route");
         } else {
             $orders_status = DB::table('administrators')->where('myid', '=', auth()->guard('admin')->user()->myid)->update([
-                'password' => Hash::make($request->password)
+                'password' => Hash::make($request->password),
             ]);
 
             $message = Lang::get("labels.PasswordUpdateMessage");
@@ -686,7 +690,6 @@ class AdminController extends Controller
                 ->where('email', '!=', 'vectorcoder@gmail.com')
                 ->where('adminType', '!=', '1')
                 ->paginate(50);
-
 
             $result['message'] = $message;
             $result['errorMessage'] = $errorMessage;
@@ -761,9 +764,8 @@ class AdminController extends Controller
                     'password' => Hash::make($request->password),
                     'isActive' => $request->isActive,
                     'image' => $uploadImage,
-                    'adminType' => $request->adminType
+                    'adminType' => $request->adminType,
                 ]);
-
 
                 $message = Lang::get("labels.New admin has been added successfully");
                 return redirect()->back()->with('message', $message);
@@ -802,7 +804,6 @@ class AdminController extends Controller
             $zones->zone_name = "Others";
             $result['zones'][0] = $zones;
         }
-
 
         $result['admins'] = $admins;
         return view("admin.editadmin", $title)->with('result', $result);
@@ -861,7 +862,6 @@ class AdminController extends Controller
 
                 $customers_id = DB::table('administrators')->where('myid', '=', $myid)->update($admin_data);
 
-
                 $message = Lang::get("labels.Admin has been updated successfully");
                 return redirect()->back()->with('message', $message);
             }
@@ -906,7 +906,6 @@ class AdminController extends Controller
         }
     }
 
-
     //add admins type
     public function addadmintype(Request $request)
     {
@@ -947,7 +946,6 @@ class AdminController extends Controller
         }
     }
 
-
     //editadmintype
     public function editadmintype(Request $request)
     {
@@ -980,12 +978,10 @@ class AdminController extends Controller
                 'isActive' => $request->isActive,
             ]);
 
-
             $message = Lang::get("labels.Admin type has been updated successfully");
             return redirect()->back()->with('message', $message);
         }
     }
-
 
     //deleteProduct
     public function deleteadmintype(Request $request)
@@ -1076,7 +1072,6 @@ class AdminController extends Controller
                 $application_setting_view = $roles[0]->application_setting_view;
                 $application_setting_update = $roles[0]->application_setting_update;
 
-
                 $general_setting_view = $roles[0]->general_setting_view;
                 $general_setting_update = $roles[0]->general_setting_update;
 
@@ -1084,7 +1079,6 @@ class AdminController extends Controller
                 $manage_admins_create = $roles[0]->manage_admins_create;
                 $manage_admins_update = $roles[0]->manage_admins_update;
                 $manage_admins_delete = $roles[0]->manage_admins_delete;
-
 
                 $language_view = $roles[0]->language_view;
                 $language_create = $roles[0]->language_create;
@@ -1132,7 +1126,6 @@ class AdminController extends Controller
                 $tax_location_create = '0';
                 $tax_location_update = '0';
                 $tax_location_delete = '0';
-
 
                 $coupons_view = '0';
                 $coupons_create = '0';
@@ -1182,7 +1175,6 @@ class AdminController extends Controller
                 $manage_admins_role = '0';
             }
 
-
             $result2[0]['link_name'] = 'dashboard';
             $result2[0]['permissions'] = array('0' => array('name' => 'dashboard_view', 'value' => $dashboard_view));
 
@@ -1191,7 +1183,7 @@ class AdminController extends Controller
                 '0' => array('name' => 'manufacturer_view', 'value' => $manufacturer_view),
                 '1' => array('name' => 'manufacturer_create', 'value' => $manufacturer_create),
                 '2' => array('name' => 'manufacturer_update', 'value' => $manufacturer_update),
-                '3' => array('name' => 'manufacturer_delete', 'value' => $manufacturer_delete)
+                '3' => array('name' => 'manufacturer_delete', 'value' => $manufacturer_delete),
             );
 
             $result2[2]['link_name'] = 'categories';
@@ -1199,7 +1191,7 @@ class AdminController extends Controller
                 '0' => array('name' => 'categories_view', 'value' => $categories_view),
                 '1' => array('name' => 'categories_create', 'value' => $categories_create),
                 '2' => array('name' => 'categories_update', 'value' => $categories_update),
-                '3' => array('name' => 'categories_delete', 'value' => $categories_delete)
+                '3' => array('name' => 'categories_delete', 'value' => $categories_delete),
             );
 
             $result2[3]['link_name'] = 'products';
@@ -1207,7 +1199,7 @@ class AdminController extends Controller
                 '0' => array('name' => 'products_view', 'value' => $products_view),
                 '1' => array('name' => 'products_create', 'value' => $products_create),
                 '2' => array('name' => 'products_update', 'value' => $products_update),
-                '3' => array('name' => 'products_delete', 'value' => $products_delete)
+                '3' => array('name' => 'products_delete', 'value' => $products_delete),
             );
 
             $result2[4]['link_name'] = 'news';
@@ -1215,7 +1207,7 @@ class AdminController extends Controller
                 '0' => array('name' => 'news_view', 'value' => $news_view),
                 '1' => array('name' => 'news_create', 'value' => $news_create),
                 '2' => array('name' => 'news_update', 'value' => $news_update),
-                '3' => array('name' => 'news_delete', 'value' => $news_delete)
+                '3' => array('name' => 'news_delete', 'value' => $news_delete),
             );
 
             $result2[5]['link_name'] = 'customers';
@@ -1223,7 +1215,7 @@ class AdminController extends Controller
                 '0' => array('name' => 'customers_view', 'value' => $customers_view),
                 '1' => array('name' => 'customers_create', 'value' => $customers_create),
                 '2' => array('name' => 'customers_update', 'value' => $customers_update),
-                '3' => array('name' => 'customers_delete', 'value' => $customers_delete)
+                '3' => array('name' => 'customers_delete', 'value' => $customers_delete),
             );
 
             $result2[6]['link_name'] = 'tax_location';
@@ -1231,7 +1223,7 @@ class AdminController extends Controller
                 '0' => array('name' => 'tax_location_view', 'value' => $tax_location_view),
                 '1' => array('name' => 'tax_location_create', 'value' => $tax_location_create),
                 '2' => array('name' => 'tax_location_update', 'value' => $tax_location_update),
-                '3' => array('name' => 'tax_location_delete', 'value' => $tax_location_delete)
+                '3' => array('name' => 'tax_location_delete', 'value' => $tax_location_delete),
             );
 
             $result2[7]['link_name'] = 'coupons';
@@ -1239,31 +1231,31 @@ class AdminController extends Controller
                 '0' => array('name' => 'coupons_view', 'value' => $coupons_view),
                 '1' => array('name' => 'coupons_create', 'value' => $coupons_create),
                 '2' => array('name' => 'coupons_update', 'value' => $coupons_update),
-                '3' => array('name' => 'coupons_delete', 'value' => $coupons_delete)
+                '3' => array('name' => 'coupons_delete', 'value' => $coupons_delete),
             );
 
             $result2[8]['link_name'] = 'notifications';
             $result2[8]['permissions'] = array(
                 '0' => array('name' => 'notifications_view', 'value' => $notifications_view),
-                '1' => array('name' => 'notifications_send', 'value' => $notifications_send)
+                '1' => array('name' => 'notifications_send', 'value' => $notifications_send),
             );
 
             $result2[9]['link_name'] = 'orders';
             $result2[9]['permissions'] = array(
                 '0' => array('name' => 'orders_view', 'value' => $orders_view),
-                '1' => array('name' => 'orders_confirm', 'value' => $orders_confirm)
+                '1' => array('name' => 'orders_confirm', 'value' => $orders_confirm),
             );
 
             $result2[10]['link_name'] = 'shipping_methods';
             $result2[10]['permissions'] = array(
                 '0' => array('name' => 'shipping_methods_view', 'value' => $shipping_methods_view),
-                '1' => array('name' => 'shipping_methods_update', 'value' => $shipping_methods_update)
+                '1' => array('name' => 'shipping_methods_update', 'value' => $shipping_methods_update),
             );
 
             $result2[11]['link_name'] = 'payment_methods';
             $result2[11]['permissions'] = array(
                 '0' => array('name' => 'payment_methods_view', 'value' => $payment_methods_view),
-                '1' => array('name' => 'payment_methods_update', 'value' => $payment_methods_update)
+                '1' => array('name' => 'payment_methods_update', 'value' => $payment_methods_update),
             );
 
             $result2[12]['link_name'] = 'reports';
@@ -1272,19 +1264,19 @@ class AdminController extends Controller
             $result2[13]['link_name'] = 'website_setting';
             $result2[13]['permissions'] = array(
                 '0' => array('name' => 'website_setting_view', 'value' => $website_setting_view),
-                '1' => array('name' => 'website_setting_update', 'value' => $website_setting_update)
+                '1' => array('name' => 'website_setting_update', 'value' => $website_setting_update),
             );
 
             $result2[14]['link_name'] = 'application_setting';
             $result2[14]['permissions'] = array(
                 '0' => array('name' => 'application_setting_view', 'value' => $application_setting_view),
-                '1' => array('name' => 'application_setting_update', 'value' => $application_setting_update)
+                '1' => array('name' => 'application_setting_update', 'value' => $application_setting_update),
             );
 
             $result2[15]['link_name'] = 'general_setting';
             $result2[15]['permissions'] = array(
                 '0' => array('name' => 'general_setting_view', 'value' => $general_setting_view),
-                '1' => array('name' => 'general_setting_update', 'value' => $general_setting_update)
+                '1' => array('name' => 'general_setting_update', 'value' => $general_setting_update),
             );
 
             $result2[16]['link_name'] = 'manage_admins';
@@ -1292,7 +1284,7 @@ class AdminController extends Controller
                 '0' => array('name' => 'manage_admins_view', 'value' => $manage_admins_view),
                 '1' => array('name' => 'manage_admins_create', 'value' => $manage_admins_create),
                 '2' => array('name' => 'manage_admins_update', 'value' => $manage_admins_update),
-                '3' => array('name' => 'manage_admins_delete', 'value' => $manage_admins_delete)
+                '3' => array('name' => 'manage_admins_delete', 'value' => $manage_admins_delete),
             );
 
             $result2[17]['link_name'] = 'language';
@@ -1300,15 +1292,14 @@ class AdminController extends Controller
                 '0' => array('name' => 'language_view', 'value' => $language_view),
                 '1' => array('name' => 'language_create', 'value' => $language_create),
                 '2' => array('name' => 'language_update', 'value' => $language_update),
-                '3' => array('name' => 'language_delete', 'value' => $language_delete)
+                '3' => array('name' => 'language_delete', 'value' => $language_delete),
             );
 
             $result2[18]['link_name'] = 'profile';
             $result2[18]['permissions'] = array(
                 '0' => array('name' => 'profile_view', 'value' => $profile_view),
-                '1' => array('name' => 'profile_update', 'value' => $profile_update)
+                '1' => array('name' => 'profile_update', 'value' => $profile_update),
             );
-
 
             $result2[19]['link_name'] = 'Admin Types';
             $result2[19]['permissions'] = array(
@@ -1316,9 +1307,8 @@ class AdminController extends Controller
                 '1' => array('name' => 'admintype_create', 'value' => $admintype_create),
                 '2' => array('name' => 'admintype_update', 'value' => $admintype_update),
                 '3' => array('name' => 'admintype_delete', 'value' => $admintype_delete),
-                '4' => array('name' => 'manage_admins_role', 'value' => $manage_admins_role)
+                '4' => array('name' => 'manage_admins_role', 'value' => $manage_admins_role),
             );
-
 
             $result['data'] = $result2;
             return view("admin.addrole", $title)->with('result', $result);
@@ -1422,7 +1412,6 @@ class AdminController extends Controller
         }
     }
 
-
     //managerole
     public function categoriesroles(Request $request)
     {
@@ -1472,7 +1461,6 @@ class AdminController extends Controller
             return view("admin.addcategoriesroles", $title)->with('result', $result);
         }
     }
-
 
     //addCategoriesRoles
     public function addNewCategoriesRoles(Request $request)
@@ -1559,7 +1547,6 @@ class AdminController extends Controller
         }
     }
 
-
     //deleteCountry
     public function deletecategoriesroles(Request $request)
     {
@@ -1570,6 +1557,5 @@ class AdminController extends Controller
             return redirect()->back()->withErrors([Lang::get("labels.AdminRemoveCategoryMessage")]);
         }
     }
-
 
 }

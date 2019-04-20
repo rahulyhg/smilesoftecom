@@ -43,6 +43,20 @@
                         
                             {!! Form::open(array('url' =>'admin/addnewproduct', 'method'=>'post', 'class' => 'form-horizontal form-validate', 'enctype'=>'multipart/form-data')) !!}             
                             	<div class="form-group">
+                                  <label for="name" class="col-sm-2 col-md-3 control-label">Supplier</label>
+                                  @php
+                                      $supplier = \App\SupplierModel::whereis_del(0)->get();
+                                  @endphp
+                                  <div class="col-sm-10 col-md-4">
+                                      <select class="form-control field-validate prodcust-type" name="products_type">
+                                         
+                                      </select><span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                      Please Choose Supplier</span>
+                                  </div>
+                                </div>
+                                
+                                <hr>                                           
+                            	<div class="form-group">
                                   <label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.Product Type') }} </label>
                                   <div class="col-sm-10 col-md-4">
                                       <select class="form-control field-validate prodcust-type" name="products_type" onChange="prodcust_type();">
@@ -60,7 +74,7 @@
                                   <label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.Category') }}</label>
                                   <div class="col-sm-10 col-md-4">
                                   @if(!empty(session('categories_id')))
-										@php
+										                @php
                                         $cat_array = explode(',', session('categories_id'));                                        
                                         @endphp
                                         <ul class="list-group list-group-root well">    
