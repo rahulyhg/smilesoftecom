@@ -1,208 +1,137 @@
 @extends('admin.layout')
 @section('content')
-    <style>
-        .myheading {
-            border-bottom: 1px solid #00000038;
-            padding-left: 30px;
-            padding-right: 30px;
-        }
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1> Warehouse
+                <small>Warehouse List...</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="{{ URL::to('admin/dashboard/this_month') }}"><i
+                                class="fa fa-dashboard"></i> {{ trans('labels.breadcrumb_dashboard') }}</a></li>
+                <li class="active">{{ trans('labels.Manufacturers') }}</li>
+            </ol>
+        </section>
 
-        .mybg {
-            padding: 20px 25px;
-            background: white;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.16);
-        }
+        <!-- Main content -->
+        <section class="content">
+            <!-- Info boxes -->
 
-        .errorClass {
-            border: red 1px solid;
-        }
-    </style>
-    <div class="content-wrapper" style="background: #3c8dbc">
-        <div class="container">
-            <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center m-t-lg mybg">
-                            <h1>
-                                <b>Warehouse</b>
-                            </h1>
-                        {{--
-                                        <hr> --}}
+            <!-- /.row -->
 
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">Listing All Warehouse's </h3>
+                            <div class="box-tools pull-right">
+                                <a href="{{ URL::to('admin/addwarehouse') }}" type="button"
+                                   class="btn btn-block btn-primary">Add New Warehouse</a>
+                            </div>
+                        </div>
 
-                        <!-- Nav tabs -->
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#store">Warehouse List &nbsp;<i
-                                                class="fa fa-home"></i></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#addstore">Add Warehouse &nbsp;<i
-                                                class="fa fa-plus"></i></a>
-                                </li>
-                            </ul>
-
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div id="store" class="tab-pane active"><br>
-                                    <table class="table table-striped table-bordered">
-                                        <thead class="thead-inverse">
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    @if (count($errors) > 0)
+                                        @if($errors->any())
+                                            <div class="alert alert-success alert-dismissible" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                </button>
+                                                {{$errors->first()}}
+                                            </div>
+                                        @endif
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
                                         <tr>
-                                            <th style="text-align: center">#</th>
-                                            <th style="text-align: center">Name</th>
-                                            <th style="text-align: center">Location</th>
-                                            <th style="text-align: center">Username</th>
-                                            <th style="text-align: center">Password</th>
-                                            <th style="text-align: center">Action</th>
+                                            <th>#</th>
+                                            <th>Warehouse Name</th>
+                                            <th>Username</th>
+                                            <th>Password</th>
+                                            <th>Location</th>
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach ($warehouselist as $index => $item)
-                                            <tr>
-                                                <td>{{ $index+1 }}</td>
-                                                <td>{{ ucwords($item->name) }}</td>
-                                                <td>{{ ucwords($item->location) }}</td>
-                                                <td><b>{{ $item->username }}</b></td>
-                                                <td><b>{{ $item->password }}</b></td>
-                                                <td><a href="{{ url('edit_store').'/'.base64_encode($item->id)}}">
-                                                        <button class="btn btn-success btn-sm">Edit</button>
-                                                    </a>
-                                                    <button onclick="del_store({{ $item->id }});"
-                                                            class="btn btn-danger btn-sm">
-                                                        Delete
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                        @if(count($warehouselist)>0)
+                                            @foreach ($warehouselist  as $key=>$warehouselists)
+                                                <tr>
+                                                    <td>{{ ++$key }}</td>
+                                                    <td>{{ $warehouselists->name }}</td>
+                                                    <td>{{ $warehouselists->username }}</td>
+                                                    <td>{{ $warehouselists->password }}</td>
+                                                    <td>{{ $warehouselists->location }}</td>
+                                                    <td>
+                                                        <a data-toggle="tooltip" data-placement="bottom" title="Edit"
+                                                           href="editWarehouse/{{ $warehouselists->id }}"
+                                                           class="badge bg-light-blue"><i class="fa fa-pencil-square-o"
+                                                                                          aria-hidden="true"></i></a>
+                                                        <a id="manufacturerFrom"
+                                                           warehouse_id='{{ $warehouselists->id }}'
+                                                           data-toggle="tooltip" data-placement="bottom" title="Delete"
+                                                           href="#" class="badge bg-red"><i class="fa fa-trash"
+                                                                                            aria-hidden="true"></i></a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
 
+                                        @else
+                                            <tr>
+                                                <td colspan="5">{{ trans('labels.NoRecordFound') }}</td>
+                                            </tr>
+                                        @endif
                                         </tbody>
                                     </table>
-
                                 </div>
-                                <div id="addstore" class="tab-pane fade"><br>
-                                    <form action="{{ url('admin/insert_warehouse') }}" method="post" id="insert_warehouse">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="" class="pull-left">Warehouse Name</label>
-                                                    <input type="text" name="name" autocomplete="off"
-                                                           class="form-control required" placeholder="Enter Name">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="" class="pull-left">Location</label>
-                                                    <input type="text" name="location" autocomplete="off"
-                                                           class="form-control required" placeholder="Enter Name">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="" class="pull-left">Username</label>
-                                                    <input type="text" name="username" maxlength="25" id="username"
-                                                           autocomplete="off" class="form-control required nospc"
-                                                           placeholder="Enter Name">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="" class="pull-left">Password</label>
-                                                    <input type="password" maxlength="25" name="password"
-                                                           autocomplete="off"
-                                                           class="form-control required" placeholder="Enter Name">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <button type="submit" class="btn btn-primary pull-left">Create
-                                                        New Warehouse
-                                                        &nbsp;<i
-                                                                class="fa fa-home"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </form>
-                                </div>
-
                             </div>
                         </div>
+                        <!-- /.box-body -->
                     </div>
+                    <!-- /.box -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
 
+            <!-- Main row -->
+
+            <!-- deleteManufacturerModal -->
+            <div class="modal fade" id="manufacturerModal" tabindex="-1" role="dialog"
+                 aria-labelledby="deleteManufacturerModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"
+                                id="deleteManufacturerModalLabel">Delete Warehouse</h4>
+                        </div>
+                        <form action="{{url('admin/deletewarehouse')}}" name="deletewarehouse" method="post"
+                              class="form-horizontal">
+
+                            <input type="hidden" name="delete" id="delete" class="form-control" value="Delete">
+                            <input type="hidden" name="warehouse_id" id="warehouse_id" class="form-control">
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete this Warehouse?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default"
+                                        data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Delete</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+            <!-- /.row -->
+        </section>
+        <!-- /.content -->
     </div>
-
-    <script>
-        $("#username").focusout(function () {
-            var username = $('#username').val();
-            $.get('{{ url('check_store_username') }}', {
-                username: username
-            }, function (data) {
-                if (data == 'Not Available') {
-                    $('#username').val('');
-                    // return false;
-                    setTimeout(function () {
-                        Swal.fire({
-                            position: 'bottom',
-                            title: 'Username Not Available',
-                            showConfirmButton: false,
-                            timer: 1200,
-                            animation: false,
-                            customClass: {
-                                popup: 'animated fadeInDown'
-                            }
-                        })
-                    }, 500);
-                }
-                //     console.log(data);
-                //    alert(data);
-            });
-        });
-
-        function del_store(id) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Delete This Store",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) = > {
-                if (result.value
-        )
-            {
-
-                $.get('{{ url('del_store') }}', {
-                    did: id
-                }, function (data) {
-
-
-                    // return false;
-                    setTimeout(function () {
-                        Swal.fire({
-                            position: 'bottom',
-                            title: 'Store has Been Deleted',
-                            showConfirmButton: false,
-                            timer: 1200,
-                            animation: false,
-                            customClass: {
-                                popup: 'animated fadeInDown'
-                            }
-                        })
-                    }, 500);
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-
-                    //     console.log(data);
-                    //    alert(data);
-                });
-            }
-        })
-        }
-    </script>
-
 @endsection

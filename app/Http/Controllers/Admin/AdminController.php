@@ -238,6 +238,11 @@ class AdminController extends Controller
                             $manufacturer_update = $roles[0]->manufacturer_update;
                             $manufacturer_delete = $roles[0]->manufacturer_delete;
 
+//                            $warehouse_view = $roles[0]->warehouse_view;
+//                            $warehouse_create = $roles[0]->warehouse_create;
+//                            $warehouse_update = $roles[0]->warehouse_update;
+//                            $warehouse_delete = $roles[0]->warehouse_delete;
+
                             $categories_view = $roles[0]->categories_view;
                             $categories_create = $roles[0]->categories_create;
                             $categories_update = $roles[0]->categories_update;
@@ -320,6 +325,11 @@ class AdminController extends Controller
                             $manufacturer_update = '0';
                             $manufacturer_delete = '0';
 
+//                            $warehouse_view = '0';
+//                            $warehouse_create = '0';
+//                            $warehouse_update = '0';
+//                            $warehouse_delete = '0';
+
                             $categories_view = '0';
                             $categories_create = '0';
                             $categories_update = '0';
@@ -400,6 +410,11 @@ class AdminController extends Controller
                         $manufacturer_create = '1';
                         $manufacturer_update = '1';
                         $manufacturer_delete = '1';
+
+//                        $warehouse_view = '1';
+//                        $warehouse_create = '1';
+//                        $warehouse_update = '1';
+//                        $warehouse_delete = '1';
 
                         $categories_view = '1';
                         $categories_create = '1';
@@ -484,6 +499,11 @@ class AdminController extends Controller
                 session(['manufacturer_create' => $manufacturer_create]);
                 session(['manufacturer_update' => $manufacturer_update]);
                 session(['manufacturer_delete' => $manufacturer_delete]);
+
+//                session(['warehouse_view' => $warehouse_view]);
+//                session(['warehouse_create' => $warehouse_create]);
+//                session(['warehouse_update' => $warehouse_update]);
+//                session(['warehouse_delete' => $warehouse_delete]);
 
                 session(['categories_view' => $categories_view]);
                 session(['categories_create' => $categories_create]);
@@ -1026,6 +1046,11 @@ class AdminController extends Controller
                 $manufacturer_update = $roles[0]->manufacturer_update;
                 $manufacturer_delete = $roles[0]->manufacturer_delete;
 
+//                $warehouse_view = $roles[0]->warehouse_view;
+//                $warehouse_create = $roles[0]->warehouse_create;
+//                $warehouse_update = $roles[0]->warehouse_update;
+//                $warehouse_delete = $roles[0]->warehouse_delete;
+
                 $categories_view = $roles[0]->categories_view;
                 $categories_create = $roles[0]->categories_create;
                 $categories_update = $roles[0]->categories_update;
@@ -1107,6 +1132,11 @@ class AdminController extends Controller
                 $manufacturer_create = '0';
                 $manufacturer_update = '0';
                 $manufacturer_delete = '0';
+
+//                $warehouse_view = '0';
+//                $warehouse_create = '0';
+//                $warehouse_update = '0';
+//                $warehouse_delete = '0';
 
                 $categories_view = '0';
                 $categories_create = '0';
@@ -1193,6 +1223,14 @@ class AdminController extends Controller
                 '2' => array('name' => 'manufacturer_update', 'value' => $manufacturer_update),
                 '3' => array('name' => 'manufacturer_delete', 'value' => $manufacturer_delete)
             );
+
+//            $result2[1]['link_name'] = 'warehouse';
+//            $result2[1]['permissions'] = array(
+//                '0' => array('name' => 'warehouse_view', 'value' => $warehouse_view),
+//                '1' => array('name' => 'warehouse_create', 'value' => $warehouse_create),
+//                '2' => array('name' => 'warehouse_update', 'value' => $warehouse_update),
+//                '3' => array('name' => 'warehouse_delete', 'value' => $warehouse_delete)
+//            );
 
             $result2[2]['link_name'] = 'categories';
             $result2[2]['permissions'] = array(
@@ -1343,6 +1381,11 @@ class AdminController extends Controller
                 'manufacturer_create' => $request->manufacturer_create,
                 'manufacturer_update' => $request->manufacturer_update,
                 'manufacturer_delete' => $request->manufacturer_delete,
+
+//                'warehouse_view' => $request->warehouse_view,
+//                'warehouse_create' => $request->warehouse_create,
+//                'warehouse_update' => $request->warehouse_update,
+//                'warehouse_delete' => $request->warehouse_delete,
 
                 'categories_view' => $request->categories_view,
                 'categories_create' => $request->categories_create,

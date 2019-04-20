@@ -62,16 +62,17 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/editmanufacturer/{id}', 'AdminManufacturerController@editmanufacturer');
             Route::post('/updatemanufacturer', 'AdminManufacturerController@updatemanufacturer');
             Route::post('/deletemanufacturer', 'AdminManufacturerController@deletemanufacturer');
-            Route::get('/warehouse', 'AdminManufacturerController@warehouse');
-            Route::post('/insert_warehouse', 'AdminManufacturerController@insert_warehouse');
 
-            //main Warehouse
-//			Route::get('/warehouse', 'AdminWarehouseController@warehouse');
-//			Route::get('/addmanufacturer', 'AdminManufacturerController@addmanufacturer');
-//			Route::post('/addnewmanufacturer', 'AdminManufacturerController@addnewmanufacturer');
-//			Route::get('/editmanufacturer/{id}', 'AdminManufacturerController@editmanufacturer');
-//			Route::post('/updatemanufacturer', 'AdminManufacturerController@updatemanufacturer');
-//			Route::post('/deletemanufacturer', 'AdminManufacturerController@deletemanufacturer');
+            //---------------------------------- Start Warehouse ----------------------------------
+
+            Route::get('/warehouse', 'AdminWareHouseController@warehouse');
+            Route::get('/addwarehouse', 'AdminWareHouseController@addwarehouse');
+//            Route::post('/addnewwarehouse', 'AdminWareHouseController@addnewwarehouse');
+            Route::get('/editWarehouse/{id}', 'AdminWareHouseController@editWarehouse');
+            Route::post('/updatewarehouse', 'AdminWareHouseController@updatewarehouse');
+            Route::post('/insert_warehouse', 'AdminWareHouseController@insert_warehouse');
+            Route::post('/deletewarehouse', 'AdminWareHouseController@deletewarehouse');
+            //---------------------------------- End Warehouse ----------------------------------
 
             //main categories
             Route::get('/categories', 'AdminCategoriesController@categories');

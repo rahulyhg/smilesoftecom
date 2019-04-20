@@ -25,7 +25,7 @@
             @if(session('dashboard_view')==1 or auth()->guard('admin')->user()->adminType=='1')
                 <li class="treeview {{ Request::is('admin/dashboard/this_month') ? 'active' : '' }}">
                     <a href="{{ URL::to('admin/warehouse')}}">
-                        <i class="fa fa-dashboard"></i> <span>Warehouse</span>
+                        <i class="fa fa-home"></i> <span>Warehouse</span>
                     </a>
                 </li>
             @endif
