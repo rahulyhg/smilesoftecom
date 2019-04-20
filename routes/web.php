@@ -5,7 +5,7 @@ Project URI: http://laravelcommerce.com
 Author: VectorCoder Team
 Author URI: http://vectorcoder.com/
 Version: 1.1 -desktop
-*/
+ */
 header("Cache-Control: no-cache, must-revalidate");
 header('Access-Control-Allow-Origin:  *');
 header('Access-Control-Allow-Methods:  POST, GET, OPTIONS, PUT, DELETE');
@@ -20,8 +20,7 @@ header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Origin, Autho
 | It's a breeze. Simply tell Laravel the URIs it should respond to
 | and give it the controller to call when that URI is requested.
 |
-*/
-
+ */
 
 /*
 |--------------------------------------------------------------------------
@@ -29,185 +28,15 @@ header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Origin, Autho
 |--------------------------------------------------------------------------
 |
 | This section contains all admin Routes
-| 
 |
-*/
+|
+ */
 
 Route::get('/clear-cache', function () {
     $exitCode = Artisan::call('cache:clear');
 });
 
 Route::group(['prefix' => 'admin'], function () {
-<<<<<<< .merge_file_a08336
-	
-	Route::group(['namespace' => 'Admin'], function () {
-
-		Route::group(['middleware' => 'admin'], function () {
-			Route::get('/dashboard/{reportBase}', 'AdminController@dashboard');
-			Route::get('/post', 'AdminController@myPost');
-			//show admin personal info record
-			Route::get('/adminInfo', 'AdminController@adminInfo');
-
-		/*
-		|--------------------------------------------------------------------------
-		| categories/Product Controller Routes
-		|--------------------------------------------------------------------------
-		|
-		| This section contains categories/Product Controller Routes
-		| 
-		|
-		*/
-
-            //main POS
-            Route::get('create_pos', 'AdminPosController@create_pos');
-            Route::get('getproducts', 'AdminPosController@getproducts');
-            Route::get('product_list_body', 'AdminPosController@product_list_body');
-
-
-            //main listingManufacturer
-			Route::get('/manufacturers', 'AdminManufacturerController@manufacturers');
-			Route::get('/addmanufacturer', 'AdminManufacturerController@addmanufacturer');
-			Route::post('/addnewmanufacturer', 'AdminManufacturerController@addnewmanufacturer');
-			Route::get('/editmanufacturer/{id}', 'AdminManufacturerController@editmanufacturer');
-			Route::post('/updatemanufacturer', 'AdminManufacturerController@updatemanufacturer');
-			Route::post('/deletemanufacturer', 'AdminManufacturerController@deletemanufacturer');
-
-			//main categories
-			Route::get('/categories', 'AdminCategoriesController@categories');
-			Route::get('/addcategory', 'AdminCategoriesController@addcategory');
-			Route::post('/addnewcategory', 'AdminCategoriesController@addnewcategory');
-			Route::get('/editcategory/{id}', 'AdminCategoriesController@editcategory');
-			Route::post('/updatecategory', 'AdminCategoriesController@updatecategory');
-			Route::get('/deletecategory/{id}', 'AdminCategoriesController@deletecategory');
-
-			//sub categories
-			Route::get('/subcategories', 'AdminCategoriesController@subcategories');
-			Route::get('/addsubcategory', 'AdminCategoriesController@addsubcategory');
-			Route::post('/addnewsubcategory', 'AdminCategoriesController@addnewsubcategory');
-			Route::get('/editsubcategory/{id}', 'AdminCategoriesController@editsubcategory');
-			Route::post('/updatesubcategory', 'AdminCategoriesController@updatesubcategory');
-			Route::get('/deletesubcategory/{id}', 'AdminCategoriesController@deletesubcategory');
-			
-			Route::post('/getajaxcategories', 'AdminCategoriesController@getajaxcategories');
-
-			//products
-			Route::get('/products', 'AdminProductsController@products');
-			Route::get('/addproduct', 'AdminProductsController@addproduct');
-			Route::post('/addnewproduct', 'AdminProductsController@addnewproduct');
-
-			//add attribute against newly added product
-			Route::get('/addproductattribute/{id}/', 'AdminProductsController@addproductattribute');
-			Route::get('/addinventory/{id}/', 'AdminProductsController@addinventory');
-			Route::post('/currentstock', 'AdminProductsController@currentstock');
-			Route::post('/addnewstock', 'AdminProductsController@addnewstock');
-			Route::post('/addminmax', 'AdminProductsController@addminmax');			
-			Route::get('/addproductimages/{id}/', 'AdminProductsController@addproductimages');
-			Route::post('/addnewdefaultattribute', 'AdminProductsController@addnewdefaultattribute');
-			Route::post('/addnewproductattribute', 'AdminProductsController@addnewproductattribute');
-			Route::post('/updateproductattribute', 'AdminProductsController@updateproductattribute');
-			Route::post('/updatedefaultattribute', 'AdminProductsController@updatedefaultattribute');
-			Route::post('/deleteproduct', 'AdminProductsController@deleteproduct');
-			Route::post('/deleteproductattribute', 'AdminProductsController@deleteproductattribute');
-			Route::post('/addnewproductimage', 'AdminProductsController@addnewproductimage');
-			Route::post('/deletedefaultattribute', 'AdminProductsController@deletedefaultattribute');
-			Route::post('editproductattribute', 'AdminProductsController@editproductattribute');
-			Route::post('editdefaultattribute', 'AdminProductsController@editdefaultattribute');
-			Route::post('addnewproductimagemodal', 'AdminProductsController@addnewproductimagemodal');
-			Route::post('deleteproductattributemodal', 'AdminProductsController@deleteproductattributemodal');
-			Route::post('deletedefaultattributemodal', 'AdminProductsController@deletedefaultattributemodal');
-
-			//product attribute
-			Route::post('/addnewproductimage', 'AdminProductsController@addnewproductimage');
-			Route::post('editproductimage', 'AdminProductsController@editproductimage');
-			Route::post('/updateproductimage', 'AdminProductsController@updateproductimage');
-			Route::post('/deleteproductimagemodal', 'AdminProductsController@deleteproductimagemodal');
-			Route::post('/deleteproductimage', 'AdminProductsController@deleteproductimage');
-			Route::get('/editproduct/{id}', 'AdminProductsController@editproduct');
-			Route::post('/updateproduct', 'AdminProductsController@updateproduct');	
-			Route::post('/getOptions', 'AdminProductsController@getOptions');	
-			Route::post('/getOptionsValue', 'AdminProductsController@getOptionsValue');	
-
-
-			//Attribute
-			Route::get('/attributes', 'AdminProductsController@attributes');
-			Route::get('/addoptions', 'AdminProductsController@addoptions');
-			Route::post('/addnewoptions', 'AdminProductsController@addnewoptions');
-			//
-			Route::post('/addnewattributes', 'AdminProductsController@addnewattributes');
-			//Route::get('/editattributes/{id}/{language_id}', 'AdminProductsController@editattributes');
-			Route::get('/manage-options/{id}', 'AdminProductsController@manageoptions');
-			Route::get('/edit-values/{id}', 'AdminProductsController@editvalues');
-			Route::post('/updatevalue', 'AdminProductsController@updatevalue');
-			Route::post('/addnewvalues', 'AdminProductsController@addnewvalues');
-			
-				
-			Route::get('/manage-options-values/{id}', 'AdminProductsController@manageoptionsvalues');
-			Route::post('/updateoptions/', 'AdminProductsController@updateoptions');
-			Route::post('/deleteattribute', 'AdminProductsController@deleteattribute');
-			Route::post('/addattributevalue', 'AdminProductsController@addattributevalue');
-			Route::post('/updateattributevalue', 'AdminProductsController@updateattributevalue');
-			Route::post('/checkattributeassociate', 'AdminProductsController@checkattributeassociate');
-			Route::post('/checkvalueassociate', 'AdminProductsController@checkvalueassociate');
-			Route::post('/deletevalue', 'AdminProductsController@deletevalue');
-
-
-			//manageAppLabel
-			Route::get('/listingAppLabels', 'AdminAppLabelsController@listingAppLabels');
-			Route::get('/addappkey', 'AdminAppLabelsController@addappkey');
-			Route::post('/addNewAppLabel', 'AdminAppLabelsController@addNewAppLabel');
-			Route::get('/editAppLabel/{id}', 'AdminAppLabelsController@editAppLabel');
-			Route::post('/updateAppLabel/', 'AdminAppLabelsController@updateAppLabel');
-			Route::get('/applabel', 'AdminAppLabelsController@manageAppLabel');
-
-
-			//customers
-			Route::get('/customers', 'AdminCustomersController@customers');
-			Route::get('/addcustomers', 'AdminCustomersController@addcustomers');
-			Route::post('/addnewcustomers', 'AdminCustomersController@addnewcustomers');
-
-
-			//add adddresses against customers
-			Route::get('/addaddress/{id}/', 'AdminCustomersController@addaddress');
-			Route::post('/addNewCustomerAddress', 'AdminCustomersController@addNewCustomerAddress');
-			Route::post('/editAddress', 'AdminCustomersController@editAddress');
-			Route::post('/updateAddress', 'AdminCustomersController@updateAddress');
-			Route::post('/deleteAddress', 'AdminCustomersController@deleteAddress');
-			Route::post('/getZones', 'AddressController@getZones');
-			//edit customer
-			Route::get('/editcustomers/{id}', 'AdminCustomersController@editcustomers');
-			Route::post('/updatecustomers', 'AdminCustomersController@updatecustomers');
-			Route::post('/deletecustomers', 'AdminCustomersController@deletecustomers');
-
-			//orders
-			Route::get('/orders', 'AdminOrdersController@orders');		
-			Route::get('/vieworder/{id}', 'AdminOrdersController@vieworder');
-			Route::post('/updateOrder', 'AdminOrdersController@updateOrder');
-			Route::post('/deleteOrder', 'AdminOrdersController@deleteOrder');
-			Route::get('/invoiceprint/{id}', 'AdminOrdersController@invoiceprint');	
-			
-			//alert setting
-			Route::get('/alertsetting', 'AdminSiteSettingController@alertSetting');
-			Route::post('/updateAlertSetting', 'AdminSiteSettingController@updateAlertSetting');
-			
-			//generate application key
-			Route::get('/generateKey', 'AdminSiteSettingController@generateKey');
-
-			//countries
-			Route::get('/countries', 'AdminTaxController@countries');
-			Route::get('/addcountry', 'AdminTaxController@addcountry');
-			Route::post('/addnewcountry', 'AdminTaxController@addnewcountry');
-			Route::get('/editcountry/{id}', 'AdminTaxController@editcountry');
-			Route::post('/updatecountry', 'AdminTaxController@updatecountry');
-			Route::post('/deletecountry', 'AdminTaxController@deletecountry');
-
-			//zones
-			Route::get('/listingZones', 'AdminTaxController@listingZones');
-			Route::get('/addZone', 'AdminTaxController@addZone');
-			Route::post('/addNewZone', 'AdminTaxController@addNewZone');
-			Route::get('/editZone/{id}', 'AdminTaxController@editZone');
-			Route::post('/updateZone', 'AdminTaxController@updateZone');
-			Route::post('/deleteZone', 'AdminTaxController@deleteZone');
-=======
 
     Route::group(['namespace' => 'Admin'], function () {
 
@@ -224,7 +53,7 @@ Route::group(['prefix' => 'admin'], function () {
             | This section contains categories/Product Controller Routes
             |
             |
-            */
+             */
             //main listingManufacturer
             Route::get('/manufacturers', 'AdminManufacturerController@manufacturers');
             Route::get('/addmanufacturer', 'AdminManufacturerController@addmanufacturer');
@@ -233,16 +62,26 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/updatemanufacturer', 'AdminManufacturerController@updatemanufacturer');
             Route::post('/deletemanufacturer', 'AdminManufacturerController@deletemanufacturer');
 
-            //---------------------------------- Start Warehouse ----------------------------------
+            ////////////////////////
+            Route::get('/warehouse', 'AdminManufacturerController@warehouse');
+            Route::post('/insert_warehouse', 'AdminManufacturerController@insert_warehouse');
 
-            Route::get('/warehouse', 'AdminWareHouseController@warehouse');
-            Route::get('/addwarehouse', 'AdminWareHouseController@addwarehouse');
-//            Route::post('/addnewwarehouse', 'AdminWareHouseController@addnewwarehouse');
-            Route::get('/editWarehouse/{id}', 'AdminWareHouseController@editWarehouse');
-            Route::post('/updatewarehouse', 'AdminWareHouseController@updatewarehouse');
-            Route::post('/insert_warehouse', 'AdminWareHouseController@insert_warehouse');
-            Route::post('/deletewarehouse', 'AdminWareHouseController@deletewarehouse');
-            //---------------------------------- End Warehouse ----------------------------------
+            //main Warehouse
+            //            Route::get('/warehouse', 'AdminWarehouseController@warehouse');
+            //            Route::get('/addmanufacturer', 'AdminManufacturerController@addmanufacturer');
+            //            Route::post('/addnewmanufacturer', 'AdminManufacturerController@addnewmanufacturer');
+            //            Route::get('/editmanufacturer/{id}', 'AdminManufacturerController@editmanufacturer');
+            //            Route::post('/updatemanufacturer', 'AdminManufacturerController@updatemanufacturer');
+            //            Route::post('/deletemanufacturer', 'AdminManufacturerController@deletemanufacturer');
+
+            ///////////////////supplier////////////////////////
+            Route::get('/supplier', 'AdminSupplierController@supplier');
+            Route::get('/addsupplier', 'AdminSupplierController@addsupplier');
+            Route::post('/addnewsupplier', 'AdminSupplierController@addnewsupplier');
+            Route::get('/editsupplier/{id}', 'AdminSupplierController@editsupplier');
+            Route::get('/updatesupplier/{id}', 'AdminSupplierController@updatesupplier');
+            Route::get('/deletesupplier', 'AdminSupplierController@deletesupplier');
+            ///////////////////////////////////////////////////////////////////
 
             //main categories
             Route::get('/categories', 'AdminCategoriesController@categories');
@@ -299,7 +138,6 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/getOptions', 'AdminProductsController@getOptions');
             Route::post('/getOptionsValue', 'AdminProductsController@getOptionsValue');
 
-
             //Attribute
             Route::get('/attributes', 'AdminProductsController@attributes');
             Route::get('/addoptions', 'AdminProductsController@addoptions');
@@ -312,7 +150,6 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/updatevalue', 'AdminProductsController@updatevalue');
             Route::post('/addnewvalues', 'AdminProductsController@addnewvalues');
 
-
             Route::get('/manage-options-values/{id}', 'AdminProductsController@manageoptionsvalues');
             Route::post('/updateoptions/', 'AdminProductsController@updateoptions');
             Route::post('/deleteattribute', 'AdminProductsController@deleteattribute');
@@ -322,7 +159,6 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/checkvalueassociate', 'AdminProductsController@checkvalueassociate');
             Route::post('/deletevalue', 'AdminProductsController@deletevalue');
 
-
             //manageAppLabel
             Route::get('/listingAppLabels', 'AdminAppLabelsController@listingAppLabels');
             Route::get('/addappkey', 'AdminAppLabelsController@addappkey');
@@ -331,12 +167,10 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/updateAppLabel/', 'AdminAppLabelsController@updateAppLabel');
             Route::get('/applabel', 'AdminAppLabelsController@manageAppLabel');
 
-
             //customers
             Route::get('/customers', 'AdminCustomersController@customers');
             Route::get('/addcustomers', 'AdminCustomersController@addcustomers');
             Route::post('/addnewcustomers', 'AdminCustomersController@addnewcustomers');
-
 
             //add adddresses against customers
             Route::get('/addaddress/{id}/', 'AdminCustomersController@addaddress');
@@ -379,7 +213,6 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/editZone/{id}', 'AdminTaxController@editZone');
             Route::post('/updateZone', 'AdminTaxController@updateZone');
             Route::post('/deleteZone', 'AdminTaxController@deleteZone');
->>>>>>> .merge_file_a01788
 
             //pickups
             Route::get('/listingPickups', 'AdminPickupController@listingPickups');
@@ -418,7 +251,6 @@ Route::group(['prefix' => 'admin'], function () {
             //shppingbyprice
             Route::get('/shppingbyweight', 'AdminShippingByWeightController@shppingbyweight');
             Route::post('/updateShppingWeightPrice', 'AdminShippingByWeightController@updateShppingWeightPrice');
-
 
             //Payment setting
             Route::get('/paymentsetting', 'AdminPaymentController@paymentsetting');
@@ -576,7 +408,6 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/addrole/{id}', 'AdminController@addrole');
             Route::post('/addnewroles', 'AdminController@addnewroles');
 
-
             //extra roles
             Route::get('/categoriesroles', 'AdminController@categoriesRoles');
             Route::get('/addcategoriesroles', 'AdminController@addCategoriesRoles');
@@ -586,7 +417,6 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/deletecategoriesroles/{id}', 'AdminController@deleteCategoriesRoles');
 
         });
-
 
         //log in
         Route::get('/login', 'AdminController@login');
@@ -598,16 +428,15 @@ Route::group(['prefix' => 'admin'], function () {
 
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | front-end Controller Routes
 |--------------------------------------------------------------------------
 |
 | This section contains all Routes of front-end content
-| 
 |
-*/
+|
+ */
 
 /********* setting themes dynamically *********/
 // default setting
@@ -627,7 +456,7 @@ Route::group(['namespace' => 'Web'], function () {
     Route::post('/language/', array(
         //'before' => 'csrf',
         'as' => 'language-chooser',
-        'uses' => 'WebSettingController@changeLanguage'
+        'uses' => 'WebSettingController@changeLanguage',
     ));
 
     Route::get('/setStyle', 'DefaultController@setStyle');
@@ -646,7 +475,6 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('/news-detail/{slug}', 'NewsController@newsDetail');
     Route::post('/loadMoreNews', 'NewsController@loadMoreNews');
 
-
     Route::get('/clear-cache', function () {
         $exitCode = Artisan::call('cache:clear');
     });
@@ -659,13 +487,12 @@ Route::group(['namespace' => 'Web'], function () {
     | This section contains all Routes of categories page, products/shop page, product detail.
     |
     |
-    */
+     */
 
     Route::get('/shop', 'ProductsController@shop');
     Route::post('/shop', 'ProductsController@shop');
     Route::get('/product-detail/{slug}', 'ProductsController@productDetail');
     Route::post('/filterProducts', 'ProductsController@filterProducts');
-
 
     /*
     |--------------------------------------------------------------------------
@@ -674,13 +501,12 @@ Route::group(['namespace' => 'Web'], function () {
     |
     | This section contains customer cart products
     |
-    */
+     */
 
     Route::get('/getCart', 'DataController@getCart');
 
     //getquantity
     Route::post('/getquantity', 'ProductsController@getquantity');
-
 
     Route::post('/addToCart', 'CartController@addToCart');
     Route::post('/updatesinglecart', 'CartController@updatesinglecart');
@@ -702,7 +528,7 @@ Route::group(['namespace' => 'Web'], function () {
     | This section contains all Routes of signup page, login page, forgot password
     | facebook login , google login, shipping address etc.
     |
-    */
+     */
 
     Route::get('/login', 'CustomersController@login');
     Route::get('/signup', 'CustomersController@signup');
@@ -712,7 +538,6 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('/forgotPassword', 'CustomersController@forgotPassword');
     Route::get('/recoverPassword', 'CustomersController@recoverPassword');
     Route::post('/processPassword', 'CustomersController@processPassword');
-
 
     Route::get('login/{social}', 'CustomersController@socialLogin');
     Route::get('login/{social}/callback', 'CustomersController@handleSocialLoginCallback');
@@ -724,7 +549,6 @@ Route::group(['namespace' => 'Web'], function () {
     //likeMyProduct
     Route::post('likeMyProduct', 'CustomersController@likeMyProduct');
 
-
     /*
     |--------------------------------------------------------------------------
     | WEbiste auth path Controller Routes
@@ -733,7 +557,7 @@ Route::group(['namespace' => 'Web'], function () {
     | This section contains all Routes of After login
     |
     |
-    */
+     */
 
     Route::group(['middleware' => 'Customer'], function () {
         Route::get('/wishlist', 'CustomersController@wishlist');
@@ -766,10 +590,8 @@ Route::group(['namespace' => 'Web'], function () {
         Route::get('/checkout/hyperpay/checkpayment', 'OrdersController@checkpayment');
         Route::post('/checkout/payment/changeresponsestatus', 'OrdersController@changeresponsestatus');
 
-
     });
 });
-
 
 Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     Route::post('/getcategories', 'CategoriesController@getcategories');
@@ -796,7 +618,6 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     // forgot password url
     Route::post('/processforgotpassword', 'CustomersController@processforgotpassword');
 
-
     /*
     |--------------------------------------------------------------------------
     | Location Controller Routes
@@ -806,8 +627,7 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     | This section contains links of affiliated to address
     |
 
-    */
-
+     */
 
     //get country url
     Route::post('/getcountries', 'LocationController@getcountries');
@@ -830,7 +650,6 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     //delete address url
     Route::post('/deleteshippingaddress', 'LocationController@deleteshippingaddress');
 
-
     /*
     |--------------------------------------------------------------------------
     | Product Controller Routes
@@ -840,8 +659,7 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     | Such as:
     | top seller, Deals, Liked, categroy wise or category individually and detail of every product.
 
-    */
-
+     */
 
     //get categories
     Route::post('/allcategories', 'MyProductController@allcategories');
@@ -867,7 +685,6 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     //getquantity
     Route::post('/getquantity', 'MyProductController@getquantity');
 
-
     /*
     |--------------------------------------------------------------------------
     | News Controller Routes
@@ -877,8 +694,7 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     | Such as:
     | top news or category individually and detail of every news.
 
-    */
-
+     */
 
     //get categories
     Route::post('/allnewscategories', 'NewsController@allnewscategories');
@@ -893,7 +709,7 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     |
     | This section contains customer orders
     |
-    */
+     */
 
     //hyperpaytoken
     Route::post('/hyperpaytoken', 'OrderController@hyperpaytoken');
@@ -931,7 +747,6 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     //get Coupon
     Route::post('/getcoupon', 'OrderController@getcoupon');
 
-
     /*
     |--------------------------------------------------------------------------
     | Banner Controller Routes
@@ -940,7 +755,7 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     | This section contains banners, banner history
     |
 
-    */
+     */
 
     //get banners
     Route::get('/getbanners', 'BannersController@getbanners');
@@ -956,7 +771,7 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     | This section contains app  languages
     |
 
-    */
+     */
     Route::get('/sitesetting', 'AppSettingController@sitesetting');
 
     //old app label
@@ -967,7 +782,6 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     Route::post('/contactus', 'AppSettingController@contactus');
     Route::get('/getlanguages', 'AppSettingController@getlanguages');
 
-
     /*
     |--------------------------------------------------------------------------
     | Page Controller Routes
@@ -977,7 +791,7 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     | Such as:
     | top Page individually and detail of every Page.
 
-    */
+     */
 
     //getAllPages
     Route::post('/getallpages', 'PagesController@getallpages');

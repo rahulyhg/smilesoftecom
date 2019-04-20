@@ -31,40 +31,40 @@ class AdminManufacturerController extends Controller
 {
     public function warehouse()
     {
-        $title = array('pageTitle' => Lang::get("labels.Warehouse"));
-        $warehouselist = WarehouseModel::whereis_del(0)->get();
-//            return view('warehouse.warehouse')->with(['warehouselist' => $warehouselist]);
-        return view("warehouse.warehouse", $title)->with('warehouselist', $warehouselist);
-    }
-
-    public function insert_warehouse(Request $request)
-    {
-        $warehouse = new WarehouseModel();
-        $warehouse->name = request('name');
-        $warehouse->location = request('location');
-        $warehouse->username = request('username');
-        $warehouse->password = request('password');
-        $warehouse->save();
-        $title = array('pageTitle' => Lang::get("labels.AddManufacturer"));
-//            return back()->with('message', 'Store Has Been Added');
-//            return view("admin.addmanufacturer", $title);
-        return back()->with(['title' => $title], 'message', 'Store Has Been Added');
-    }
-
-    public function deletewarehouse($id)
-    {
-        if (session('manufacturer_delete') == 0) {
+        if (session('manufacturer_view') == 0) {
             print Lang::get("labels.You do not have to access this route");
         } else {
-
-            DB::table('warehouse')->where('id', $id)->delete();
-//            DB::table('warehouse')->where('id', $request->warehouse_id)->delete();
-//            DB::table('manufacturers_info')->where('manufacturers_id', $request->manufacturers_id)->delete();
-
-            return redirect()->back()->withErrors([Lang::get("labels.warehouseDeletedMessage")]);
+            $title = array('pageTitle' => Lang::get("labels.Manufacturers"));
+            $warehouselist = WarehouseModel::whereis_del(0)->get();
+//            return view('warehouse.warehouse')->with(['warehouselist' => $warehouselist]);
+            return view("warehouse.warehouse", $title)->with('warehouselist', $warehouselist);
         }
     }
-
+    public function insert_warehouse(Request $request)
+    {
+//        $store = new WarehouseModel();
+//        $store->name = request('name');
+//        $store->location = request('location');
+//        $store->username = request('username');
+//        $store->password = request('password');
+//        $store->save();
+//        return back()->with('message', 'Store Has Been Added');
+        dd($request);
+        if (session('manufacturer_view') == 0) {
+            print Lang::get("labels.You do not have to access this route");
+        } else {
+            $warehouse = new WarehouseModel();
+            $warehouse->name = request('name');
+            $warehouse->location = request('location');
+            $warehouse->username = request('username');
+            $warehouse->password = request('password');
+            $warehouse->save();
+            $title = array('pageTitle' => Lang::get("labels.AddManufacturer"));
+//            return back()->with('message', 'Store Has Been Added');
+//            return view("admin.addmanufacturer", $title);
+            return back()->with(['title'=>$title], 'message', 'Store Has Been Added');
+        }
+    }
     public function manufacturers()
     {
         if (session('manufacturer_view') == 0) {
@@ -82,8 +82,12 @@ class AdminManufacturerController extends Controller
 
     public function addmanufacturer(Request $request)
     {
-       $title = array('pageTitle' => Lang::get("labels.AddWarehouse"));
+        if (session('manufacturer_view') == 0) {
+            print Lang::get("labels.You do not have to access this route");
+        } else {
+            $title = array('pageTitle' => Lang::get("labels.AddManufacturer"));
             return view("admin.addmanufacturer", $title);
+        }
     }
 
 

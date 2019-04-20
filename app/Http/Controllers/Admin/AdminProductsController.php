@@ -130,6 +130,7 @@ class AdminProductsController extends Controller
 
             $products = $data->orderBy('products.products_id', 'DESC')->paginate(40);
 
+            
 
             $results['subCategories'] = $subCategories;
             $results['products'] = $products;

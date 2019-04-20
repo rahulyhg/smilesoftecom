@@ -45,6 +45,8 @@
 <!-- Bootstrap WYSIHTML5 -->
 <script src="{!! asset('resources/views/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') !!}"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
 <!-- Page script -->
 
 <?php
