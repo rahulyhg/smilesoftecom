@@ -24,7 +24,7 @@
                     <div class="col-lg-12">
                         <div class="text-center m-t-lg mybg">
                             <h1>
-                                <b>Store</b>
+                                <b>Warehouse</b>
                             </h1>
                         {{--
                                         <hr> --}}
@@ -33,11 +33,11 @@
                         <!-- Nav tabs -->
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#store">Store List &nbsp;<i
+                                    <a class="nav-link active" data-toggle="tab" href="#store">Warehouse List &nbsp;<i
                                                 class="fa fa-home"></i></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#addstore">Add Store &nbsp;<i
+                                    <a class="nav-link" data-toggle="tab" href="#addstore">Add Warehouse &nbsp;<i
                                                 class="fa fa-plus"></i></a>
                                 </li>
                             </ul>
@@ -84,7 +84,7 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="" class="pull-left">Store Name</label>
+                                                    <label for="" class="pull-left">Warehouse Name</label>
                                                     <input type="text" name="name" autocomplete="off"
                                                            class="form-control required" placeholder="Enter Name">
                                                 </div>
@@ -115,7 +115,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <button type="submit" class="btn btn-primary pull-left">Create
-                                                        Branch
+                                                        New Warehouse
                                                         &nbsp;<i
                                                                 class="fa fa-home"></i></button>
                                                 </div>
