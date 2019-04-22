@@ -807,7 +807,7 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     Route::post('/getallpages', 'PagesController@getallpages');
 });
 
-//--------------------------- Ashish --------------------------------
+//---------------------------  Ashish --------------------------------
 Route::group(['middleware' => 'warehouse'], function () {
     Route::get('/warehouse_dashboard', 'WareHouseController@warehouse_dashboard');
     Route::get('/warehouse_logout', 'WareHouseController@logout');
