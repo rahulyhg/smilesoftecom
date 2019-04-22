@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="aVMpzwECPpX04VJ7m6cZfcnnGQyy6bicxVym2RYP">
 
-    <title>POS - Awesome Shop</title>
+    <title>POS - Smile Shop</title>
 
     <link rel="stylesheet" href="https://pos.ultimatefosters.com/AdminLTE/plugins/pace/pace.css?v=35">
 
@@ -95,7 +95,7 @@
     {{--}--}}
     {{--</script>--}}
     <div class="col-md-12 no-print pos-header">
-        <input type="hidden" id="pos_redirect_url" value="https://pos.ultimatefosters.com/pos/create">
+        {{--<input type="hidden" id="pos_redirect_url" value="https://pos.ultimatefosters.com/pos/create">--}}
         <div class="row">
 
             <div class="col-md-10">
@@ -229,8 +229,10 @@
                         </div>
 
                         <div class="box-body">
-                            <form method="POST" action="https://pos.ultimatefosters.com/pos" accept-charset="UTF-8"
-                                  id="add_pos_sell_form"><input name="_token" type="hidden"
+                            <form action="{{ url('admin/store_pos') }}" id="store_pos" method="post" enctype="multipart/form-data">
+                            {{--<form method="POST" action="{{url('admin/store_pos')}}" accept-charset="UTF-8"--}}
+                                  {{--id="">--}}
+                                <input name="_token" type="hidden"
                                                                 value="aVMpzwECPpX04VJ7m6cZfcnnGQyy6bicxVym2RYP">
 
                                 <input id="location_id" data-receipt_printer_type="browser" name="location_id"
@@ -451,169 +453,171 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-body bg-gray disabled"
                                                      style="margin-bottom: 0px !important">
-                                                    <table class="table table-condensed"
-                                                           style="margin-bottom: 0px !important">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <div class="col-sm-1 col-xs-3 d-inline-table">
-                                                                    <b>Items:</b>
-                                                                    <br/>
-                                                                    <span class="total_quantity">0</span>
-                                                                </div>
-
-                                                                <div class="col-sm-2 col-xs-3 d-inline-table">
-                                                                    <b>Total:</b>
-                                                                    <br/>
-                                                                    <span class="price_total">0</span>
-                                                                </div>
-
-                                                                <div class="col-sm-2 col-xs-6 d-inline-table">
-
-								<span class="">
-
-								<b>Discount(-): <i class="fa fa-info-circle text-info hover-q " aria-hidden="true"
-                                                   data-container="body" data-toggle="popover" data-placement="auto"
-                                                   data-content="Set 'Default Sale Discount' for all sales in Business Settings. Click on the edit icon below to add/update discount."
-                                                   data-html="true" data-trigger="hover"></i></b>
-								<br/>
-								<i class="fa fa-pencil-square-o cursor-pointer" id="pos-edit-discount"
-                                   title="Edit Discount" aria-hidden="true" data-toggle="modal"
-                                   data-target="#posEditDiscountModal"></i>
-								<span id="total_discount">0</span>
-								<input type="hidden" name="discount_type" id="discount_type" value="percentage"
-                                       data-default="percentage">
-
-								<input type="hidden" name="discount_amount" id="discount_amount" value=" 10.00 "
-                                       data-default="10.00">
-
-								</span>
-                                                                </div>
-
-                                                                <div class="col-sm-2 col-xs-6 d-inline-table">
-
-								<span class="">
-
-								<b>Order Tax(+): <i class="fa fa-info-circle text-info hover-q " aria-hidden="true"
-                                                    data-container="body" data-toggle="popover" data-placement="auto"
-                                                    data-content="Set 'Default Sale Tax' for all sales in Business Settings. Click on the edit icon below to add/update Order Tax."
-                                                    data-html="true" data-trigger="hover"></i></b>
-								<br/>
-								<i class="fa fa-pencil-square-o cursor-pointer" title="Edit Order Tax"
-                                   aria-hidden="true" data-toggle="modal" data-target="#posEditOrderTaxModal"
-                                   id="pos-edit-tax"></i>
-								<span id="order_tax">
-																			0
-																	</span>
-
-								<input type="hidden" name="tax_rate_id"
-                                       id="tax_rate_id"
-                                       value="  "
-                                       data-default="">
-
-								<input type="hidden" name="tax_calculation_amount" id="tax_calculation_amount"
-                                       value=" 0.00 " data-default="">
-
-								</span>
-                                                                </div>
-
-                                                                <!-- shipping -->
-                                                                <div class="col-sm-2 col-xs-6 d-inline-table">
-
-								<span class="">
-
-								<b>Shipping(+): <i class="fa fa-info-circle text-info hover-q " aria-hidden="true"
-                                                   data-container="body" data-toggle="popover" data-placement="auto"
-                                                   data-content="Set shipping details and shipping charges. Click on the edit icon below to add/update shipping details and charges."
-                                                   data-html="true" data-trigger="hover"></i></b>
-								<br/>
-								<i class="fa fa-pencil-square-o cursor-pointer" title="Shipping" aria-hidden="true"
-                                   data-toggle="modal" data-target="#posShippingModal"></i>
-								<span id="shipping_charges_amount">0</span>
-								<input type="hidden" name="shipping_details" id="shipping_details" value=""
-                                       data-default="">
-
-								<input type="hidden" name="shipping_charges" id="shipping_charges" value="0.00 "
-                                       data-default="0.00">
-
-								</span>
-                                                                </div>
 
 
-                                                                <div class="col-sm-3 col-xs-12 d-inline-table">
-                                                                    <b>Total Payable:</b>
-                                                                    <br/>
-                                                                    <input type="hidden" name="final_total"
-                                                                           id="final_total_input" value=0>
-                                                                    <span id="total_payable"
-                                                                          class="text-success lead text-bold">0</span>
-                                                                    <button type="button"
-                                                                            class="btn btn-danger btn-flat btn-xs pull-right"
-                                                                            id="pos-cancel">Cancel
-                                                                    </button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
+                                                        <table class="table table-condensed"
+                                                               style="margin-bottom: 0px !important">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    {{--<div class="col-sm-1 col-xs-3 d-inline-table">--}}
+                                                                    {{--<b>Items:</b>--}}
+                                                                    {{--<br/>--}}
+                                                                    {{--<span class="total_quantity">0</span>--}}
+                                                                    {{--</div>--}}
 
-                                                        <tr>
-                                                            <td>
-                                                                {{--<div class="col-sm-2 col-xs-6 col-2px-padding">--}}
+                                                                    {{--<div class="col-sm-2 col-xs-3 d-inline-table">--}}
+                                                                    {{--<b>Total:</b>--}}
+                                                                    {{--<br/>--}}
+                                                                    {{--<span class="price_total">0</span>--}}
+                                                                    {{--</div>--}}
 
-                                                                {{--<button type="button"--}}
-                                                                {{--class="btn btn-warning btn-block btn-flat "--}}
-                                                                {{--id="pos-draft">Draft</button>--}}
+                                                                    {{--<div class="col-sm-2 col-xs-6 d-inline-table">--}}
 
-                                                                {{--<button type="button"--}}
-                                                                {{--class="btn btn-info btn-block btn-flat"--}}
-                                                                {{--id="pos-quotation">Quotation</button>--}}
-                                                                {{--</div>--}}
-                                                                {{--<div class="col-sm-3 col-xs-6 col-2px-padding">--}}
-                                                                {{--<button type="button"--}}
-                                                                {{--class="btn bg-maroon btn-block btn-flat no-print  pos-express-finalize"--}}
-                                                                {{--data-pay_method="card"--}}
-                                                                {{--title="Express checkout using card" >--}}
-                                                                {{--<div class="text-center">--}}
-                                                                {{--<i class="fa fa-check" aria-hidden="true"></i>--}}
-                                                                {{--<b>Card</b>--}}
-                                                                {{--</div>--}}
-                                                                {{--</button>--}}
-                                                                {{--<button type="button"--}}
-                                                                {{--class="btn bg-red btn-block btn-flat no-print pos-express-finalize"--}}
-                                                                {{--data-pay_method="suspend"--}}
-                                                                {{--title="Suspend Sales (pause)" >--}}
-                                                                {{--<div class="text-center">--}}
-                                                                {{--<i class="fa fa-pause" aria-hidden="true"></i>--}}
-                                                                {{--<b>Suspend</b>--}}
-                                                                {{--</div>--}}
-                                                                {{--</button>--}}
-                                                                {{--</div>--}}
-                                                                {{--<div class="col-sm-4 col-xs-12 col-2px-padding">--}}
-                                                                {{--<button type="button" class="btn bg-navy  btn-block btn-flat btn-lg no-print  pos-express-btn" id="pos-finalize" title="Checkout using multiple payment methods">--}}
-                                                                {{--<div class="text-center">--}}
-                                                                {{--<i class="fa fa-check" aria-hidden="true"></i>--}}
-                                                                {{--<b>Multiple Pay</b>--}}
-                                                                {{--</div>--}}
-                                                                {{--</button>--}}
-                                                                {{--</div>--}}
-                                                                <div class="col-sm-3 col-xs-12 col-2px-padding">
-                                                                    <button type="button"
-                                                                            class="btn btn-success btn-block btn-flat btn-lg no-print  pos-express-btn pos-express-finalize"
-                                                                            data-pay_method="cash"
-                                                                            title="Mark complete paid &amp; checkout">
-                                                                        <div class="text-center">
-                                                                            <i class="fa fa-check"
-                                                                               aria-hidden="true"></i>
-                                                                            <b>Cash</b>
-                                                                        </div>
-                                                                    </button>
-                                                                </div>
+                                                                    {{--<span class="">--}}
 
-                                                                <div class="div-overlay pos-processing"></div>
-                                                            </td>
-                                                        </tr>
+                                                                    {{--<b>Discount(-): <i class="fa fa-info-circle text-info hover-q " aria-hidden="true"--}}
+                                                                    {{--data-container="body" data-toggle="popover" data-placement="auto"--}}
+                                                                    {{--data-content="Set 'Default Sale Discount' for all sales in Business Settings. Click on the edit icon below to add/update discount."--}}
+                                                                    {{--data-html="true" data-trigger="hover"></i></b>--}}
+                                                                    {{--<br/>--}}
+                                                                    {{--<i class="fa fa-pencil-square-o cursor-pointer" id="pos-edit-discount"--}}
+                                                                    {{--title="Edit Discount" aria-hidden="true" data-toggle="modal"--}}
+                                                                    {{--data-target="#posEditDiscountModal"></i>--}}
+                                                                    {{--<span id="total_discount">0</span>--}}
+                                                                    {{--<input type="hidden" name="discount_type" id="discount_type" value="percentage"--}}
+                                                                    {{--data-default="percentage">--}}
 
-                                                        </tbody>
-                                                    </table>
+                                                                    {{--<input type="hidden" name="discount_amount" id="discount_amount" value=" 10.00 "--}}
+                                                                    {{--data-default="10.00">--}}
+
+                                                                    {{--</span>--}}
+                                                                    {{--</div>--}}
+
+                                                                    {{--<div class="col-sm-2 col-xs-6 d-inline-table">--}}
+
+                                                                    {{--<span class="">--}}
+
+                                                                    {{--<b>Order Tax(+): <i class="fa fa-info-circle text-info hover-q " aria-hidden="true"--}}
+                                                                    {{--data-container="body" data-toggle="popover" data-placement="auto"--}}
+                                                                    {{--data-content="Set 'Default Sale Tax' for all sales in Business Settings. Click on the edit icon below to add/update Order Tax."--}}
+                                                                    {{--data-html="true" data-trigger="hover"></i></b>--}}
+                                                                    {{--<br/>--}}
+                                                                    {{--<i class="fa fa-pencil-square-o cursor-pointer" title="Edit Order Tax"--}}
+                                                                    {{--aria-hidden="true" data-toggle="modal" data-target="#posEditOrderTaxModal"--}}
+                                                                    {{--id="pos-edit-tax"></i>--}}
+                                                                    {{--<span id="order_tax">--}}
+                                                                    {{--0--}}
+                                                                    {{--</span>--}}
+
+                                                                    {{--<input type="hidden" name="tax_rate_id"--}}
+                                                                    {{--id="tax_rate_id"--}}
+                                                                    {{--value="  "--}}
+                                                                    {{--data-default="">--}}
+
+                                                                    {{--<input type="hidden" name="tax_calculation_amount" id="tax_calculation_amount"--}}
+                                                                    {{--value=" 0.00 " data-default="">--}}
+
+                                                                    {{--</span>--}}
+                                                                    {{--</div>--}}
+                                                                    {{--<!-- shipping -->--}}
+                                                                    {{--<div class="col-sm-2 col-xs-6 d-inline-table">--}}
+
+                                                                    {{--<span class="">--}}
+
+                                                                    {{--<b>Shipping(+): <i class="fa fa-info-circle text-info hover-q " aria-hidden="true"--}}
+                                                                    {{--data-container="body" data-toggle="popover" data-placement="auto"--}}
+                                                                    {{--data-content="Set shipping details and shipping charges. Click on the edit icon below to add/update shipping details and charges."--}}
+                                                                    {{--data-html="true" data-trigger="hover"></i></b>--}}
+                                                                    {{--<br/>--}}
+                                                                    {{--<i class="fa fa-pencil-square-o cursor-pointer" title="Shipping" aria-hidden="true"--}}
+                                                                    {{--data-toggle="modal" data-target="#posShippingModal"></i>--}}
+                                                                    {{--<span id="shipping_charges_amount">0</span>--}}
+                                                                    {{--<input type="hidden" name="shipping_details" id="shipping_details" value=""--}}
+                                                                    {{--data-default="">--}}
+
+                                                                    {{--<input type="hidden" name="shipping_charges" id="shipping_charges" value="0.00 "--}}
+                                                                    {{--data-default="0.00">--}}
+
+                                                                    {{--</span>--}}
+                                                                    {{--</div>--}}
+
+
+                                                                    <div class="col-sm-3 col-xs-12 d-inline-table">
+                                                                        <b>Total Payable:</b>
+                                                                        <br/>
+                                                                        <input type="hidden" name="final_total"
+                                                                               id="final_total_input" value=0>
+                                                                        <span id="total_payable"
+                                                                              class="text-success lead text-bold">0</span>
+                                                                        <button type="button"
+                                                                                class="btn btn-danger btn-flat btn-xs pull-right"
+                                                                                onclick="reset_pos_form()"
+                                                                                id="pos-cancel">Cancel
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>
+                                                                    {{--<div class="col-sm-2 col-xs-6 col-2px-padding">--}}
+
+                                                                    {{--<button type="button"--}}
+                                                                    {{--class="btn btn-warning btn-block btn-flat "--}}
+                                                                    {{--id="pos-draft">Draft</button>--}}
+
+                                                                    {{--<button type="button"--}}
+                                                                    {{--class="btn btn-info btn-block btn-flat"--}}
+                                                                    {{--id="pos-quotation">Quotation</button>--}}
+                                                                    {{--</div>--}}
+                                                                    {{--<div class="col-sm-3 col-xs-6 col-2px-padding">--}}
+                                                                    {{--<button type="button"--}}
+                                                                    {{--class="btn bg-maroon btn-block btn-flat no-print  pos-express-finalize"--}}
+                                                                    {{--data-pay_method="card"--}}
+                                                                    {{--title="Express checkout using card" >--}}
+                                                                    {{--<div class="text-center">--}}
+                                                                    {{--<i class="fa fa-check" aria-hidden="true"></i>--}}
+                                                                    {{--<b>Card</b>--}}
+                                                                    {{--</div>--}}
+                                                                    {{--</button>--}}
+                                                                    {{--<button type="button"--}}
+                                                                    {{--class="btn bg-red btn-block btn-flat no-print pos-express-finalize"--}}
+                                                                    {{--data-pay_method="suspend"--}}
+                                                                    {{--title="Suspend Sales (pause)" >--}}
+                                                                    {{--<div class="text-center">--}}
+                                                                    {{--<i class="fa fa-pause" aria-hidden="true"></i>--}}
+                                                                    {{--<b>Suspend</b>--}}
+                                                                    {{--</div>--}}
+                                                                    {{--</button>--}}
+                                                                    {{--</div>--}}
+                                                                    {{--<div class="col-sm-4 col-xs-12 col-2px-padding">--}}
+                                                                    {{--<button type="button" class="btn bg-navy  btn-block btn-flat btn-lg no-print  pos-express-btn" id="pos-finalize" title="Checkout using multiple payment methods">--}}
+                                                                    {{--<div class="text-center">--}}
+                                                                    {{--<i class="fa fa-check" aria-hidden="true"></i>--}}
+                                                                    {{--<b>Multiple Pay</b>--}}
+                                                                    {{--</div>--}}
+                                                                    {{--</button>--}}
+                                                                    {{--</div>--}}
+                                                                    <div class="col-sm-3 col-xs-12 col-2px-padding">
+                                                                        <button type="submit" id="btnStorePOS"
+                                                                                class="btn btn-success btn-block btn-flat btn-lg no-print  pos-express-btn pos-express-finalize"
+                                                                                data-pay_method="cash"
+                                                                                title="Mark complete paid &amp; checkout">
+                                                                            <div class="text-center">
+                                                                                <i class="fa fa-check"
+                                                                                   aria-hidden="true"></i>
+                                                                                <b>Cash</b>
+                                                                            </div>
+                                                                        </button>
+                                                                    </div>
+
+                                                                    <div class="div-overlay pos-processing"></div>
+                                                                </td>
+                                                            </tr>
+
+                                                            </tbody>
+                                                        </table>
 
                                                     <!-- Button to perform various actions -->
                                                     <div class="row">
@@ -747,15 +751,7 @@
                                                 <div class="modal-body">
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="shipping_details_modal">Shipping
-                                                                    Details:*</label>
-                                                                <textarea class="form-control"
-                                                                          placeholder="Shipping Details" required
-                                                                          rows="4" name="shipping_details_modal"
-                                                                          cols="50"
-                                                                          id="shipping_details_modal"></textarea>
-                                                            </div>
+                                                            recur_interval>--}}
                                                         </div>
 
                                                         <div class="col-md-6">
@@ -1298,25 +1294,25 @@
                                                 <div class="modal-body">
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="recur_interval">Subscription
-                                                                    Interval:*</label>
-                                                                <div class="input-group">
-                                                                    <input class="form-control" required
-                                                                           style="width: 50%;" name="recur_interval"
-                                                                           type="number" id="recur_interval">
+                                                            {{--<div class="form-group">--}}
+                                                                {{--<label for="recur_interval">Subscription--}}
+                                                                    {{--Interval:*</label>--}}
+                                                                {{--<div class="input-group">--}}
+                                                                    {{--<input class="form-control" required--}}
+                                                                           {{--style="width: 50%;" name="recur_interval"--}}
+                                                                           {{--type="number" id="recur_interval">--}}
 
-                                                                    <select class="form-control" required
-                                                                            style="width: 50%;"
-                                                                            name="recur_interval_type">
-                                                                        <option value="days" selected="selected">Days
-                                                                        </option>
-                                                                        <option value="months">Months</option>
-                                                                        <option value="years">Years</option>
-                                                                    </select>
+                                                                    {{--<select class="form-control" required--}}
+                                                                            {{--style="width: 50%;"--}}
+                                                                            {{--name="recur_interval_type">--}}
+                                                                        {{--<option value="days" selected="selected">Days--}}
+                                                                        {{--</option>--}}
+                                                                        {{--<option value="months">Months</option>--}}
+                                                                        {{--<option value="years">Years</option>--}}
+                                                                    {{--</select>--}}
 
-                                                                </div>
-                                                            </div>
+                                                                {{--</div>--}}
+                                                            {{--</div>--}}
                                                         </div>
 
                                                         <div class="col-md-6">
@@ -1354,7 +1350,41 @@
                             {{--<select class="select2" id="product_category" style="width:45% !important">--}}
 
                             {{--<option value="all">All Categories</option>--}}
+                            {{--@if(!empty(session('categories_id')))--}}
+                            {{--@php--}}
+                            {{--$cat_array = explode(',', session('categories_id'));--}}
+                            {{--@endphp--}}
+                            {{--@foreach ($result['categories'] as $categories)--}}
+                            {{--@if(in_array($categories->id,$cat_array))--}}
 
+                            {{--<option value="{{ $categories->id }}">{{ $categories->name }}</option>--}}
+
+                            {{--@endif--}}
+                            {{--@if(!empty($categories->sub_categories))--}}
+                            {{--<optgroup label="{{ $categories->name }}">--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="{{ $sub_category->sub_id }}">{{ $sub_category->sub_name }}</option>--}}
+                            {{--</optgroup>--}}
+                            {{--@endif--}}
+                            {{--@endforeach--}}
+                            {{--@else--}}
+                            {{--@foreach ($result['categories'] as $categories)--}}
+                            {{--<option value="{{ $categories->id }}">{{ $categories->name }}</option>--}}
+
+                            {{--@if(!empty($categories->sub_categories))--}}
+
+                            {{--@foreach ($categories->sub_categories as $sub_category)--}}
+
+                            {{--<optgroup label="{{ $categories->name }}">--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="{{ $sub_category->sub_id }}">{{ $sub_category->sub_name }}</option>--}}
+                            {{--</optgroup>--}}
+                            {{--@endforeach--}}
+
+
+                            {{--@endif--}}
+                            {{--@endforeach--}}
+                            {{--@endif--}}
                             {{--<option value="3">Accessories</option>--}}
                             {{--<option value="18">Books</option>--}}
                             {{--<option value="12">Electronics</option>--}}
@@ -1364,33 +1394,60 @@
                             {{--<option value="2">Women&#039;s</option>--}}
 
                             {{--<optgroup label="Accessories">--}}
-                            {{--<i class="fa fa-minus"></i> <option value="6">Belts</option>--}}
-                            {{--<i class="fa fa-minus"></i> <option value="10">Sandal</option>--}}
-                            {{--<i class="fa fa-minus"></i> <option value="8">Shoes</option>--}}
-                            {{--<i class="fa fa-minus"></i> <option value="11">Wallets</option>--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="6">Belts</option>--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="10">Sandal</option>--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="8">Shoes</option>--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="11">Wallets</option>--}}
                             {{--</optgroup>--}}
                             {{--<optgroup label="Books">--}}
-                            {{--<i class="fa fa-minus"></i> <option value="19">Autobiography</option>--}}
-                            {{--<i class="fa fa-minus"></i> <option value="20">Children&#039;s books</option>--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="19">Autobiography</option>--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="20">Children&#039;s books</option>--}}
                             {{--</optgroup>--}}
                             {{--<optgroup label="Electronics">--}}
-                            {{--<i class="fa fa-minus"></i> <option value="13">Cell Phones</option>--}}
-                            {{--<i class="fa fa-minus"></i> <option value="14">Computers</option>--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="13">Cell Phones</option>--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="14">Computers</option>--}}
                             {{--</optgroup>--}}
                             {{--<optgroup label="Men&#039;s">--}}
-                            {{--<i class="fa fa-minus"></i> <option value="4">Jeans</option>--}}
-                            {{--<i class="fa fa-minus"></i> <option value="5">Shirts</option>--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="4">Jeans</option>--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="5">Shirts</option>--}}
                             {{--</optgroup>--}}
                             {{--<optgroup label="Sports">--}}
-                            {{--<i class="fa fa-minus"></i> <option value="16">Athletic Clothing</option>--}}
-                            {{--<i class="fa fa-minus"></i> <option value="17">Exercise &amp; Fitness</option>--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="16">Athletic Clothing</option>--}}
+                            {{--<i class="fa fa-minus"></i>--}}
+                            {{--<option value="17">Exercise &amp; Fitness</option>--}}
                             {{--</optgroup>--}}
                             {{--</select>--}}
 
                             {{--&nbsp;--}}
                             {{--<select id="product_brand" class="select2" name="size" style="width:45% !important"><option value="all">All Brands</option><option value="1">Levis</option><option value="2">Espirit</option><option value="3">U.S. Polo Assn.</option><option value="4">Nike</option><option value="5">Puma</option><option value="6">Adidas</option><option value="7">Samsung</option><option value="8">Apple</option><option value="9">Acer</option><option value="10">Bowflex</option><option value="11">Oreo</option><option value="12">Sharewood</option><option value="13">Barilla</option><option value="14">Lipton</option></select>--}}
-
                             <h4>Product List</h4>
+
+
+                            {{--<div class="form-group">--}}
+                            {{--<label for="name"--}}
+                            {{--class="col-sm-2 col-md-3 control-label">{{ trans('labels.Manufacturers') }} </label>--}}
+                            {{--<div class="col-sm-10 col-md-4">--}}
+                            {{--<select class="form-control" name="manufacturers_id">--}}
+                            {{--<option value="">{{ trans('labels.ChooseManufacturers') }}</option>--}}
+                            {{--@foreach ($result['manufacturer'] as $manufacturer)--}}
+                            {{--<option value="{{ $manufacturer->id }}">{{ $manufacturer->name }}</option>--}}
+                            {{--@endforeach--}}
+                            {{--</select><span class="help-block"--}}
+                            {{--style="font-weight: normal;font-size: 11px;margin-bottom: 0;">--}}
+                            {{--{{ trans('labels.ChooseManufacturerText') }}.</span>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
 
 
                             <div class="box-tools pull-right">
@@ -1404,7 +1461,17 @@
                         <input type="hidden" id="suggestion_page" value="1">
                         <div class="box-body">
                             <div class="row">
+
                                 <div class="col-md-12">
+                                    <div class="input-group add-on glo_searchbox">
+                                        <input class="form-control" placeholder="Search by item name" name="srch-term"
+                                               id="Search" type="text" onkeyup="getBuyEItem()">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <br>
                                     <div class="eq-height-row" id="product_list_body"></div>
                                 </div>
                                 <div class="col-md-12 text-center" id="suggestion_page_loader" style="display: none;">
@@ -1912,7 +1979,7 @@
 <!-- Bootstrap file input -->
 <script src="https://pos.ultimatefosters.com/plugins/bootstrap-fileinput/fileinput.min.js?v=35"></script>
 <!--accounting js-->
-{{--<script src="https://pos.ultimatefosters.com/plugins/accounting.min.js?v=35"></script>--}}
+<script src="https://pos.ultimatefosters.com/plugins/accounting.min.js?v=35"></script>
 
 <script src="https://pos.ultimatefosters.com/AdminLTE/plugins/daterangepicker/moment.min.js?v=35"></script>
 
@@ -1966,7 +2033,9 @@
 
 <script src="https://pos.ultimatefosters.com/js/lang/en.js?v=35"></script>
 
-<script src="https://pos.ultimatefosters.com/js/functions.js?v=35"></script>
+{{--<script src="https://pos.ultimatefosters.com/js/functions.js?v=35"></script>--}}
+<script src="{!! URL::to('public/pos/js/functions.js?v=35') !!}"></script>
+
 <script src="https://pos.ultimatefosters.com/js/common.js?v=35"></script>
 <script src="https://pos.ultimatefosters.com/js/app.js?v=35"></script>
 <script src="https://pos.ultimatefosters.com/js/help-tour.js?v=35"></script>
@@ -1993,9 +2062,42 @@
         });
     });
 
+    var append_norecord_e = '<div class="col-sm-12 no_block" id="no_record_found_block_e"><div class="adver_list_row"><span class="list_no_record">' +
+            '< No Record Available ></span></div></div>';
+    function getBuyEItem() {
+        var check_rowcount = $('.target').length;
+        if (check_rowcount > 0) {
+            var input = document.getElementById("Search");
+            var filter = input.value.toLowerCase();
+            var nodes = document.getElementsByClassName('target');
+            for (i = 0; i < nodes.length; i++) {
+                if (nodes[i].innerText.toLowerCase().includes(filter)) {
+                    nodes[i].style.display = "block";
+                    $('#no_record_found_block_e').remove();
+                } else {
+                    nodes[i].style.display = "none";
+                }
+            }
+            if ($('.target:visible').length == 0) {
+                $('.no_block').remove();
+                $('#product_list_body').append(append_norecord_e);
+            } else {
+                $('#product_list_body').find('.no_block').remove();
+            }
+        }
+    }
+
     function product_list_body() {
         $.get('{{ url('admin/product_list_body') }}', {tid: 1}, function (data) {
             $('#product_list_body').html(data);
+        });
+    }
+
+    function getProductRow(pid) {
+        $.get('{{ url('admin/getProductRow') }}', {pid: pid}, function (data) {
+//            $('#product_list_body').html(data);
+            $('table#pos_table tbody').append(data).find('input.pos_quantity');
+            pos_total_row();
         });
     }
 
@@ -2005,7 +2107,9 @@
         //shortcut for express checkout
         Mousetrap.bind('shift+e', function (e) {
             e.preventDefault();
-            $('button.pos-express-finalize[data-pay_method="cash"]').trigger('click');
+//            $('button.pos-express-finalize[data-pay_method="cash"]').trigger('click');
+//            btnStorePOS
+            $('form#store_pos').submit();
         });
 
         //shortcut for cancel checkout
@@ -2015,37 +2119,37 @@
         });
 
         //shortcut for draft checkout
-        Mousetrap.bind('shift+d', function (e) {
-            e.preventDefault();
-            $('#pos-draft').trigger('click');
-        });
-
-        //shortcut for draft pay & checkout
-        Mousetrap.bind('shift+p', function (e) {
-            e.preventDefault();
-            $('#pos-finalize').trigger('click');
-        });
-
-        //shortcut for edit discount
-        Mousetrap.bind('shift+i', function (e) {
-            e.preventDefault();
-            $('#pos-edit-discount').trigger('click');
-        });
-
-        //shortcut for edit tax
-        Mousetrap.bind('shift+t', function (e) {
-            e.preventDefault();
-            $('#pos-edit-tax').trigger('click');
-        });
-
-        //shortcut for add payment row
-        var payment_modal = document.querySelector('#modal_payment');
-        Mousetrap.bind('shift+r', function (e, combo) {
-            if ($('#modal_payment').is(':visible')) {
-                e.preventDefault();
-                $('#add-payment-row').trigger('click');
-            }
-        });
+//        Mousetrap.bind('shift+d', function (e) {
+//            e.preventDefault();
+//            $('#pos-draft').trigger('click');
+//        });
+//
+//        //shortcut for draft pay & checkout
+//        Mousetrap.bind('shift+p', function (e) {
+//            e.preventDefault();
+//            $('#pos-finalize').trigger('click');
+//        });
+//
+//        //shortcut for edit discount
+//        Mousetrap.bind('shift+i', function (e) {
+//            e.preventDefault();
+//            $('#pos-edit-discount').trigger('click');
+//        });
+//
+//        //shortcut for edit tax
+//        Mousetrap.bind('shift+t', function (e) {
+//            e.preventDefault();
+//            $('#pos-edit-tax').trigger('click');
+//        });
+//
+//        //shortcut for add payment row
+//        var payment_modal = document.querySelector('#modal_payment');
+//        Mousetrap.bind('shift+r', function (e, combo) {
+//            if ($('#modal_payment').is(':visible')) {
+//                e.preventDefault();
+//                $('#add-payment-row').trigger('click');
+//            }
+//        });
 
         //shortcut for add finalize payment
         var payment_modal = document.querySelector('#modal_payment');

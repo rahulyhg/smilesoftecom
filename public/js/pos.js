@@ -458,43 +458,45 @@ $(document).ready(function() {
     });
 
     //Finalize without showing payment options
-    $('button.pos-express-finalize').click(function() {
-        //Check if product is present or not.
-        if ($('table#pos_table tbody').find('.product_row').length <= 0) {
-            toastr.warning(LANG.no_products_added);
-            return false;
-        }
-
-        var pay_method = $(this).data('pay_method');
-
-        //Check for remaining balance & add it in 1st payment row
-        var total_payable = __read_number($('input#final_total_input'));
-        var total_paying = __read_number($('input#total_paying_input'));
-        if (total_payable > total_paying) {
-            var bal_due = total_payable - total_paying;
-
-            var first_row = $('#payment_rows_div')
-                .find('.payment-amount')
-                .first();
-            var first_row_val = __read_number(first_row);
-            first_row_val = first_row_val + bal_due;
-            __write_number(first_row, first_row_val);
-            first_row.trigger('change');
-        }
-
-        //Change payment method.
-        $('#payment_rows_div')
-            .find('.payment_types_dropdown')
-            .first()
-            .val(pay_method);
-        if (pay_method == 'card') {
-            $('div#card_details_modal').modal('show');
-        } else if (pay_method == 'suspend') {
-            $('div#confirmSuspendModal').modal('show');
-        } else {
-            pos_form_obj.submit();
-        }
-    });
+    // $('button.pos-express-finalize').click(function() {
+    //     //Check if product is present or not.
+    //     if ($('table#pos_table tbody').find('.product_row').length <= 0) {
+    //         toastr.warning(LANG.no_products_added);
+    //         return false;
+    //     }
+    //
+    //     var pay_method = $(this).data('pay_method');
+    //     var store_pos = $('form#store_pos');
+    //
+    //     //Check for remaining balance & add it in 1st payment row
+    //     var total_payable = __read_number($('input#final_total_input'));
+    //     var total_paying = __read_number($('input#total_paying_input'));
+    //     if (total_payable > total_paying) {
+    //         var bal_due = total_payable - total_paying;
+    //
+    //         var first_row = $('#payment_rows_div')
+    //             .find('.payment-amount')
+    //             .first();
+    //         var first_row_val = __read_number(first_row);
+    //         first_row_val = first_row_val + bal_due;
+    //         __write_number(first_row, first_row_val);
+    //         first_row.trigger('change');
+    //     }
+    //
+    //     //Change payment method.
+    //     $('#payment_rows_div')
+    //         .find('.payment_types_dropdown')
+    //         .first()
+    //         .val(pay_method);
+    //     store_pos.submit();
+    //     // if (pay_method == 'card') {
+    //     // } else if (pay_method == 'suspend') {
+    //     //     $('div#confirmSuspendModal').modal('show');
+    //     // } else {
+    //     //
+    //     //
+    //     // }
+    // });
 
     $('div#card_details_modal').on('shown.bs.modal', function(e) {
         $('input#card_number').focus();
@@ -1119,10 +1121,10 @@ function pos_product_row(variation_id) {
                     is_added = true;
 
                     //Increment product quantity
-                    qty_element = $(this).find('.pos_quantity');
-                    var qty = __read_number(qty_element);
-                    __write_number(qty_element, qty + 1);
-                    qty_element.change();
+                    // qty_element = $(this).find('.pos_quantity');
+                    // var qty = __read_number(qty_element);
+                    // __write_number(qty_element, qty + 1);
+                    // qty_element.change();
 
                     round_row_to_iraqi_dinnar($(this));
 
