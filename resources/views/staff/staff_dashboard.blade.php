@@ -44,113 +44,113 @@
                     <!-- /.box -->
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-4 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-aqua">
-                        <div class="inner">
-                            <h3></h3>
-                            <p>New Staff</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-bag"></i>
-                        </div>
-                        <a href="{{url('warehouse_staff')}}" class="small-box-footer" data-toggle="tooltip"
-                           data-placement="bottom"
-                           title="View All Staff Members">View All Staff Members <i
-                                    class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-4 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-light-blue">
-                        <div class="inner">
-                            <h3></h3>
-                            <p>Profits</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-bag"></i>
-                        </div>
-                        <a href="{{ URL::to('admin/products')}}" class="small-box-footer" data-toggle="tooltip"
-                           data-placement="bottom"
-                           title="{{ trans('labels.viewAllProducts') }}">{{ trans('labels.viewAllProducts') }} <i
-                                    class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-4 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-teal">
-                        <div class="inner">
-                            <h3></h3>
-                            <p>Total Money Earned</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-bag"></i>
-                        </div>
-                        <a href="{{ URL::to('admin/orders')}}" class="small-box-footer" data-toggle="tooltip"
-                           data-placement="bottom"
-                           title="{{ trans('labels.viewAllOrders') }}">{{ trans('labels.viewAllOrders') }} <i
-                                    class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-4 col-xs-6">
+            {{--<div class="row">--}}
+                {{--<div class="col-lg-4 col-xs-6">--}}
+                    {{--<!-- small box -->--}}
+                    {{--<div class="small-box bg-aqua">--}}
+                        {{--<div class="inner">--}}
+                            {{--<h3></h3>--}}
+                            {{--<p>New Staff</p>--}}
+                        {{--</div>--}}
+                        {{--<div class="icon">--}}
+                            {{--<i class="ion ion-bag"></i>--}}
+                        {{--</div>--}}
+                        {{--<a href="{{url('warehouse_staff')}}" class="small-box-footer" data-toggle="tooltip"--}}
+                           {{--data-placement="bottom"--}}
+                           {{--title="View All Staff Members">View All Staff Members <i--}}
+                                    {{--class="fa fa-arrow-circle-right"></i></a>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<!-- ./col -->--}}
+                {{--<div class="col-lg-4 col-xs-6">--}}
+                    {{--<!-- small box -->--}}
+                    {{--<div class="small-box bg-light-blue">--}}
+                        {{--<div class="inner">--}}
+                            {{--<h3></h3>--}}
+                            {{--<p>Profits</p>--}}
+                        {{--</div>--}}
+                        {{--<div class="icon">--}}
+                            {{--<i class="ion ion-bag"></i>--}}
+                        {{--</div>--}}
+                        {{--<a href="{{ URL::to('admin/products')}}" class="small-box-footer" data-toggle="tooltip"--}}
+                           {{--data-placement="bottom"--}}
+                           {{--title="{{ trans('labels.viewAllProducts') }}">{{ trans('labels.viewAllProducts') }} <i--}}
+                                    {{--class="fa fa-arrow-circle-right"></i></a>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<!-- ./col -->--}}
+                {{--<div class="col-lg-4 col-xs-6">--}}
+                    {{--<!-- small box -->--}}
+                    {{--<div class="small-box bg-teal">--}}
+                        {{--<div class="inner">--}}
+                            {{--<h3></h3>--}}
+                            {{--<p>Total Money Earned</p>--}}
+                        {{--</div>--}}
+                        {{--<div class="icon">--}}
+                            {{--<i class="ion ion-bag"></i>--}}
+                        {{--</div>--}}
+                        {{--<a href="{{ URL::to('admin/orders')}}" class="small-box-footer" data-toggle="tooltip"--}}
+                           {{--data-placement="bottom"--}}
+                           {{--title="{{ trans('labels.viewAllOrders') }}">{{ trans('labels.viewAllOrders') }} <i--}}
+                                    {{--class="fa fa-arrow-circle-right"></i></a>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<!-- ./col -->--}}
+                {{--<div class="col-lg-4 col-xs-6">--}}
 
-                    <div class="small-box bg-red">
-                        <div class="inner">
-                            <h3>Out of Stock </h3>
-                            <p>Out of Stock</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-                        <a href="{{ URL::to('admin/outofstock')}}" class="small-box-footer" data-toggle="tooltip"
-                           data-placement="bottom"
-                           title="{{ trans('labels.outOfStock') }}">{{ trans('labels.outOfStock') }} <i
-                                    class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-4 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-yellow">
-                        <div class="inner">
-                            <h3>Total Customer</h3>
+                    {{--<div class="small-box bg-red">--}}
+                        {{--<div class="inner">--}}
+                            {{--<h3>Out of Stock </h3>--}}
+                            {{--<p>Out of Stock</p>--}}
+                        {{--</div>--}}
+                        {{--<div class="icon">--}}
+                            {{--<i class="ion ion-stats-bars"></i>--}}
+                        {{--</div>--}}
+                        {{--<a href="{{ URL::to('admin/outofstock')}}" class="small-box-footer" data-toggle="tooltip"--}}
+                           {{--data-placement="bottom"--}}
+                           {{--title="{{ trans('labels.outOfStock') }}">{{ trans('labels.outOfStock') }} <i--}}
+                                    {{--class="fa fa-arrow-circle-right"></i></a>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<!-- ./col -->--}}
+                {{--<div class="col-lg-4 col-xs-6">--}}
+                    {{--<!-- small box -->--}}
+                    {{--<div class="small-box bg-yellow">--}}
+                        {{--<div class="inner">--}}
+                            {{--<h3>Total Customer</h3>--}}
 
-                            <p>{{ trans('labels.customerRegistrations') }}</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-person-add"></i>
-                        </div>
-                        <a href="{{ URL::to('admin/customers')}}" class="small-box-footer" data-toggle="tooltip"
-                           data-placement="bottom"
-                           title="{{ trans('labels.viewAllCustomers') }}">{{ trans('labels.viewAllCustomers') }} <i
-                                    class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-4 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h3>Total Product</h3>
+                            {{--<p>{{ trans('labels.customerRegistrations') }}</p>--}}
+                        {{--</div>--}}
+                        {{--<div class="icon">--}}
+                            {{--<i class="ion ion-person-add"></i>--}}
+                        {{--</div>--}}
+                        {{--<a href="{{ URL::to('admin/customers')}}" class="small-box-footer" data-toggle="tooltip"--}}
+                           {{--data-placement="bottom"--}}
+                           {{--title="{{ trans('labels.viewAllCustomers') }}">{{ trans('labels.viewAllCustomers') }} <i--}}
+                                    {{--class="fa fa-arrow-circle-right"></i></a>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<!-- ./col -->--}}
+                {{--<div class="col-lg-4 col-xs-6">--}}
+                    {{--<!-- small box -->--}}
+                    {{--<div class="small-box bg-green">--}}
+                        {{--<div class="inner">--}}
+                            {{--<h3>Total Product</h3>--}}
 
-                            <p>Total Product</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-pie-graph"></i>
-                        </div>
-                        <a href="{{ URL::to('admin/products')}}" class="small-box-footer" data-toggle="tooltip"
-                           data-placement="bottom"
-                           title="{{ trans('labels.viewAllProducts') }}">{{ trans('labels.viewAllProducts') }} <i
-                                    class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
+                            {{--<p>Total Product</p>--}}
+                        {{--</div>--}}
+                        {{--<div class="icon">--}}
+                            {{--<i class="ion ion-pie-graph"></i>--}}
+                        {{--</div>--}}
+                        {{--<a href="{{ URL::to('admin/products')}}" class="small-box-footer" data-toggle="tooltip"--}}
+                           {{--data-placement="bottom"--}}
+                           {{--title="{{ trans('labels.viewAllProducts') }}">{{ trans('labels.viewAllProducts') }} <i--}}
+                                    {{--class="fa fa-arrow-circle-right"></i></a>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<!-- ./col -->--}}
 
-            </div>
+            {{--</div>--}}
 
         </section>
     </div>

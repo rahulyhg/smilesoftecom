@@ -807,23 +807,27 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     Route::post('/getallpages', 'PagesController@getallpages');
 });
 
+Route::group(['middleware' => 'warehouse'], function () {
+    Route::get('/warehouse_dashboard', 'WareHouseController@warehouse_dashboard');
+    Route::get('/warehouse_logout', 'WareHouseController@logout');
+    Route::get('/warehouse_staff', 'WareHouseController@warehouse_staff');
+    Route::get('/add_staff', 'WareHouseController@add_staff');
+    Route::post('/insert_staff', 'WareHouseController@insert_staff');
+    Route::get('/staff_edit/{id}', 'WareHouseController@staff_edit');
+    Route::post('/staff_update', 'WareHouseController@staff_update');
+    Route::post('/staff_del', 'WareHouseController@staff_del');
+});
+
+Route::group(['middleware' => 'staff'], function () {
+    Route::get('/staff_dashboard', 'StaffController@staff_dashboard');
+    Route::get('/staff_logout', 'StaffController@logout');
+    Route::get('/staff_staff', 'StaffController@warehouse_staff');
+});
+
 
 Route::get('/warehouse_login', 'WareHouseController@login');
 Route::post('/warehouse_loginCheck', 'WareHouseController@loginCheck');
-Route::get('/warehouse_dashboard', 'WareHouseController@warehouse_dashboard');
-Route::get('/warehouse_logout', 'WareHouseController@logout');
-Route::get('/warehouse_staff', 'WareHouseController@warehouse_staff');
-Route::get('/add_staff', 'WareHouseController@add_staff');
-Route::post('/insert_staff', 'WareHouseController@insert_staff');
-Route::get('/staff_edit/{id}', 'WareHouseController@staff_edit');
-Route::post('/staff_update', 'WareHouseController@staff_update');
-Route::post('/staff_del', 'WareHouseController@staff_del');
-
 
 Route::get('/staff_login', 'StaffController@login');
 Route::post('/staff_loginCheck', 'StaffController@loginCheck');
-Route::get('/staff_dashboard', 'StaffController@staff_dashboard');
-Route::get('/staff_logout', 'StaffController@logout');
-Route::get('/staff_staff', 'StaffController@warehouse_staff');
-
 
