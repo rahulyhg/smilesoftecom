@@ -1501,11 +1501,11 @@
                                     <li class="active"><a href="#tab_final" data-toggle="tab" aria-expanded="true"><b><i
                                                         class="fa fa-check"></i> Final</b></a></li>
 
-                                    <li class=""><a href="#tab_quotation" data-toggle="tab" aria-expanded="false"><b><i
-                                                        class="fa fa-terminal"></i> Quotation</b></a></li>
+                                    {{--<li class=""><a href="#tab_quotation" data-toggle="tab" aria-expanded="false"><b><i--}}
+                                                        {{--class="fa fa-terminal"></i> Quotation</b></a></li>--}}
 
-                                    <li class=""><a href="#tab_draft" data-toggle="tab" aria-expanded="false"><b><i
-                                                        class="fa fa-terminal"></i> Draft</b></a></li>
+                                    {{--<li class=""><a href="#tab_draft" data-toggle="tab" aria-expanded="false"><b><i--}}
+                                                        {{--class="fa fa-terminal"></i> Draft</b></a></li>--}}
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="tab_final">
@@ -2208,7 +2208,26 @@
 //            $('input#search_product').focus().select();
         });
     });
+
+
+//    toastr.success(result.msg);
 </script>
+@if(session()->has('message'))
+    <script type="text/javascript">
+        setTimeout(function () {
+            toastr.success('{{ session()->get('message') }}');// success_noti("");
+        }, 500);
+    </script>
+@endif
+
+@if(session()->has('errmessage'))
+    <script type="text/javascript">
+        setTimeout(function () {
+            toastr.error('{{ session()->get('errmessage') }}');
+        }, 500);
+
+    </script>
+@endif
 <!-- Call restaurant module if defined -->
 <div class="modal fade view_modal" tabindex="-1" role="dialog"
      aria-labelledby="gridSystemModalLabel"></div>
