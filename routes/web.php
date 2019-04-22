@@ -65,6 +65,7 @@ Route::group(['prefix' => 'admin'], function () {
             ////////////////////////
             Route::get('/warehouse', 'AdminManufacturerController@warehouse');
             Route::post('/insert_warehouse', 'AdminManufacturerController@insert_warehouse');
+            Route::get('/ViewStock/{id}', 'AdminManufacturerController@viewstock');
 
             //main Warehouse
             //            Route::get('/warehouse', 'AdminWarehouseController@warehouse');
@@ -113,6 +114,7 @@ Route::group(['prefix' => 'admin'], function () {
 
             //products
             Route::get('/products', 'AdminProductsController@products');
+            Route::get('/barcode-generate', 'AdminProductsController@barcode_generate');
             Route::get('/addproduct', 'AdminProductsController@addproduct');
             Route::post('/addnewproduct', 'AdminProductsController@addnewproduct');
 

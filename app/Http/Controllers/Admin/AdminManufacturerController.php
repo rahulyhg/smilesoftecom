@@ -25,7 +25,7 @@ use App\WarehouseModel;
 
 //for requesting a value
 use Illuminate\Http\Request;
-
+use App\Warehouse_inventory_history_Model;
 
 class AdminManufacturerController extends Controller
 {
@@ -63,6 +63,13 @@ class AdminManufacturerController extends Controller
 
             return redirect()->back()->withErrors([Lang::get("labels.warehouseDeletedMessage")]);
         }
+    }
+
+    function ViewStock($id)
+    {
+        $title = array('pageTitle' => 'Stock History');
+        $Warehouse_history = Warehouse_inventory_history_Model::get();
+        return view("admin.warehouse_history", $title)->with('Warehouse_history', $Warehouse_history);
     }
 
     public function manufacturers()

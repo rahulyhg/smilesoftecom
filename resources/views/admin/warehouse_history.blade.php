@@ -3,8 +3,8 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1> Warehouse
-                <small>Warehouse List...</small>
+            <h1> Warehouse Stock History
+                <small>Warehouse Stock History List...</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ URL::to('admin/dashboard/this_month') }}"><i
@@ -52,37 +52,20 @@
                                         <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Warehouse Name</th>
-                                            <th>Username</th>
-                                            <th>Password</th>
-                                            <th>Location</th>
-                                            <th>Action</th>
+                                            {{-- <th>Warehouse Name</th> --}}
+                                            <th>Product</th>
+                                            <th>Stock</th>
+                                            {{-- <th>Action</th> --}}
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @if(count($warehouselist)>0)
-                                            @foreach ($warehouselist  as $key=>$warehouselists)
+                                        @if(count($Warehouse_history)>0)
+                                            @foreach ($Warehouse_history  as $key=>$Warehouse_history_list)
                                                 <tr>
                                                     <td>{{ ++$key }}</td>
-                                                    <td>{{ $warehouselists->name }}</td>
-                                                    <td>{{ $warehouselists->username }}</td>
-                                                    <td>{{ $warehouselists->password }}</td>
-                                                    <td>{{ $warehouselists->location }}</td>
-                                                    <td>
-                                                        <a data-toggle="tooltip" data-placement="bottom" title="Edit"
-                                                           href="editWarehouse/{{ $warehouselists->id }}"
-                                                           class="badge bg-light-blue"><i class="fa fa-pencil-square-o"
-                                                                                          aria-hidden="true"></i></a>
-                                                        <a data-toggle="tooltip" data-placement="bottom" title="View Stocks"
-                                                           href="{{ url('admin/ViewStock').'/'.$warehouselists->id  }}"
-                                                           class="badge bg-light-green"><i class="fa fa-pencil-square-o"
-                                                                                          aria-hidden="true"></i></a>
-                                                        <a id="manufacturerFrom"
-                                                           warehouse_id='{{ $warehouselists->id }}'
-                                                           data-toggle="tooltip" data-placement="bottom" title="Delete"
-                                                           href="#" class="badge bg-red"><i class="fa fa-trash"
-                                                                                            aria-hidden="true"></i></a>
-                                                    </td>
+                                                    <td>{{ isset($Warehouse_history_list->pname->products_name) ? $Warehouse_history_list->pname->products_name : '-'  }}</td>
+                                                    <td>{{ $Warehouse_history_list->stock }}</td>
+                                                  
                                                 </tr>
                                             @endforeach
 
