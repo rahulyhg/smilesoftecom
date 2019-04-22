@@ -27,6 +27,12 @@
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
+                <li class="dropdown messages-menu">
+                    <a href="{{url('admin/pos')}}" target="_blank" class="dropdown-toggle">
+                        <img src="http://chittagongit.com/images/pos-icon/pos-icon-17.jpg" height="20px" width="30px"
+                             alt="Point of Sale (POS)" id="cpimg">
+                    </a>
+                </li>
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -44,15 +50,21 @@
                                             <div class="pull-left">
 
                                                 @if(!empty($unseenOrder->customers_picture))
-                                                    <img src="{{asset('').'/'.$unseenOrder->customers_picture}}" class="img-circle" alt="{{ $unseenOrder->customers_name }} Image">
+                                                    <img src="{{asset('').'/'.$unseenOrder->customers_picture}}"
+                                                         class="img-circle"
+                                                         alt="{{ $unseenOrder->customers_name }} Image">
                                                 @else
-                                                    <img src="{{asset('').'/resources/assets/images/default_images/user.png' }}" class="img-circle" alt="{{ $unseenOrder->customers_name }} Image">
+                                                    <img src="{{asset('').'/resources/assets/images/default_images/user.png' }}"
+                                                         class="img-circle"
+                                                         alt="{{ $unseenOrder->customers_name }} Image">
                                                 @endif
 
                                             </div>
                                             <h4>
                                                 {{ $unseenOrder->customers_name }}
-                                                <small><i class="fa fa-clock-o"></i> {{ date('d/m/Y', strtotime($unseenOrder->date_purchased)) }}</small>
+                                                <small>
+                                                    <i class="fa fa-clock-o"></i> {{ date('d/m/Y', strtotime($unseenOrder->date_purchased)) }}
+                                                </small>
                                             </h4>
                                             <p>Ordered Products ({{ $unseenOrder->total_products}})</p>
                                         </a>
@@ -79,14 +91,19 @@
                                         <a href="{{ URL::to("admin/editcustomers")}}/{{ $newCustomer->customers_id}}">
                                             <div class="pull-left">
                                                 @if(!empty($newCustomer->customers_picture))
-                                                    <img src="{{asset('').'/'.$newCustomer->customers_picture}}" class="img-circle">
+                                                    <img src="{{asset('').'/'.$newCustomer->customers_picture}}"
+                                                         class="img-circle">
                                                 @else
-                                                    <img src="{{asset('').'/resources/assets/images/default_images/user.png' }}" class="img-circle" alt="{{ $newCustomer->customers_firstname }} Image">
+                                                    <img src="{{asset('').'/resources/assets/images/default_images/user.png' }}"
+                                                         class="img-circle"
+                                                         alt="{{ $newCustomer->customers_firstname }} Image">
                                                 @endif
                                             </div>
                                             <h4>
                                                 {{ $newCustomer->customers_firstname }} {{ $newCustomer->customers_lastname }}
-                                                <small><i class="fa fa-clock-o"></i> {{ date('d/m/Y', $newCustomer->created_at) }}</small>
+                                                <small>
+                                                    <i class="fa fa-clock-o"></i> {{ date('d/m/Y', $newCustomer->created_at) }}
+                                                </small>
                                             </h4>
                                             <p></p>
                                         </a>
@@ -113,7 +130,8 @@
                                     <li><!-- start message -->
                                         <a href="{{ URL::to("admin/editproduct")}}/{{ $lowInQunatity->products_id}}">
                                             <div class="pull-left">
-                                                <img src="{{asset('').'/'.$lowInQunatity->products_image}}" class="img-circle" >
+                                                <img src="{{asset('').'/'.$lowInQunatity->products_image}}"
+                                                     class="img-circle">
                                             </div>
                                             <h4 style="white-space: normal;">
                                                 {{ $lowInQunatity->products_name }}

@@ -66,6 +66,24 @@
         }
     </style>
 
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            var availableTags = [];
+
+            $.get('{{ url('getCustomer') }}', function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    availableTags[i] = data[i].name-data[i].contact;
+                }
+            });
+            $("#tags").autocomplete({
+                source: availableTags,
+            });
+        });
+    </script>
 
     <!-- Facebook Pixel Code -->
 {{--<script>--}}
@@ -229,11 +247,12 @@
                         </div>
 
                         <div class="box-body">
-                            <form action="{{ url('admin/store_pos') }}" id="store_pos" method="post" enctype="multipart/form-data">
-                            {{--<form method="POST" action="{{url('admin/store_pos')}}" accept-charset="UTF-8"--}}
-                                  {{--id="">--}}
+                            <form action="{{ url('admin/store_pos') }}" id="store_pos" method="post"
+                                  enctype="multipart/form-data">
+                                {{--<form method="POST" action="{{url('admin/store_pos')}}" accept-charset="UTF-8"--}}
+                                {{--id="">--}}
                                 <input name="_token" type="hidden"
-                                                                value="aVMpzwECPpX04VJ7m6cZfcnnGQyy6bicxVym2RYP">
+                                       value="aVMpzwECPpX04VJ7m6cZfcnnGQyy6bicxVym2RYP">
 
                                 <input id="location_id" data-receipt_printer_type="browser" name="location_id"
                                        type="hidden" value="1">
@@ -255,11 +274,16 @@
                                                            value="1">
                                                     <input type="hidden" id="default_customer_name"
                                                            value="Walk-In Customer">
-                                                    <select class="form-control mousetrap" id="customer_id" required
-                                                            style="width: 100%;" name="contact_id">
-                                                        <option selected="selected" value="">Enter Customer name /
-                                                            phone
-                                                        </option>
+                                                    {{--<input type="text" name="tags" id="tags">--}}
+                                                    @php
+                                                        $customer = \App\CustomerModel::where(['is_del'=>0])->get();
+                                                    @endphp
+
+                                                    <select class="form-control" id="" required
+                                                            style="width: 100%;" name="customer_id">
+                                                        @foreach($customer as $cust)
+                                                            <option value="{{$cust->id}}">{{$cust->name}}-{{$cust->contact}}</option>
+                                                        @endforeach
                                                     </select>
                                                     <span class="input-group-btn">
 										<button type="button" class="btn btn-default bg-white btn-flat add_new_customer"
@@ -281,7 +305,8 @@
 									</span>
                                                     <input class="form-control mousetrap" id="search_product"
                                                            placeholder="Enter Product name / SKU / Scan bar code"
-                                                           autofocus name="search_product" type="text">
+                                                           autofocus name="search_product"
+                                                           type="text">
                                                     <span class="input-group-btn">
 										<button type="button"
                                                 class="btn btn-default bg-white btn-flat pos_add_quick_product"
@@ -455,169 +480,169 @@
                                                      style="margin-bottom: 0px !important">
 
 
-                                                        <table class="table table-condensed"
-                                                               style="margin-bottom: 0px !important">
-                                                            <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    {{--<div class="col-sm-1 col-xs-3 d-inline-table">--}}
-                                                                    {{--<b>Items:</b>--}}
-                                                                    {{--<br/>--}}
-                                                                    {{--<span class="total_quantity">0</span>--}}
-                                                                    {{--</div>--}}
+                                                    <table class="table table-condensed"
+                                                           style="margin-bottom: 0px !important">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                {{--<div class="col-sm-1 col-xs-3 d-inline-table">--}}
+                                                                {{--<b>Items:</b>--}}
+                                                                {{--<br/>--}}
+                                                                {{--<span class="total_quantity">0</span>--}}
+                                                                {{--</div>--}}
 
-                                                                    {{--<div class="col-sm-2 col-xs-3 d-inline-table">--}}
-                                                                    {{--<b>Total:</b>--}}
-                                                                    {{--<br/>--}}
-                                                                    {{--<span class="price_total">0</span>--}}
-                                                                    {{--</div>--}}
+                                                                {{--<div class="col-sm-2 col-xs-3 d-inline-table">--}}
+                                                                {{--<b>Total:</b>--}}
+                                                                {{--<br/>--}}
+                                                                {{--<span class="price_total">0</span>--}}
+                                                                {{--</div>--}}
 
-                                                                    {{--<div class="col-sm-2 col-xs-6 d-inline-table">--}}
+                                                                {{--<div class="col-sm-2 col-xs-6 d-inline-table">--}}
 
-                                                                    {{--<span class="">--}}
+                                                                {{--<span class="">--}}
 
-                                                                    {{--<b>Discount(-): <i class="fa fa-info-circle text-info hover-q " aria-hidden="true"--}}
-                                                                    {{--data-container="body" data-toggle="popover" data-placement="auto"--}}
-                                                                    {{--data-content="Set 'Default Sale Discount' for all sales in Business Settings. Click on the edit icon below to add/update discount."--}}
-                                                                    {{--data-html="true" data-trigger="hover"></i></b>--}}
-                                                                    {{--<br/>--}}
-                                                                    {{--<i class="fa fa-pencil-square-o cursor-pointer" id="pos-edit-discount"--}}
-                                                                    {{--title="Edit Discount" aria-hidden="true" data-toggle="modal"--}}
-                                                                    {{--data-target="#posEditDiscountModal"></i>--}}
-                                                                    {{--<span id="total_discount">0</span>--}}
-                                                                    {{--<input type="hidden" name="discount_type" id="discount_type" value="percentage"--}}
-                                                                    {{--data-default="percentage">--}}
+                                                                {{--<b>Discount(-): <i class="fa fa-info-circle text-info hover-q " aria-hidden="true"--}}
+                                                                {{--data-container="body" data-toggle="popover" data-placement="auto"--}}
+                                                                {{--data-content="Set 'Default Sale Discount' for all sales in Business Settings. Click on the edit icon below to add/update discount."--}}
+                                                                {{--data-html="true" data-trigger="hover"></i></b>--}}
+                                                                {{--<br/>--}}
+                                                                {{--<i class="fa fa-pencil-square-o cursor-pointer" id="pos-edit-discount"--}}
+                                                                {{--title="Edit Discount" aria-hidden="true" data-toggle="modal"--}}
+                                                                {{--data-target="#posEditDiscountModal"></i>--}}
+                                                                {{--<span id="total_discount">0</span>--}}
+                                                                {{--<input type="hidden" name="discount_type" id="discount_type" value="percentage"--}}
+                                                                {{--data-default="percentage">--}}
 
-                                                                    {{--<input type="hidden" name="discount_amount" id="discount_amount" value=" 10.00 "--}}
-                                                                    {{--data-default="10.00">--}}
+                                                                {{--<input type="hidden" name="discount_amount" id="discount_amount" value=" 10.00 "--}}
+                                                                {{--data-default="10.00">--}}
 
-                                                                    {{--</span>--}}
-                                                                    {{--</div>--}}
+                                                                {{--</span>--}}
+                                                                {{--</div>--}}
 
-                                                                    {{--<div class="col-sm-2 col-xs-6 d-inline-table">--}}
+                                                                {{--<div class="col-sm-2 col-xs-6 d-inline-table">--}}
 
-                                                                    {{--<span class="">--}}
+                                                                {{--<span class="">--}}
 
-                                                                    {{--<b>Order Tax(+): <i class="fa fa-info-circle text-info hover-q " aria-hidden="true"--}}
-                                                                    {{--data-container="body" data-toggle="popover" data-placement="auto"--}}
-                                                                    {{--data-content="Set 'Default Sale Tax' for all sales in Business Settings. Click on the edit icon below to add/update Order Tax."--}}
-                                                                    {{--data-html="true" data-trigger="hover"></i></b>--}}
-                                                                    {{--<br/>--}}
-                                                                    {{--<i class="fa fa-pencil-square-o cursor-pointer" title="Edit Order Tax"--}}
-                                                                    {{--aria-hidden="true" data-toggle="modal" data-target="#posEditOrderTaxModal"--}}
-                                                                    {{--id="pos-edit-tax"></i>--}}
-                                                                    {{--<span id="order_tax">--}}
-                                                                    {{--0--}}
-                                                                    {{--</span>--}}
+                                                                {{--<b>Order Tax(+): <i class="fa fa-info-circle text-info hover-q " aria-hidden="true"--}}
+                                                                {{--data-container="body" data-toggle="popover" data-placement="auto"--}}
+                                                                {{--data-content="Set 'Default Sale Tax' for all sales in Business Settings. Click on the edit icon below to add/update Order Tax."--}}
+                                                                {{--data-html="true" data-trigger="hover"></i></b>--}}
+                                                                {{--<br/>--}}
+                                                                {{--<i class="fa fa-pencil-square-o cursor-pointer" title="Edit Order Tax"--}}
+                                                                {{--aria-hidden="true" data-toggle="modal" data-target="#posEditOrderTaxModal"--}}
+                                                                {{--id="pos-edit-tax"></i>--}}
+                                                                {{--<span id="order_tax">--}}
+                                                                {{--0--}}
+                                                                {{--</span>--}}
 
-                                                                    {{--<input type="hidden" name="tax_rate_id"--}}
-                                                                    {{--id="tax_rate_id"--}}
-                                                                    {{--value="  "--}}
-                                                                    {{--data-default="">--}}
+                                                                {{--<input type="hidden" name="tax_rate_id"--}}
+                                                                {{--id="tax_rate_id"--}}
+                                                                {{--value="  "--}}
+                                                                {{--data-default="">--}}
 
-                                                                    {{--<input type="hidden" name="tax_calculation_amount" id="tax_calculation_amount"--}}
-                                                                    {{--value=" 0.00 " data-default="">--}}
+                                                                {{--<input type="hidden" name="tax_calculation_amount" id="tax_calculation_amount"--}}
+                                                                {{--value=" 0.00 " data-default="">--}}
 
-                                                                    {{--</span>--}}
-                                                                    {{--</div>--}}
-                                                                    {{--<!-- shipping -->--}}
-                                                                    {{--<div class="col-sm-2 col-xs-6 d-inline-table">--}}
+                                                                {{--</span>--}}
+                                                                {{--</div>--}}
+                                                                {{--<!-- shipping -->--}}
+                                                                {{--<div class="col-sm-2 col-xs-6 d-inline-table">--}}
 
-                                                                    {{--<span class="">--}}
+                                                                {{--<span class="">--}}
 
-                                                                    {{--<b>Shipping(+): <i class="fa fa-info-circle text-info hover-q " aria-hidden="true"--}}
-                                                                    {{--data-container="body" data-toggle="popover" data-placement="auto"--}}
-                                                                    {{--data-content="Set shipping details and shipping charges. Click on the edit icon below to add/update shipping details and charges."--}}
-                                                                    {{--data-html="true" data-trigger="hover"></i></b>--}}
-                                                                    {{--<br/>--}}
-                                                                    {{--<i class="fa fa-pencil-square-o cursor-pointer" title="Shipping" aria-hidden="true"--}}
-                                                                    {{--data-toggle="modal" data-target="#posShippingModal"></i>--}}
-                                                                    {{--<span id="shipping_charges_amount">0</span>--}}
-                                                                    {{--<input type="hidden" name="shipping_details" id="shipping_details" value=""--}}
-                                                                    {{--data-default="">--}}
+                                                                {{--<b>Shipping(+): <i class="fa fa-info-circle text-info hover-q " aria-hidden="true"--}}
+                                                                {{--data-container="body" data-toggle="popover" data-placement="auto"--}}
+                                                                {{--data-content="Set shipping details and shipping charges. Click on the edit icon below to add/update shipping details and charges."--}}
+                                                                {{--data-html="true" data-trigger="hover"></i></b>--}}
+                                                                {{--<br/>--}}
+                                                                {{--<i class="fa fa-pencil-square-o cursor-pointer" title="Shipping" aria-hidden="true"--}}
+                                                                {{--data-toggle="modal" data-target="#posShippingModal"></i>--}}
+                                                                {{--<span id="shipping_charges_amount">0</span>--}}
+                                                                {{--<input type="hidden" name="shipping_details" id="shipping_details" value=""--}}
+                                                                {{--data-default="">--}}
 
-                                                                    {{--<input type="hidden" name="shipping_charges" id="shipping_charges" value="0.00 "--}}
-                                                                    {{--data-default="0.00">--}}
+                                                                {{--<input type="hidden" name="shipping_charges" id="shipping_charges" value="0.00 "--}}
+                                                                {{--data-default="0.00">--}}
 
-                                                                    {{--</span>--}}
-                                                                    {{--</div>--}}
+                                                                {{--</span>--}}
+                                                                {{--</div>--}}
 
 
-                                                                    <div class="col-sm-3 col-xs-12 d-inline-table">
-                                                                        <b>Total Payable:</b>
-                                                                        <br/>
-                                                                        <input type="hidden" name="final_total"
-                                                                               id="final_total_input" value=0>
-                                                                        <span id="total_payable"
-                                                                              class="text-success lead text-bold">0</span>
-                                                                        <button type="button"
-                                                                                class="btn btn-danger btn-flat btn-xs pull-right"
-                                                                                onclick="reset_pos_form()"
-                                                                                id="pos-cancel">Cancel
-                                                                        </button>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
+                                                                <div class="col-sm-3 col-xs-12 d-inline-table">
+                                                                    <b>Total Payable:</b>
+                                                                    <br/>
+                                                                    <input type="hidden" name="final_total"
+                                                                           id="final_total_input" value=0>
+                                                                    <span id="total_payable"
+                                                                          class="text-success lead text-bold">0</span>
+                                                                    <button type="button"
+                                                                            class="btn btn-danger btn-flat btn-xs pull-right"
+                                                                            onclick="reset_pos_form()"
+                                                                            id="pos-cancel">Cancel
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
 
-                                                            <tr>
-                                                                <td>
-                                                                    {{--<div class="col-sm-2 col-xs-6 col-2px-padding">--}}
+                                                        <tr>
+                                                            <td>
+                                                                {{--<div class="col-sm-2 col-xs-6 col-2px-padding">--}}
 
-                                                                    {{--<button type="button"--}}
-                                                                    {{--class="btn btn-warning btn-block btn-flat "--}}
-                                                                    {{--id="pos-draft">Draft</button>--}}
+                                                                {{--<button type="button"--}}
+                                                                {{--class="btn btn-warning btn-block btn-flat "--}}
+                                                                {{--id="pos-draft">Draft</button>--}}
 
-                                                                    {{--<button type="button"--}}
-                                                                    {{--class="btn btn-info btn-block btn-flat"--}}
-                                                                    {{--id="pos-quotation">Quotation</button>--}}
-                                                                    {{--</div>--}}
-                                                                    {{--<div class="col-sm-3 col-xs-6 col-2px-padding">--}}
-                                                                    {{--<button type="button"--}}
-                                                                    {{--class="btn bg-maroon btn-block btn-flat no-print  pos-express-finalize"--}}
-                                                                    {{--data-pay_method="card"--}}
-                                                                    {{--title="Express checkout using card" >--}}
-                                                                    {{--<div class="text-center">--}}
-                                                                    {{--<i class="fa fa-check" aria-hidden="true"></i>--}}
-                                                                    {{--<b>Card</b>--}}
-                                                                    {{--</div>--}}
-                                                                    {{--</button>--}}
-                                                                    {{--<button type="button"--}}
-                                                                    {{--class="btn bg-red btn-block btn-flat no-print pos-express-finalize"--}}
-                                                                    {{--data-pay_method="suspend"--}}
-                                                                    {{--title="Suspend Sales (pause)" >--}}
-                                                                    {{--<div class="text-center">--}}
-                                                                    {{--<i class="fa fa-pause" aria-hidden="true"></i>--}}
-                                                                    {{--<b>Suspend</b>--}}
-                                                                    {{--</div>--}}
-                                                                    {{--</button>--}}
-                                                                    {{--</div>--}}
-                                                                    {{--<div class="col-sm-4 col-xs-12 col-2px-padding">--}}
-                                                                    {{--<button type="button" class="btn bg-navy  btn-block btn-flat btn-lg no-print  pos-express-btn" id="pos-finalize" title="Checkout using multiple payment methods">--}}
-                                                                    {{--<div class="text-center">--}}
-                                                                    {{--<i class="fa fa-check" aria-hidden="true"></i>--}}
-                                                                    {{--<b>Multiple Pay</b>--}}
-                                                                    {{--</div>--}}
-                                                                    {{--</button>--}}
-                                                                    {{--</div>--}}
-                                                                    <div class="col-sm-3 col-xs-12 col-2px-padding">
-                                                                        <button type="submit" id="btnStorePOS"
-                                                                                class="btn btn-success btn-block btn-flat btn-lg no-print  pos-express-btn pos-express-finalize"
-                                                                                data-pay_method="cash"
-                                                                                title="Mark complete paid &amp; checkout">
-                                                                            <div class="text-center">
-                                                                                <i class="fa fa-check"
-                                                                                   aria-hidden="true"></i>
-                                                                                <b>Cash</b>
-                                                                            </div>
-                                                                        </button>
-                                                                    </div>
+                                                                {{--<button type="button"--}}
+                                                                {{--class="btn btn-info btn-block btn-flat"--}}
+                                                                {{--id="pos-quotation">Quotation</button>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="col-sm-3 col-xs-6 col-2px-padding">--}}
+                                                                {{--<button type="button"--}}
+                                                                {{--class="btn bg-maroon btn-block btn-flat no-print  pos-express-finalize"--}}
+                                                                {{--data-pay_method="card"--}}
+                                                                {{--title="Express checkout using card" >--}}
+                                                                {{--<div class="text-center">--}}
+                                                                {{--<i class="fa fa-check" aria-hidden="true"></i>--}}
+                                                                {{--<b>Card</b>--}}
+                                                                {{--</div>--}}
+                                                                {{--</button>--}}
+                                                                {{--<button type="button"--}}
+                                                                {{--class="btn bg-red btn-block btn-flat no-print pos-express-finalize"--}}
+                                                                {{--data-pay_method="suspend"--}}
+                                                                {{--title="Suspend Sales (pause)" >--}}
+                                                                {{--<div class="text-center">--}}
+                                                                {{--<i class="fa fa-pause" aria-hidden="true"></i>--}}
+                                                                {{--<b>Suspend</b>--}}
+                                                                {{--</div>--}}
+                                                                {{--</button>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="col-sm-4 col-xs-12 col-2px-padding">--}}
+                                                                {{--<button type="button" class="btn bg-navy  btn-block btn-flat btn-lg no-print  pos-express-btn" id="pos-finalize" title="Checkout using multiple payment methods">--}}
+                                                                {{--<div class="text-center">--}}
+                                                                {{--<i class="fa fa-check" aria-hidden="true"></i>--}}
+                                                                {{--<b>Multiple Pay</b>--}}
+                                                                {{--</div>--}}
+                                                                {{--</button>--}}
+                                                                {{--</div>--}}
+                                                                <div class="col-sm-3 col-xs-12 col-2px-padding">
+                                                                    <button type="submit" id="btnStorePOS"
+                                                                            class="btn btn-success btn-block btn-flat btn-lg no-print  pos-express-btn pos-express-finalize"
+                                                                            data-pay_method="cash"
+                                                                            title="Mark complete paid &amp; checkout">
+                                                                        <div class="text-center">
+                                                                            <i class="fa fa-check"
+                                                                               aria-hidden="true"></i>
+                                                                            <b>Cash</b>
+                                                                        </div>
+                                                                    </button>
+                                                                </div>
 
-                                                                    <div class="div-overlay pos-processing"></div>
-                                                                </td>
-                                                            </tr>
+                                                                <div class="div-overlay pos-processing"></div>
+                                                            </td>
+                                                        </tr>
 
-                                                            </tbody>
-                                                        </table>
+                                                        </tbody>
+                                                    </table>
 
                                                     <!-- Button to perform various actions -->
                                                     <div class="row">
@@ -1295,23 +1320,23 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             {{--<div class="form-group">--}}
-                                                                {{--<label for="recur_interval">Subscription--}}
-                                                                    {{--Interval:*</label>--}}
-                                                                {{--<div class="input-group">--}}
-                                                                    {{--<input class="form-control" required--}}
-                                                                           {{--style="width: 50%;" name="recur_interval"--}}
-                                                                           {{--type="number" id="recur_interval">--}}
+                                                            {{--<label for="recur_interval">Subscription--}}
+                                                            {{--Interval:*</label>--}}
+                                                            {{--<div class="input-group">--}}
+                                                            {{--<input class="form-control" required--}}
+                                                            {{--style="width: 50%;" name="recur_interval"--}}
+                                                            {{--type="number" id="recur_interval">--}}
 
-                                                                    {{--<select class="form-control" required--}}
-                                                                            {{--style="width: 50%;"--}}
-                                                                            {{--name="recur_interval_type">--}}
-                                                                        {{--<option value="days" selected="selected">Days--}}
-                                                                        {{--</option>--}}
-                                                                        {{--<option value="months">Months</option>--}}
-                                                                        {{--<option value="years">Years</option>--}}
-                                                                    {{--</select>--}}
+                                                            {{--<select class="form-control" required--}}
+                                                            {{--style="width: 50%;"--}}
+                                                            {{--name="recur_interval_type">--}}
+                                                            {{--<option value="days" selected="selected">Days--}}
+                                                            {{--</option>--}}
+                                                            {{--<option value="months">Months</option>--}}
+                                                            {{--<option value="years">Years</option>--}}
+                                                            {{--</select>--}}
 
-                                                                {{--</div>--}}
+                                                            {{--</div>--}}
                                                             {{--</div>--}}
                                                         </div>
 
@@ -1529,10 +1554,8 @@
         <div class="modal fade contact_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <form method="POST" action="https://pos.ultimatefosters.com/contacts" accept-charset="UTF-8"
-                          id="quick_add_contact"><input name="_token" type="hidden"
-                                                        value="aVMpzwECPpX04VJ7m6cZfcnnGQyy6bicxVym2RYP">
-
+                    <form method="post" action="{{url('admin/customer_add')}}">
+                        <input name="_token" type="hidden" value="{{@csrf_token()}}">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                         aria-hidden="true">&times;</span></button>
@@ -1541,278 +1564,51 @@
 
                         <div class="modal-body">
                             <div class="row">
-
-                                <div class="col-md-6 contact_type_div">
+                                <div class="col-md-7">
                                     <div class="form-group">
-                                        <label for="type">Contact type:*</label>
+                                        <label for="cname">Customer Name:*</label>
                                         <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-user"></i>
-                </span>
-                                            <select class="form-control" id="contact_type" required name="type">
-                                                <option selected="selected" value="">Please Select</option>
-                                                <option value="supplier">Suppliers</option>
-                                                <option value="customer">Customers</option>
-                                                <option value="both">Both (Supplier &amp; Customer)</option>
-                                            </select>
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input class="form-control" placeholder="Customer's Full Name" required name="cname"
+                                                   type="text" id="cname">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+
+                                <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="name">Name:*</label>
+                                        <label for="contact">Contact Number:*</label>
                                         <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-user"></i>
-                </span>
-                                            <input class="form-control" placeholder="Name" required name="name"
-                                                   type="text" id="name">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-mobile"></i>
+                                            </span>
+                                            <input class="form-control" required placeholder="Enter Contact No." name="contact"
+                                                   type="text" id="contact">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
-                                <div class="col-md-4 supplier_fields">
-                                    <div class="form-group">
-                                        <label for="supplier_business_name">Business Name:*</label>
-                                        <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-briefcase"></i>
-                </span>
-                                            <input class="form-control" required placeholder="Business Name"
-                                                   name="supplier_business_name" type="text"
-                                                   id="supplier_business_name">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="contact_id">Contact ID:</label>
-                                        <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-id-badge"></i>
-                </span>
-                                            <input class="form-control" placeholder="Contact ID" name="contact_id"
-                                                   type="text" id="contact_id">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="tax_number">Tax number:</label>
-                                        <div class="input-group">
-                  <span class="input-group-addon">
-                      <i class="fa fa-info"></i>
-                  </span>
-                                            <input class="form-control" placeholder="Tax number" name="tax_number"
-                                                   type="text" id="tax_number">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="opening_balance">Opening Balance:</label>
-                                        <div class="input-group">
-                  <span class="input-group-addon">
-                      <i class="fa fa-money"></i>
-                  </span>
-                                            <input class="form-control input_number" name="opening_balance" type="text"
-                                                   value="0" id="opening_balance">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <div class="multi-input">
-                                            <label for="pay_term_number">Pay term:</label> <i
-                                                    class="fa fa-info-circle text-info hover-q " aria-hidden="true"
-                                                    data-container="body" data-toggle="popover" data-placement="auto"
-                                                    data-content="Payments to be paid for purchases/sales within the given time period.<br/><small class='text-muted'>All upcoming or due payments will be displayed in dashboard - Payment Due section</small>"
-                                                    data-html="true" data-trigger="hover"></i> <br/>
-                                            <input class="form-control width-40 pull-left" placeholder="Pay term"
-                                                   name="pay_term_number" type="number" id="pay_term_number">
-
-                                            <select class="form-control width-60 pull-left" name="pay_term_type">
-                                                <option selected="selected" value="">Please Select</option>
-                                                <option value="months">Months</option>
-                                                <option value="days">Days</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4 customer_fields">
-                                    <div class="form-group">
-                                        <label for="customer_group_id">Customer Group:</label>
-                                        <div class="input-group">
-                  <span class="input-group-addon">
-                      <i class="fa fa-users"></i>
-                  </span>
-                                            <select class="form-control" id="customer_group_id"
-                                                    name="customer_group_id">
-                                                <option value="" selected="selected">None</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 customer_fields">
-                                    <div class="form-group">
-                                        <label for="credit_limit">Credit Limit:</label>
-                                        <div class="input-group">
-                  <span class="input-group-addon">
-                      <i class="fa fa-money"></i>
-                  </span>
-                                            <input class="form-control input_number" name="credit_limit" type="text"
-                                                   id="credit_limit">
-                                        </div>
-                                        <p class="help-block">Keep blank for no limit</p>
-                                    </div>
-                                </div>
                                 <div class="col-md-12">
-                                    <hr/>
-                                </div>
-                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="email">Email:</label>
+                                        <label for="address">Customer Full Address:</label>
                                         <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-envelope"></i>
-                </span>
-                                            <input class="form-control" placeholder="Email" name="email" type="email"
-                                                   id="email">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-map-marker"></i>
+                                            </span>
+                                            <input class="form-control" placeholder="Enter Full Address" name="address"
+                                                   type="text"
+                                                   id="address">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="mobile">Mobile:*</label>
-                                        <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-mobile"></i>
-                </span>
-                                            <input class="form-control" required placeholder="Mobile" name="mobile"
-                                                   type="text" id="mobile">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="alternate_number">Alternate contact number:</label>
-                                        <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-phone"></i>
-                </span>
-                                            <input class="form-control" placeholder="Alternate contact number"
-                                                   name="alternate_number" type="text" id="alternate_number">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="landline">Landline:</label>
-                                        <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-phone"></i>
-                </span>
-                                            <input class="form-control" placeholder="Landline" name="landline"
-                                                   type="text" id="landline">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="city">City:</label>
-                                        <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-map-marker"></i>
-                </span>
-                                            <input class="form-control" placeholder="City" name="city" type="text"
-                                                   id="city">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="state">State:</label>
-                                        <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-map-marker"></i>
-                </span>
-                                            <input class="form-control" placeholder="State" name="state" type="text"
-                                                   id="state">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="country">Country:</label>
-                                        <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-globe"></i>
-                </span>
-                                            <input class="form-control" placeholder="Country" name="country" type="text"
-                                                   id="country">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="landmark">Landmark:</label>
-                                        <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-map-marker"></i>
-                </span>
-                                            <input class="form-control" placeholder="Landmark" name="landmark"
-                                                   type="text" id="landmark">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class=" hide ">
-                                    <div class="clearfix"></div>
-                                    <div class="col-md-12">
-                                        <hr/>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="custom_field1">Custom Field 1:</label>
-                                            <input class="form-control" placeholder="Custom Field 1"
-                                                   name="custom_field1" type="text" id="custom_field1">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="custom_field2">Custom Field 2:</label>
-                                            <input class="form-control" placeholder="Custom Field 2"
-                                                   name="custom_field2" type="text" id="custom_field2">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="custom_field3">Custom Field 3:</label>
-                                            <input class="form-control" placeholder="Custom Field 3"
-                                                   name="custom_field3" type="text" id="custom_field3">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="custom_field4">Custom Field 4:</label>
-                                            <input class="form-control" placeholder="Custom Field 4"
-                                                   name="custom_field4" type="text" id="custom_field4">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary">Save Customer Details</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
-
                     </form>
 
                 </div><!-- /.modal-content -->
@@ -2063,7 +1859,7 @@
     });
 
     var append_norecord_e = '<div class="col-sm-12 no_block" id="no_record_found_block_e"><div class="adver_list_row"><span class="list_no_record">' +
-            '< No Record Available ></span></div></div>';
+        '< No Record Available ></span></div></div>';
     function getBuyEItem() {
         var check_rowcount = $('.target').length;
         if (check_rowcount > 0) {

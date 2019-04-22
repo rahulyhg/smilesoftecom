@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\CustomerModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -68,6 +69,7 @@ class AdminPosController extends Controller
             return Redirect::back()->with('errmessage', 'Please select any goods');
         }
     }
+
     public function addNewRows($id, $count)
     {
         for ($i = 0; $i < $count; $i++) {
@@ -111,6 +113,33 @@ class AdminPosController extends Controller
 
             }
         }
+    }
+
+    public function customer_add()
+    {
+        $customer_name = request('cname');
+        $contact = request('contact');
+        $address = request('address');
+
+        if (isset($contact))
+        {
+            $customer = new CustomerModel();
+            $customer->name = $customer_name;
+            $customer->contact = $contact;
+            $customer->address = $address;
+            $customer->save();
+            return Redirect('admin/pos')->with('message', 'Customer Added Successfully:)');
+        }
+        else
+            {
+            return Redirect('admin/pos')->with('errmessage', 'Customer Registration Failed:(');
+        }
+
+    }
+    public function getCustomer()
+    {
+        $customer = CustomerModel::where(['is_del'=>0])->get();
+        return $customer;
     }
 
 }
