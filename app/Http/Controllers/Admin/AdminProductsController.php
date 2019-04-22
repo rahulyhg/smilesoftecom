@@ -130,6 +130,7 @@ class AdminProductsController extends Controller
 
             $products = $data->orderBy('products.products_id', 'DESC')->paginate(40);
 
+            
 
             $results['subCategories'] = $subCategories;
             $results['products'] = $products;
@@ -202,7 +203,7 @@ class AdminProductsController extends Controller
                 $uploadImage = '';
             }
 
-            $barcode_id = DB::table('barcode')->insertGetId([
+            $products_id = DB::table('products')->insertGetId([
                 'product_id' => $request->product_id,
                 'quantity' => $request->quantity,
                 'cost_price' => $request->cost_price,
@@ -213,7 +214,7 @@ class AdminProductsController extends Controller
                 'updated_at' => Carbon::now()->format('Y-m-d')
             ]);
 
-            $products_id  = DB::table('products')->insertGetId([
+            $barcode = DB::table('barcode')->insertGetId([
                 'barcode' => $request->barcode,
                 'products_image' => $uploadImage,
                 'manufacturers_id' => $request->manufacturers_id,
@@ -299,7 +300,7 @@ class AdminProductsController extends Controller
                         $checkSlug = DB::table('products')->where('products_slug', $currentSlug)->get();
                         $slug_count++;
                     } while (count($checkSlug) > 0);
-                    DB::table('products')->where(['products_id'=>$products_id, 'barcode_id'=>$barcode_id])->update([
+                    DB::table('products')->where('products_id', $products_id)->update([
                         'products_slug' => $slug
                     ]);
                 }

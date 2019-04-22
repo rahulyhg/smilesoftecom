@@ -23,9 +23,16 @@
                 </li>
             @endif
             @if(session('dashboard_view')==1 or auth()->guard('admin')->user()->adminType=='1')
-                <li class="treeview {{ Request::is('admin/dashboard/this_month') ? 'active' : '' }}">
+                <li class="treeview {{ Request::is('admin/warehouse') ? 'active' : '' }}">
                     <a href="{{ URL::to('admin/warehouse')}}">
                         <i class="fa fa-home"></i> <span>Warehouse</span>
+                    </a>
+                </li>
+            @endif
+            @if(session('dashboard_view')==1 or auth()->guard('admin')->user()->adminType=='1')
+                <li class="treeview {{ Request::is('admin/supplier') ? 'active' : '' }}">
+                    <a href="{{ URL::to('admin/supplier')}}">
+                        <i class="fa fa-dashboard"></i> <span>Supplier</span>
                     </a>
                 </li>
             @endif
