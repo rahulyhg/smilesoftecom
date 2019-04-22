@@ -1,5 +1,12 @@
 @extends('admin.layout')
 @section('content') 
+<style>
+  .myrow{
+    border-bottom: 1px solid #00000021;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+</style>
 <div class="content-wrapper"> 
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -98,36 +105,63 @@
                                       </div>
                                     </div>                
                                     @endif
-                                    
-                                   <div class="form-group">
+                                      <div class="form-group">
                                       <label for="name" class="col-sm-2 col-md-4 control-label">
-                                         {{ trans('labels.Current Stock') }}                             	 
+                                         All Over Stock                             	 
                                       </label>
                                       <div class="col-sm-10 col-md-8">
                                           <p id="current_stocks" style="width:100%">{{$result['stocks']}}</p><br>
                                                                        
                                       </div>
+                                      <input type="hidden" name="stock" id="stock" value="{{$result['stocks']}}">
                                    </div>
-                                   
-                                   <div class="form-group">
+                                    @php
+                                        $warehouseModel = \App\WarehouseModel::whereis_del(0)->get();
+                                    @endphp
+
+                                    @foreach ($warehouseModel as $wobject)
+                                   <div class="myrow"></div>
+                                   @php
+                                       $wstock = \App\Warehouse_Inventory_Model::where(['pid' => $result['products'][0]->products_id ,'w_id' =>$wobject->id])->first();
+                                   @endphp
+                                   <h4>{{  $wobject->name }}</h4>
+                                          <div class="form-group">
                                       <label for="name" class="col-sm-2 col-md-4 control-label">
-                                         {{ trans('labels.Total Purchase Price') }}                              	 
+                                         {{ trans('labels.Current Stock') }}                             	 
                                       </label>
                                       <div class="col-sm-10 col-md-8">
-                                          <p class="purchase_price_content" style="width:100%">{{ $result['currency'][19]->value }}<span id="total_purchases">{{$result['purchase_price']}}</span></p><br>
+                                          <p id="current_stocks" style="width:100%">{{ $wstock->stock }}</p><br>
                                                                        
                                       </div>
                                    </div>
-                    
+                                   
+                                   <div class="form-group">
+                                      {{-- <label for="name" class="col-sm-2 col-md-4 control-label">
+                                         {{ trans('labels.Total Purchase Price') }}                              	 
+                                      </label> --}}
+                                      {{-- <div class="col-sm-10 col-md-8">
+                                          <p class="purchase_price_content" style="width:100%">{{ $result['currency'][19]->value }}<span id="total_purchases">{{$result['purchase_price'] / $wstock->stock}}</span></p><br>
+                                                                       
+                                      </div> --}}
+                                   </div>
+                                  <input type="hidden" name="w_id[]" value="{{ $wobject->id }}">
                                    <div class="form-group">
                                       <label for="name" class="col-sm-2 col-md-4 control-label">{{ trans('labels.Enter Stock') }}</label>
                                       <div class="col-sm-10 col-md-8">
-                                          <input type="text" name="stock" value=""  class="form-control number-validate">
+                                          <input type="text" onkeyup="totalstock();" name="w_stock[]" value="0"  class="form-control number-validate w_stock">
                                           <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                           {{ trans('labels.Enter Stock Text') }}</span>
                                       </div>
                                    </div>
                     
+                                   
+                                    @endforeach
+
+                                    
+                                    
+                                 
+                  <div class="myrow"></div>
+                  {{-- <hr> --}}
                                    <div class="form-group">
                                       <label for="name" class="col-sm-2 col-md-4 control-label">{{ trans('labels.Purchase Price') }}</label>
                                       <div class="col-sm-10 col-md-8">
@@ -136,7 +170,6 @@
                                           {{ trans('labels.Purchase Price Text') }}</span>
                                       </div>
                                    </div>
-                    
                                    <div class="form-group">
                                       <label for="name" class="col-sm-2 col-md-4 control-label">{{ trans('labels.Reference / Purchase Code') }}</label>
                                       <div class="col-sm-10 col-md-8">
@@ -266,5 +299,19 @@
 </div>
 
     <!-- /.row --> 
-
+<script>
+function totalstock()
+    {
+  var grandTotal = 0 ;
+        // debugger;
+        $('.w_stock').each(function () {
+                if ($(this).val() != '') {
+                    grandTotal = grandTotal + parseFloat($(this).val());
+                }
+            });
+            // alert(grandTotal);
+        $('#stock').val(grandTotal);
+    
+    }
+</script>
 @endsection 

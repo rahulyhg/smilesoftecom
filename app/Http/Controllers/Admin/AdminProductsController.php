@@ -5,26 +5,24 @@ Project URI: http://ionicecommerce.com
 Author: VectorCoder Team
 Author URI: http://vectorcoder.com/
 
-*/
+ */
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\App\CategoriesController;
-
-use Carbon\Carbon;
-use Validator;
 use App;
-use Lang;
-use DB;
+use App\BarcodeModel;
+use App\Http\Controllers\Controller;
+use App\WarehouseModel;
+use App\Warehouse_Inventory_Model;
 //for password encryption or hash protected
-use Hash;
-use App\Administrator;
+use Auth;
 
 //for authenitcate login data
-use Auth;
+use DB;
 
 //for requesting a value
 use Illuminate\Http\Request;
+use Lang;
+use App\Warehouse_inventory_history_Model;
 
 class AdminProductsController extends Controller
 {
@@ -130,8 +128,6 @@ class AdminProductsController extends Controller
 
             $products = $data->orderBy('products.products_id', 'DESC')->paginate(40);
 
-            
-
             $results['subCategories'] = $subCategories;
             $results['products'] = $products;
 
@@ -203,24 +199,24 @@ class AdminProductsController extends Controller
                 $uploadImage = '';
             }
 
-            $products_id = DB::table('products')->insertGetId([
-                'product_id' => $request->product_id,
-                'quantity' => $request->quantity,
-                'cost_price' => $request->cost_price,
-                'selling_price' => $request->selling_price,
-                'barcode' => $request->barcode,
-                'pdf_path' => $request->pdf_path,
-                'created_at' => Carbon::now()->format('Y-m-d'),
-                'updated_at' => Carbon::now()->format('Y-m-d')
-            ]);
+            // $products_id = DB::table('products')->insertGetId([
+            //     'product_id' => $request->product_id,
+            //     'quantity' => $request->quantity,
+            //     'cost_price' => $request->cost_price,
+            //     'selling_price' => $request->selling_price,
+            //     'barcode' => $request->barcode,
+            //     'pdf_path' => $request->pdf_path,
+            //     'created_at' => Carbon::now()->format('Y-m-d'),
+            //     'updated_at' => Carbon::now()->format('Y-m-d')
+            // ]);
 
-            $barcode = DB::table('barcode')->insertGetId([
-                'barcode' => $request->barcode,
+            $products_id = DB::table('products')->insertGetId([
                 'products_image' => $uploadImage,
                 'manufacturers_id' => $request->manufacturers_id,
                 'products_quantity' => 0,
                 'products_model' => $request->products_model,
                 'products_price' => $request->products_price,
+                // 'products_purchase_price' => $request->products_purchase_price,
                 'products_date_added' => $date_added,
                 'products_weight' => $request->products_weight,
                 'products_status' => $request->products_status,
@@ -232,194 +228,206 @@ class AdminProductsController extends Controller
                 'is_prime' => $request->is_prime,
                 'prime_percent' => $request->prime_percent,
                 'products_min_order' => $request->products_min_order,
-                'products_max_stock' => $request->products_max_stock
+                'products_max_stock' => $request->products_max_stock,
             ]);
 
-            $slug_flag = false;
-            foreach ($languages as $languages_data) {
-                $products_name = 'products_name_' . $languages_data->languages_id;
-                $products_url = 'products_url_' . $languages_data->languages_id;
-                $products_description = 'products_description_' . $languages_data->languages_id;
+            $barcode = new BarcodeModel();
+            $barcode->product_id = $products_id;
+            $barcode->cost_price = $request->products_purchase_price;
+            $barcode->selling_price = $request->products_price;
+            $barcode->barcode = request('barcode');
+            $barcode->save();
 
-                //left banner
-                $products_left_banner = 'products_left_banner_' . $languages_data->languages_id;
-
-                $products_left_banner_start_date = 'products_left_banner_start_date_' . $languages_data->languages_id;
-                if (!empty($request->$products_left_banner_start_date)) {
-
-                    $leftStartDate = str_replace('/', '-', $request->$products_left_banner_start_date);
-                    $leftStartDateFormat = strtotime($leftStartDate);
-                } else {
-                    $leftStartDateFormat = '';
-                }
-
-                //expire date
-                $products_left_banner_expire_date = 'products_left_banner_expire_date_' . $languages_data->languages_id;
-                if (!empty($request->$products_left_banner_expire_date)) {
-                    $leftExpiretDate = str_replace('/', '-', $request->$products_left_banner_expire_date);
-                    $leftExpireDateFormat = strtotime($leftExpiretDate);
-                } else {
-                    $leftExpireDateFormat = '';
-                }
-
-                //right banner
-                $products_right_banner = 'products_right_banner_' . $languages_data->languages_id;
-
-                $products_right_banner_start_date = 'products_right_banner_start_date_' . $languages_data->languages_id;
-                if (!empty($request->$products_right_banner_start_date)) {
-                    $rightStartDate = str_replace('/', '-', $request->$products_right_banner_start_date);
-                    $rightStartDateFormat = strtotime($rightStartDate);
-                } else {
-                    $rightStartDateFormat = '';
-                }
-
-                //expire date
-                $products_right_banner_expire_date = 'products_right_banner_expire_date_' . $languages_data->languages_id;
-                if (!empty($request->$products_right_banner_expire_date)) {
-                    $rightExpiretDate = str_replace('/', '-', $request->$products_right_banner_expire_date);
-                    $rightExpireDateFormat = strtotime($rightExpiretDate);
-                } else {
-                    $rightExpireDateFormat = '';
-                }
-
-                //slug
-                if ($slug_flag == false) {
-                    $slug_flag = true;
-
-                    $slug = $request->$products_name;
-                    $old_slug = $request->$products_name;
-
-                    $slug_count = 0;
-                    do {
-                        if ($slug_count == 0) {
-                            $currentSlug = $myVar->slugify($slug);
-                        } else {
-                            $currentSlug = $myVar->slugify($old_slug . '-' . $slug_count);
-                        }
-                        $slug = $currentSlug;
-                        $checkSlug = DB::table('products')->where('products_slug', $currentSlug)->get();
-                        $slug_count++;
-                    } while (count($checkSlug) > 0);
-                    DB::table('products')->where('products_id', $products_id)->update([
-                        'products_slug' => $slug
-                    ]);
-                }
-
-
-                if ($request->hasFile($products_left_banner) and in_array($request->$products_left_banner->extension(), $extensions)) {
-                    $image = $request->$products_left_banner;
-                    $fileName = 'left_' . $languages_data->languages_id . time() . '.' . $image->getClientOriginalName();
-                    $image->move('resources/assets/images/products_banners/', $fileName);
-                    $leftBanner = 'resources/assets/images/products_banners/' . $fileName;
-                } else {
-                    $leftBanner = '';
-                }
-
-                if ($request->hasFile($products_right_banner) and in_array($request->$products_right_banner->extension(), $extensions)) {
-                    $image = $request->$products_right_banner;
-                    $fileName = 'right_' . $languages_data->languages_id . time() . '.' . $image->getClientOriginalName();
-                    $image->move('resources/assets/images/products_banners/', $fileName);
-                    $rightBanner = 'resources/assets/images/products_banners/' . $fileName;
-                } else {
-                    $rightBanner = '';
-                }
-
-
-                DB::table('products_description')->insert([
-                    'products_name' => $request->$products_name,
-                    'language_id' => $languages_data->languages_id,
-                    'products_id' => $products_id,
-                    'products_url' => $request->$products_url,
-                    'products_left_banner' => $leftBanner,
-                    'products_left_banner_start_date' => $leftStartDateFormat,
-                    'products_left_banner_expire_date' => $leftExpireDateFormat,
-                    'products_right_banner' => $rightBanner,
-                    'products_right_banner_start_date' => $rightStartDateFormat,
-                    'products_right_banner_expire_date' => $rightExpireDateFormat,
-                    'products_description' => addslashes($request->$products_description)
-                ]);
+            $data = WarehouseModel::whereis_del(0)->get();
+            foreach ($data as $obj) {
+                $warehouse_inventory = new Warehouse_Inventory_Model();
+                $warehouse_inventory->w_id = $obj->id;
+                $warehouse_inventory->pid = $products_id;
+                $warehouse_inventory->stock = 0;
+                $warehouse_inventory->save();
             }
+        }
 
-            //flash sale product
-            if ($request->isFlash == 'yes') {
+        $slug_flag = false;
+        foreach ($languages as $languages_data) {
+            $products_name = 'products_name_' . $languages_data->languages_id;
+            $products_url = 'products_url_' . $languages_data->languages_id;
+            $products_description = 'products_description_' . $languages_data->languages_id;
 
-                $startdate = $request->flash_start_date;
-                $starttime = $request->flash_start_time;
+            //left banner
+            $products_left_banner = 'products_left_banner_' . $languages_data->languages_id;
 
-                $start_date = str_replace('/', '-', $startdate . ' ' . $starttime);
-                $flash_start_date = strtotime($start_date);
+            $products_left_banner_start_date = 'products_left_banner_start_date_' . $languages_data->languages_id;
+            if (!empty($request->$products_left_banner_start_date)) {
 
-                $expiredate = $request->flash_expires_date;
-                $expiretime = $request->flash_end_time;
-
-                $expire_date = str_replace('/', '-', $expiredate . ' ' . $expiretime);
-                $flash_expires_date = strtotime($expire_date);
-
-
-                DB::table('flash_sale')->insert([
-                    'products_id' => $products_id,
-                    'flash_sale_products_price' => $request->flash_sale_products_price,
-                    'flash_sale_date_added' => time(),
-                    'flash_start_date' => $flash_start_date,
-                    'flash_expires_date' => $flash_expires_date,
-                    'flash_status' => $request->flash_status
-                ]);
-            }
-
-            //special product
-            if ($request->isSpecial == 'yes') {
-
-                DB::table('specials')->where('products_id', '=', $products_id)->update([
-                    'specials_last_modified' => time(),
-                    'date_status_change' => time(),
-                    'status' => 0,
-                ]);
-
-
-                DB::table('specials')->insert([
-                    'products_id' => $products_id,
-                    'specials_new_products_price' => $request->specials_new_products_price,
-                    'specials_date_added' => time(),
-                    'expires_date' => $expiryDateFormate,
-                    'status' => $request->status,
-                ]);
-            }
-
-            foreach ($request->categories as $categories) {
-                DB::table('products_to_categories')->insert([
-                    'products_id' => $products_id,
-                    'categories_id' => $categories
-                ]);
-            }
-
-            $options = DB::table('products_options')
-                ->join('products_options_descriptions', 'products_options_descriptions.products_options_id', '=', 'products_options.products_options_id')
-                ->select('products_options.products_options_id', 'products_options_descriptions.options_name as products_options_name', 'products_options_descriptions.language_id')->where('products_options_descriptions.language_id', $language_id)->get();
-            if (!empty($options) and count($options) > 0) {
-                $result['options'] = $options;
+                $leftStartDate = str_replace('/', '-', $request->$products_left_banner_start_date);
+                $leftStartDateFormat = strtotime($leftStartDate);
             } else {
-                $result['options'] = '';
+                $leftStartDateFormat = '';
             }
 
-            $options_value = DB::table('products_options_values')->join('products_options_values_descriptions', 'products_options_values_descriptions.products_options_values_id', '=', 'products_options_values.products_options_values_id')->select('products_options_values.products_options_values_id', 'products_options_values_descriptions.options_values_name as products_options_values_name')->where('products_options_values_descriptions.language_id', '=', $language_id)->get();
-
-            if (!empty($options_value) and count($options_value) > 0) {
-                $result['options_value'] = $options_value;
+            //expire date
+            $products_left_banner_expire_date = 'products_left_banner_expire_date_' . $languages_data->languages_id;
+            if (!empty($request->$products_left_banner_expire_date)) {
+                $leftExpiretDate = str_replace('/', '-', $request->$products_left_banner_expire_date);
+                $leftExpireDateFormat = strtotime($leftExpiretDate);
             } else {
-                $result['options_value'] = '';
+                $leftExpireDateFormat = '';
             }
 
-            $result['data'] = array('products_id' => $products_id, 'language_id' => $language_id);
+            //right banner
+            $products_right_banner = 'products_right_banner_' . $languages_data->languages_id;
 
-            //notify users
-            $myVar = new AdminAlertController();
-            $alertSetting = $myVar->newProductNotification($products_id);
-
-            if ($request->products_type == 1) {
-                return redirect('admin/addproductattribute/' . $products_id);
+            $products_right_banner_start_date = 'products_right_banner_start_date_' . $languages_data->languages_id;
+            if (!empty($request->$products_right_banner_start_date)) {
+                $rightStartDate = str_replace('/', '-', $request->$products_right_banner_start_date);
+                $rightStartDateFormat = strtotime($rightStartDate);
             } else {
-                return redirect('admin/addinventory/' . $products_id);
+                $rightStartDateFormat = '';
             }
+
+            //expire date
+            $products_right_banner_expire_date = 'products_right_banner_expire_date_' . $languages_data->languages_id;
+            if (!empty($request->$products_right_banner_expire_date)) {
+                $rightExpiretDate = str_replace('/', '-', $request->$products_right_banner_expire_date);
+                $rightExpireDateFormat = strtotime($rightExpiretDate);
+            } else {
+                $rightExpireDateFormat = '';
+            }
+
+            //slug
+            if ($slug_flag == false) {
+                $slug_flag = true;
+
+                $slug = $request->$products_name;
+                $old_slug = $request->$products_name;
+
+                $slug_count = 0;
+                do {
+                    if ($slug_count == 0) {
+                        $currentSlug = $myVar->slugify($slug);
+                    } else {
+                        $currentSlug = $myVar->slugify($old_slug . '-' . $slug_count);
+                    }
+                    $slug = $currentSlug;
+                    $checkSlug = DB::table('products')->where('products_slug', $currentSlug)->get();
+                    $slug_count++;
+                } while (count($checkSlug) > 0);
+                DB::table('products')->where('products_id', $products_id)->update([
+                    'products_slug' => $slug,
+                ]);
+            }
+
+            if ($request->hasFile($products_left_banner) and in_array($request->$products_left_banner->extension(), $extensions)) {
+                $image = $request->$products_left_banner;
+                $fileName = 'left_' . $languages_data->languages_id . time() . '.' . $image->getClientOriginalName();
+                $image->move('resources/assets/images/products_banners/', $fileName);
+                $leftBanner = 'resources/assets/images/products_banners/' . $fileName;
+            } else {
+                $leftBanner = '';
+            }
+
+            if ($request->hasFile($products_right_banner) and in_array($request->$products_right_banner->extension(), $extensions)) {
+                $image = $request->$products_right_banner;
+                $fileName = 'right_' . $languages_data->languages_id . time() . '.' . $image->getClientOriginalName();
+                $image->move('resources/assets/images/products_banners/', $fileName);
+                $rightBanner = 'resources/assets/images/products_banners/' . $fileName;
+            } else {
+                $rightBanner = '';
+            }
+
+            DB::table('products_description')->insert([
+                'products_name' => $request->$products_name,
+                'language_id' => $languages_data->languages_id,
+                'products_id' => $products_id,
+                'products_url' => $request->$products_url,
+                'products_left_banner' => $leftBanner,
+                'products_left_banner_start_date' => $leftStartDateFormat,
+                'products_left_banner_expire_date' => $leftExpireDateFormat,
+                'products_right_banner' => $rightBanner,
+                'products_right_banner_start_date' => $rightStartDateFormat,
+                'products_right_banner_expire_date' => $rightExpireDateFormat,
+                'products_description' => addslashes($request->$products_description),
+            ]);
+        }
+
+        //flash sale product
+        if ($request->isFlash == 'yes') {
+
+            $startdate = $request->flash_start_date;
+            $starttime = $request->flash_start_time;
+
+            $start_date = str_replace('/', '-', $startdate . ' ' . $starttime);
+            $flash_start_date = strtotime($start_date);
+
+            $expiredate = $request->flash_expires_date;
+            $expiretime = $request->flash_end_time;
+
+            $expire_date = str_replace('/', '-', $expiredate . ' ' . $expiretime);
+            $flash_expires_date = strtotime($expire_date);
+
+            DB::table('flash_sale')->insert([
+                'products_id' => $products_id,
+                'flash_sale_products_price' => $request->flash_sale_products_price,
+                'flash_sale_date_added' => time(),
+                'flash_start_date' => $flash_start_date,
+                'flash_expires_date' => $flash_expires_date,
+                'flash_status' => $request->flash_status,
+            ]);
+        }
+
+        //special product
+        if ($request->isSpecial == 'yes') {
+
+            DB::table('specials')->where('products_id', '=', $products_id)->update([
+                'specials_last_modified' => time(),
+                'date_status_change' => time(),
+                'status' => 0,
+            ]);
+
+            DB::table('specials')->insert([
+                'products_id' => $products_id,
+                'specials_new_products_price' => $request->specials_new_products_price,
+                'specials_date_added' => time(),
+                'expires_date' => $expiryDateFormate,
+                'status' => $request->status,
+            ]);
+        }
+
+        foreach ($request->categories as $categories) {
+            DB::table('products_to_categories')->insert([
+                'products_id' => $products_id,
+                'categories_id' => $categories,
+            ]);
+        }
+
+        $options = DB::table('products_options')
+            ->join('products_options_descriptions', 'products_options_descriptions.products_options_id', '=', 'products_options.products_options_id')
+            ->select('products_options.products_options_id', 'products_options_descriptions.options_name as products_options_name', 'products_options_descriptions.language_id')->where('products_options_descriptions.language_id', $language_id)->get();
+        if (!empty($options) and count($options) > 0) {
+            $result['options'] = $options;
+        } else {
+            $result['options'] = '';
+        }
+
+        $options_value = DB::table('products_options_values')->join('products_options_values_descriptions', 'products_options_values_descriptions.products_options_values_id', '=', 'products_options_values.products_options_values_id')->select('products_options_values.products_options_values_id', 'products_options_values_descriptions.options_values_name as products_options_values_name')->where('products_options_values_descriptions.language_id', '=', $language_id)->get();
+
+        if (!empty($options_value) and count($options_value) > 0) {
+            $result['options_value'] = $options_value;
+        } else {
+            $result['options_value'] = '';
+        }
+
+        $result['data'] = array('products_id' => $products_id, 'language_id' => $language_id);
+
+        //notify users
+        $myVar = new AdminAlertController();
+        $alertSetting = $myVar->newProductNotification($products_id);
+
+        if ($request->products_type == 1) {
+            return redirect('admin/addproductattribute/' . $products_id);
+        } else {
+            return redirect('admin/addinventory/' . $products_id);
         }
     }
 
@@ -479,7 +487,6 @@ class AdminProductsController extends Controller
                         ->join('products_options_descriptions', 'products_options_descriptions.products_options_id', '=', 'products_options.products_options_id')
                         ->select('products_options.products_options_id', 'products_options_descriptions.options_name as products_options_name', 'products_options_descriptions.language_id')->where('products_options_descriptions.language_id', $language_id)->where('products_options.products_options_id', $attribute_data->options_id)->get();
 
-
                     if (count($option_name) > 0) {
 
                         $temp = array();
@@ -490,21 +497,17 @@ class AdminProductsController extends Controller
 
                         $attr[$index2]['option'] = $temp_option;
 
-
                         // fetch all attributes add join from products_options_values table for option value name
 
                         $attributes_value_query = DB::table('products_attributes')->where('products_id', '=', $products_id)->where('options_id', '=', $attribute_data->options_id)->get();
 
-
                         foreach ($attributes_value_query as $products_option_value) {
-
 
                             $option_value = DB::table('products_options_values')->join('products_options_values_descriptions', 'products_options_values_descriptions.products_options_values_id', '=', 'products_options_values.products_options_values_id')->select('products_options_values.products_options_values_id', 'products_options_values_descriptions.options_values_name as products_options_values_name')->where('products_options_values_descriptions.language_id', '=', $language_id)->where('products_options_values.products_options_values_id', '=', $products_option_value->options_values_id)->get();
 
                             if (count($option_value) > 0) {
 
                                 $attributes = DB::table('products_attributes')->where([['products_id', '=', $products_id], ['options_id', '=', $attribute_data->options_id], ['options_values_id', '=', $products_option_value->options_values_id]])->get();
-
 
                                 $temp_i['products_attributes_id'] = $attributes[0]->products_attributes_id;
 
@@ -538,7 +541,6 @@ class AdminProductsController extends Controller
 
         }
     }
-
 
     //currentstock
     public function currentstock(Request $request)
@@ -610,21 +612,21 @@ class AdminProductsController extends Controller
         //orders products
         $orders_products = DB::table('orders_products')->where('products_id', $products_id)->get();
         /*$stockOut = 0;
-		foreach($orders_products as $orders_product){
-			$totalAttribute = DB::table('orders_products_attributes')->where('orders_products_id','=',$orders_product->orders_products_id)->get();
-			$totalAttributes = count($totalAttribute);
+        foreach($orders_products as $orders_product){
+        $totalAttribute = DB::table('orders_products_attributes')->where('orders_products_id','=',$orders_product->orders_products_id)->get();
+        $totalAttributes = count($totalAttribute);
 
-			if($postAttributes>$totalAttributes){
-				$count = $postAttributes;
-			}elseif($postAttributes<$totalAttributes or $postAttributes==$totalAttributes){
-				$count = $totalAttributes;
-			}
+        if($postAttributes>$totalAttributes){
+        $count = $postAttributes;
+        }elseif($postAttributes<$totalAttributes or $postAttributes==$totalAttributes){
+        $count = $totalAttributes;
+        }
 
-			$products = DB::select("select orders_products.* from `orders_products` left join `orders_products_attributes` on `orders_products_attributes`.`orders_products_id` = `orders_products`.`orders_products_id` where `orders_products`.`products_id`='".$products_id."' and `orders_products_attributes`.`products_options` in (".$options_names.") and `orders_products_attributes`.`products_options_values` in (".$options_values.") and (select count(*) from `orders_products_attributes` where `orders_products_attributes`.`products_id` = '".$products_id."' and `orders_products_attributes`.`products_options` in (".$options_names.") and `orders_products_attributes`.`products_options_values` in (".$options_values.") and `orders_products_attributes`.`orders_products_id`= '".$orders_product->orders_products_id."') = ".$count." and `orders_products`.`orders_products_id` = '".$orders_product->orders_products_id."' group by `orders_products_attributes`.`orders_products_id`");
-			if(count($products)>0){
-				$stockOut += $products[0]->products_quantity;
-			}
-		}*/
+        $products = DB::select("select orders_products.* from `orders_products` left join `orders_products_attributes` on `orders_products_attributes`.`orders_products_id` = `orders_products`.`orders_products_id` where `orders_products`.`products_id`='".$products_id."' and `orders_products_attributes`.`products_options` in (".$options_names.") and `orders_products_attributes`.`products_options_values` in (".$options_values.") and (select count(*) from `orders_products_attributes` where `orders_products_attributes`.`products_id` = '".$products_id."' and `orders_products_attributes`.`products_options` in (".$options_names.") and `orders_products_attributes`.`products_options_values` in (".$options_values.") and `orders_products_attributes`.`orders_products_id`= '".$orders_product->orders_products_id."') = ".$count." and `orders_products`.`orders_products_id` = '".$orders_product->orders_products_id."' group by `orders_products_attributes`.`orders_products_id`");
+        if(count($products)>0){
+        $stockOut += $products[0]->products_quantity;
+        }
+        }*/
 
         $result = array();
         $result['purchasePrice'] = $purchasePrice;
@@ -644,10 +646,10 @@ class AdminProductsController extends Controller
 
     }
 
-
     //addnewstock
     public function addnewstock(Request $request)
     {
+        // return $_REQUEST;
 
         if (session('products_create') == 0 or session('products_update') == 0) {
             print Lang::get("labels.You do not have to access this route");
@@ -665,7 +667,23 @@ class AdminProductsController extends Controller
                 'stock_type' => 'in',
             ]);
 
+            $ware_ids = request('w_id');
+            $ware_stock = request('w_stock');
 
+            for($i = 0; $i < count($ware_ids); $i++) {
+                $warehouse_inventory = Warehouse_Inventory_Model::where(['pid' => $products_id,'w_id' =>$ware_ids[$i]])->first();
+
+                // $warehouse_inventory->w_id = $ware_ids[$i];
+                // $warehouse_inventory->pid = $products_id;
+                $warehouse_inventory->stock =$warehouse_inventory->stock + $ware_stock[$i];
+                $warehouse_inventory->save();
+
+                $Warehouse_inventory_history_Model = new Warehouse_inventory_history_Model();
+                $Warehouse_inventory_history_Model->w_id = $ware_ids[$i];
+                $Warehouse_inventory_history_Model->pid = $products_id;
+                $Warehouse_inventory_history_Model->stock =  $ware_stock[$i];
+                $Warehouse_inventory_history_Model->save();
+            }
             if ($products[0]->products_type == 1) {
 
                 foreach ($request->attributeid as $attribute) {
@@ -688,13 +706,11 @@ class AdminProductsController extends Controller
 
             }
 
-
             return redirect()->back()->withErrors([Lang::get("labels.inventoryaddedsuccessfully")]);
 
         }
 
     }
-
 
     //addminmax
 
@@ -706,7 +722,6 @@ class AdminProductsController extends Controller
         } else {
             $products_id = $request->products_id;
             $products = $this->getProducts($products_id);
-
 
             if ($products[0]->products_type == 1) {
                 $inventory_ref_id = $request->inventory_ref_id;
@@ -736,9 +751,7 @@ class AdminProductsController extends Controller
 
                 ]);
 
-
             }
-
 
             return redirect()->back()->withErrors([Lang::get("labels.Min max level added successfully")]);
 
@@ -746,17 +759,14 @@ class AdminProductsController extends Controller
 
     }
 
-
     //getOptions
 
     public function getOptions(Request $request)
     {
 
-
         $options = DB::table('products_options')
             ->where('language_id', '=', $request->languages_id)
             ->get();
-
 
         if (count($options) > 0) {
 
@@ -778,7 +788,6 @@ class AdminProductsController extends Controller
 
     }
 
-
     //getOptions
 
     public function getOptionsValue(Request $request)
@@ -792,7 +801,6 @@ class AdminProductsController extends Controller
             ->where('products_options_values_descriptions.language_id', '=', $language_id)
             ->where('products_options_values.products_options_id', '=', $request->option_id)
             ->get();
-
 
         if (count($value) > 0) {
 
@@ -812,7 +820,6 @@ class AdminProductsController extends Controller
 
     }
 
-
     //addproductattribute
 
     public function addproductattribute(Request $request)
@@ -824,9 +831,7 @@ class AdminProductsController extends Controller
 
         } else {
 
-
             $language_id = 1;
-
 
             $title = array('pageTitle' => Lang::get("labels.AddAttributes"));
 
@@ -834,29 +839,23 @@ class AdminProductsController extends Controller
 
             $subcategory_id = $request->subcategory_id;
 
-
             //get function from other controller
 
             $myVar = new AdminSiteSettingController();
 
             $result['languages'] = $myVar->getLanguages();
 
-
             $options = DB::table('products_options')->join('products_options_descriptions', 'products_options_descriptions.products_options_id', '=', 'products_options.products_options_id')->where('products_options_descriptions.language_id', '=', $language_id)->get();
-
 
             $result['options'] = $options;
 
             $result['subcategory_id'] = $subcategory_id;
 
-
             $options_value = DB::table('products_options_values')->get();
-
 
             $result['options_value'] = $options_value;
 
             $result['data'] = array('products_id' => $products_id);
-
 
             $products_attributes = DB::table('products_attributes')
                 ->join('products_options', 'products_options.products_options_id', '=', 'products_attributes.options_id')
@@ -870,7 +869,6 @@ class AdminProductsController extends Controller
                 ->orderBy('products_attributes_id', 'DESC')
                 ->get();
 
-
             $result['products_attributes'] = $products_attributes;
 
             //dd($result['products_attributes']);
@@ -880,7 +878,6 @@ class AdminProductsController extends Controller
         }
 
     }
-
 
     //addproductImages
 
@@ -899,12 +896,10 @@ class AdminProductsController extends Controller
 
             $result['data'] = array('products_id' => $products_id);
 
-
             $products_images = DB::table('products_images')
                 ->where('products_id', '=', $products_id)
                 ->orderBy('sort_order', 'ASC')
                 ->get();
-
 
             $result['products_images'] = $products_images;
 
@@ -914,12 +909,10 @@ class AdminProductsController extends Controller
 
     }
 
-
     public function addnewproductattribute(Request $request)
     {
 
         if (!empty($request->products_options_id) and !empty($request->products_id) and !empty($request->products_options_values_id) and isset($request->options_values_price)) {
-
 
             $checkRecord = DB::table('products_attributes')->where([
 
@@ -927,10 +920,9 @@ class AdminProductsController extends Controller
 
                 'options_values_id' => $request->products_options_values_id,
 
-                'products_id' => $request->products_id
+                'products_id' => $request->products_id,
 
             ])->get();
-
 
             if (count($checkRecord) > 0) {
 
@@ -952,10 +944,9 @@ class AdminProductsController extends Controller
 
                     'price_prefix' => $request->price_prefix,
 
-                    'is_default' => $request->is_default
+                    'is_default' => $request->is_default,
 
                 ]);
-
 
                 $products_attributes = DB::table('products_attributes')
                     ->join('products_options', 'products_options.products_options_id', '=', 'products_attributes.options_id')
@@ -972,7 +963,6 @@ class AdminProductsController extends Controller
 
             }
 
-
         } else {
 
             $products_attributes = 'empty';
@@ -983,7 +973,6 @@ class AdminProductsController extends Controller
 
     }
 
-
     //addNewDefaultAttribute
 
     public function addnewdefaultattribute(Request $request)
@@ -992,7 +981,6 @@ class AdminProductsController extends Controller
         $language_id = 1;
 
         $products_attributes = '';
-
 
         if (!empty($request->products_options_id) and !empty($request->products_id) and !empty($request->products_options_values_id)) {
 
@@ -1005,7 +993,6 @@ class AdminProductsController extends Controller
                 'options_values_id' => $request->products_options_values_id,
 
             ])->get();
-
 
             if (count($checkRecord) > 0) {
 
@@ -1025,10 +1012,9 @@ class AdminProductsController extends Controller
 
                     'price_prefix' => '+',
 
-                    'is_default' => $request->is_default
+                    'is_default' => $request->is_default,
 
                 ]);
-
 
                 $products_attributes = DB::table('products_attributes')
                     ->join('products_options', 'products_options.products_options_id', '=', 'products_attributes.options_id')
@@ -1045,18 +1031,15 @@ class AdminProductsController extends Controller
 
             }
 
-
         } else {
 
             $products_attributes = 'empty';
 
         }
 
-
         return ($products_attributes);
 
     }
-
 
     public function updateproductattribute(Request $request)
     {
@@ -1075,10 +1058,9 @@ class AdminProductsController extends Controller
 
                 'options_values_id' => $request->products_options_values_id,
 
-                'products_id' => $request->products_id
+                'products_id' => $request->products_id,
 
             ])->get();
-
 
             DB::table('products_attributes')->where('products_attributes_id', '=', $request->products_attributes_id)->update([
 
@@ -1091,7 +1073,6 @@ class AdminProductsController extends Controller
                 'price_prefix' => $request->price_prefix,
 
             ]);
-
 
             $products_attributes = DB::table('products_attributes')
                 ->join('products_options', 'products_options.products_options_id', '=', 'products_attributes.options_id')
@@ -1106,13 +1087,11 @@ class AdminProductsController extends Controller
                 ->orderBy('products_attributes_id', 'DESC')
                 ->get();
 
-
             return ($products_attributes);
 
         }
 
     }
-
 
     public function updatedefaultattribute(Request $request)
     {
@@ -1133,10 +1112,9 @@ class AdminProductsController extends Controller
 
                     'options_values_id' => $request->products_options_values_id,
 
-                    'products_id' => $request->products_id
+                    'products_id' => $request->products_id,
 
                 ])->get();
-
 
                 DB::table('products_attributes')->where('products_attributes_id', '=', $request->products_attributes_id)->update([
 
@@ -1145,7 +1123,6 @@ class AdminProductsController extends Controller
                     'options_values_id' => $request->products_options_values_id,
 
                 ]);
-
 
                 $products_attributes = DB::table('products_attributes')
                     ->join('products_options', 'products_options.products_options_id', '=', 'products_attributes.options_id')
@@ -1160,7 +1137,6 @@ class AdminProductsController extends Controller
                     ->orderBy('products_attributes_id', 'DESC')
                     ->get();
 
-
             } else {
 
                 $products_attributes = 'empty';
@@ -1172,7 +1148,6 @@ class AdminProductsController extends Controller
         }
 
     }
-
 
     //editProduct
 
@@ -1193,16 +1168,13 @@ class AdminProductsController extends Controller
 
             $category_id = '0';
 
-
             $result = array();
-
 
             //get categories from CategoriesController controller
 
             $myVar = new AdminCategoriesController();
 
             $result['categories'] = $myVar->allCategories($language_id);
-
 
             //get function from other controller
 
@@ -1212,13 +1184,11 @@ class AdminProductsController extends Controller
 
             $result['units'] = $myVar->getUnits();
 
-
             //tax class
 
             $taxClass = DB::table('tax_class')->get();
 
             $result['taxClass'] = $taxClass;
-
 
             //get all sub categories
 
@@ -1229,23 +1199,19 @@ class AdminProductsController extends Controller
 
             $result['subCategories'] = $subCategories;
 
-
             //get function from ManufacturerController controller
 
             $myVar = new AdminManufacturerController();
 
             $result['manufacturer'] = $myVar->getManufacturer($language_id);
 
-
             $product = DB::table('products')
                 ->where('products.products_id', '=', $products_id)
                 ->get();
 
-
             $description_data = array();
 
             foreach ($result['languages'] as $languages_data) {
-
 
                 $description = DB::table('products_description')->where([
 
@@ -1254,7 +1220,6 @@ class AdminProductsController extends Controller
                     ['products_id', '=', $products_id],
 
                 ])->get();
-
 
                 if (count($description) > 0) {
 
@@ -1308,11 +1273,9 @@ class AdminProductsController extends Controller
 
             }
 
-
             $result['description'] = $description_data;
 
             $result['product'] = $product;
-
 
             //get product category
 
@@ -1322,21 +1285,17 @@ class AdminProductsController extends Controller
                 ->where('products_id', '=', $products_id)->where('categories_description.language_id', '=', $language_id)
                 ->get();
 
-
             $mainCategories = array();
 
             $subCategories = array();
 
-
             foreach ($categories as $category) {
-
 
                 if ($category->parent_id == 0) {
 
                     $mainCategories[] = $category->categories_id;
 
                 }
-
 
                 if ($category->parent_id != 0) {
 
@@ -1346,14 +1305,11 @@ class AdminProductsController extends Controller
 
             }
 
-
             $result['subCategories'] = $subCategories;
 
             $result['mainCategories'] = $mainCategories;
 
-
             $getSpecialProduct = DB::table('specials')->where('products_id', $products_id)->orderby('specials_id', 'desc')->limit(1)->get();
-
 
             if (count($getSpecialProduct) > 0) {
 
@@ -1361,16 +1317,13 @@ class AdminProductsController extends Controller
 
             } else {
 
-                $specialProduct[0] = (object)array('specials_id' => '', 'products_id' => '', 'specials_new_products_price' => '', 'status' => '', 'expires_date' => '');
+                $specialProduct[0] = (object) array('specials_id' => '', 'products_id' => '', 'specials_new_products_price' => '', 'status' => '', 'expires_date' => '');
 
             }
 
-
             $result['specialProduct'] = $specialProduct;
 
-
             $getflashProduct = DB::table('flash_sale')->where('products_id', $products_id)->orderby('flash_sale_id', 'desc')->limit(1)->get();
-
 
             if (count($getflashProduct) > 0) {
 
@@ -1378,10 +1331,9 @@ class AdminProductsController extends Controller
 
             } else {
 
-                $flashProduct[0] = (object)array('products_id' => '', 'products_id' => '', 'flash_sale_products_price' => '', 'flash_status' => '', 'flash_start_date' => '', 'flash_expires_date' => '');
+                $flashProduct[0] = (object) array('products_id' => '', 'products_id' => '', 'flash_sale_products_price' => '', 'flash_status' => '', 'flash_start_date' => '', 'flash_expires_date' => '');
 
             }
-
 
             $result['flashProduct'] = $flashProduct;
 
@@ -1390,7 +1342,6 @@ class AdminProductsController extends Controller
         }
 
     }
-
 
     //updateProduct
 
@@ -1409,11 +1360,9 @@ class AdminProductsController extends Controller
 
             $products_last_modified = date('Y-m-d h:i:s');
 
-
             $expiryDate = str_replace('/', '-', $request->expires_date);
 
             $expiryDateFormate = strtotime($expiryDate);
-
 
             //get function from other controller
 
@@ -1423,11 +1372,9 @@ class AdminProductsController extends Controller
 
             $extensions = $myVar->imageType();
 
-
             //check slug
 
             if ($request->old_slug != $request->slug) {
-
 
                 $slug = $request->slug;
 
@@ -1453,13 +1400,11 @@ class AdminProductsController extends Controller
 
                 } while (count($checkSlug) > 0);
 
-
             } else {
 
                 $slug = $request->slug;
 
             }
-
 
             if ($request->hasFile('products_image') and in_array($request->products_image->extension(), $extensions)) {
 
@@ -1476,7 +1421,6 @@ class AdminProductsController extends Controller
                 $uploadImage = $request->oldImage;
 
             }
-
 
             DB::table('products')->where('products_id', '=', $products_id)->update([
 
@@ -1513,10 +1457,9 @@ class AdminProductsController extends Controller
 
                 'products_min_order' => $request->products_min_order,
 
-                'products_max_stock' => $request->products_max_stock
+                'products_max_stock' => $request->products_max_stock,
 
             ]);
-
 
             foreach ($languages as $languages_data) {
 
@@ -1526,28 +1469,23 @@ class AdminProductsController extends Controller
 
                 $products_description = 'products_description_' . $languages_data->languages_id;
 
-
                 //left banner
 
                 $products_left_banner = 'products_left_banner_' . $languages_data->languages_id;
-
 
                 $products_left_banner_start_date = 'products_left_banner_start_date_' . $languages_data->languages_id;
 
                 if (!empty($request->$products_left_banner_start_date)) {
 
-
                     $leftStartDate = str_replace('/', '-', $request->$products_left_banner_start_date);
 
                     $leftStartDateFormat = strtotime($leftStartDate);
-
 
                 } else {
 
                     $leftStartDateFormat = '';
 
                 }
-
 
                 //expire date
 
@@ -1565,11 +1503,9 @@ class AdminProductsController extends Controller
 
                 }
 
-
                 //right banner
 
                 $products_right_banner = 'products_right_banner_' . $languages_data->languages_id;
-
 
                 $products_right_banner_start_date = 'products_right_banner_start_date_' . $languages_data->languages_id;
 
@@ -1584,7 +1520,6 @@ class AdminProductsController extends Controller
                     $rightStartDateFormat = '';
 
                 }
-
 
                 //expire date
 
@@ -1602,11 +1537,9 @@ class AdminProductsController extends Controller
 
                 }
 
-
                 $old_left_banner = 'old_left_banner_' . $languages_data->languages_id;
 
                 $old_right_banner = 'old_right_banner_' . $languages_data->languages_id;
-
 
                 if ($request->hasFile($products_left_banner) and in_array($request->$products_left_banner->extension(), $extensions)) {
 
@@ -1624,7 +1557,6 @@ class AdminProductsController extends Controller
 
                 }
 
-
                 if ($request->hasFile($products_right_banner) and in_array($request->$products_right_banner->extension(), $extensions)) {
 
                     $image = $request->$products_right_banner;
@@ -1640,7 +1572,6 @@ class AdminProductsController extends Controller
                     $rightBanner = $request->$old_right_banner;
 
                 }
-
 
                 $checkExist = DB::table('products_description')->where('products_id', '=', $products_id)->where('language_id', '=', $languages_data->languages_id)->get();
 
@@ -1664,7 +1595,7 @@ class AdminProductsController extends Controller
 
                         'products_right_banner_expire_date' => $rightExpireDateFormat,
 
-                        'products_description' => addslashes($request->$products_description)
+                        'products_description' => addslashes($request->$products_description),
 
                     ]);
 
@@ -1692,14 +1623,13 @@ class AdminProductsController extends Controller
 
                         'products_right_banner_expire_date' => $rightExpireDateFormat,
 
-                        'products_description' => addslashes($request->$products_description)
+                        'products_description' => addslashes($request->$products_description),
 
                     ]);
 
                 }
 
             }
-
 
             //delete categories
 
@@ -1709,19 +1639,17 @@ class AdminProductsController extends Controller
 
             ])->delete();
 
-
             foreach ($request->categories as $categories) {
 
                 DB::table('products_to_categories')->insert([
 
                     'products_id' => $products_id,
 
-                    'categories_id' => $categories
+                    'categories_id' => $categories,
 
                 ]);
 
             }
-
 
             //special product
 
@@ -1737,7 +1665,6 @@ class AdminProductsController extends Controller
 
                 ]);
 
-
                 DB::table('specials')->insert([
 
                     'products_id' => $products_id,
@@ -1752,7 +1679,6 @@ class AdminProductsController extends Controller
 
                 ]);
 
-
             } else if ($request->isSpecial == 'no') {
 
                 DB::table('specials')->where('products_id', '=', $products_id)->update([
@@ -1763,11 +1689,9 @@ class AdminProductsController extends Controller
 
             }
 
-
             //flash sale product
 
             if ($request->isFlash == 'yes') {
-
 
                 DB::table('flash_sale')->where('products_id', '=', $products_id)->update([
 
@@ -1777,26 +1701,21 @@ class AdminProductsController extends Controller
 
                 ]);
 
-
                 $startdate = $request->flash_start_date;
 
                 $starttime = $request->flash_start_time;
-
 
                 $start_date = str_replace('/', '-', $startdate . ' ' . $starttime);
 
                 $flash_start_date = strtotime($start_date);
 
-
                 $expiredate = $request->flash_expires_date;
 
                 $expiretime = $request->flash_end_time;
 
-
                 $expire_date = str_replace('/', '-', $expiredate . ' ' . $expiretime);
 
                 $flash_expires_date = strtotime($expire_date);
-
 
                 DB::table('flash_sale')->insert([
 
@@ -1810,10 +1729,9 @@ class AdminProductsController extends Controller
 
                     'flash_expires_date' => $flash_expires_date,
 
-                    'flash_status' => $request->flash_status
+                    'flash_status' => $request->flash_status,
 
                 ]);
-
 
             } else if ($request->isSpecial == 'no') {
 
@@ -1825,14 +1743,11 @@ class AdminProductsController extends Controller
 
             }
 
-
             $options = DB::table('products_options')
                 ->leftJoin('products_options_descriptions', 'products_options_descriptions.products_options_id', '=', 'products_options.products_options_id')
                 ->select('products_options.products_options_id', 'products_options_descriptions.options_name as products_options_name', 'products_options_descriptions.language_id')->where('products_options_descriptions.language_id', '1')->get();
 
-
             $result['options'] = $options;
-
 
             $options_value = DB::table('products_options_values')
                 ->leftJoin('products_options_values_descriptions', 'products_options_values_descriptions.products_options_values_id', '=', 'products_options_values.products_options_values_id')
@@ -1840,11 +1755,9 @@ class AdminProductsController extends Controller
                 ->where('products_options_values_descriptions.language_id', '=', $language_id)
                 ->get();
 
-
             $result['options_value'] = $options_value;
 
             $result['data'] = array('products_id' => $products_id, 'language_id' => $language_id);
-
 
             if ($request->products_type == 1) {
 
@@ -1860,7 +1773,6 @@ class AdminProductsController extends Controller
 
     }
 
-
     //deleteproductattributemodal
 
     public function deleteproductmodal(Request $request)
@@ -1872,17 +1784,14 @@ class AdminProductsController extends Controller
 
     }
 
-
     //editProductAttribute
 
     public function editproductattribute(Request $request)
     {
 
-
         $myVar = new AdminSiteSettingController();
 
         $languages = $myVar->getLanguages();
-
 
         $products_id = $request->products_id;
 
@@ -1892,13 +1801,11 @@ class AdminProductsController extends Controller
 
         $options_id = $request->options_id;
 
-
         $myVar = new AdminSiteSettingController();
 
         $languages = $myVar->getLanguages();
 
         $extensions = $myVar->imageType();
-
 
         $products_id = $request->products_id;
 
@@ -1908,16 +1815,13 @@ class AdminProductsController extends Controller
 
         $options_id = $request->options_id;
 
-
         $options = DB::table('products_options')
             ->leftJoin('products_options_descriptions', 'products_options_descriptions.products_options_id', '=', 'products_options.products_options_id')
             ->select('products_options.products_options_id', 'products_options_descriptions.options_name as products_options_name', 'products_options_descriptions.language_id')
             ->where('products_options_descriptions.language_id', '=', $language_id)
             ->get();
 
-
         $result['options'] = $options;
-
 
         $options_value = DB::table('products_options_values')
             ->leftJoin('products_options_values_descriptions', 'products_options_values_descriptions.products_options_values_id', '=', 'products_options_values.products_options_values_id')
@@ -1926,12 +1830,9 @@ class AdminProductsController extends Controller
             ->where('products_options_values.products_options_id', '=', $options_id)
             ->get();
 
-
         $result['options_value'] = $options_value;
 
-
         $result['data'] = array('products_id' => $request->products_id, 'products_attributes_id' => $products_attributes_id, 'language_id' => $language_id);
-
 
         $products_attributes = DB::table('products_attributes')
             ->join('products_options', 'products_options.products_options_id', '=', 'products_attributes.options_id')
@@ -1944,22 +1845,18 @@ class AdminProductsController extends Controller
             ->where('products_attributes.products_attributes_id', '=', $products_attributes_id)
             ->get();
 
-
         $result['products_attributes'] = $products_attributes;
 
         $result['languages'] = $languages;
-
 
         return view("admin/editproductattributeform")->with('result', $result);
 
     }
 
-
     //editdefaultattributemodal
 
     public function editdefaultattribute(Request $request)
     {
-
 
         //get function from other controller
 
@@ -1969,7 +1866,6 @@ class AdminProductsController extends Controller
 
         $extensions = $myVar->imageType();
 
-
         $products_id = $request->products_id;
 
         $products_attributes_id = $request->products_attributes_id;
@@ -1978,16 +1874,13 @@ class AdminProductsController extends Controller
 
         $options_id = $request->options_id;
 
-
         $options = DB::table('products_options')
             ->leftJoin('products_options_descriptions', 'products_options_descriptions.products_options_id', '=', 'products_options.products_options_id')
             ->select('products_options.products_options_id', 'products_options_descriptions.options_name as products_options_name', 'products_options_descriptions.language_id')
             ->where('products_options_descriptions.language_id', '=', $language_id)
             ->get();
 
-
         $result['options'] = $options;
-
 
         $options_value = DB::table('products_options_values')
             ->leftJoin('products_options_values_descriptions', 'products_options_values_descriptions.products_options_values_id', '=', 'products_options_values.products_options_values_id')
@@ -1996,12 +1889,9 @@ class AdminProductsController extends Controller
             ->where('products_options_values.products_options_id', '=', $options_id)
             ->get();
 
-
         $result['options_value'] = $options_value;
 
-
         $result['data'] = array('products_id' => $request->products_id, 'products_attributes_id' => $products_attributes_id, 'language_id' => $language_id);
-
 
         $products_attributes = DB::table('products_attributes')
             ->join('products_options', 'products_options.products_options_id', '=', 'products_attributes.options_id')
@@ -2014,35 +1904,28 @@ class AdminProductsController extends Controller
             ->where('products_attributes.products_attributes_id', '=', $products_attributes_id)
             ->get();
 
-
         $result['products_attributes'] = $products_attributes;
 
         $result['languages'] = $languages;
 
-
         return view("admin/editdefaultattributeform")->with('result', $result);
 
     }
-
 
     //deleteproductattributemodal
 
     public function deleteproductattributemodal(Request $request)
     {
 
-
         $products_id = $request->products_id;
 
         $products_attributes_id = $request->products_attributes_id;
 
-
         $result['data'] = array('products_id' => $products_id, 'products_attributes_id' => $products_attributes_id);
-
 
         return view("admin/deleteproductattributemodal")->with('result', $result);
 
     }
-
 
     //deletedefaultattributemodal
 
@@ -2059,7 +1942,6 @@ class AdminProductsController extends Controller
 
     }
 
-
     //deleteproductattribute
 
     public function deleteproductattribute(Request $request)
@@ -2071,18 +1953,15 @@ class AdminProductsController extends Controller
 
         } else {
 
-
             $language_id = '1';
-
 
             $checkRecord = DB::table('products_attributes')->where([
 
                 'products_attributes_id' => $request->products_attributes_id,
 
-                'products_id' => $request->products_id
+                'products_id' => $request->products_id,
 
             ])->delete();
-
 
             $products_attributes = DB::table('products_attributes')
                 ->join('products_options', 'products_options.products_options_id', '=', 'products_attributes.options_id')
@@ -2097,19 +1976,16 @@ class AdminProductsController extends Controller
                 ->orderBy('products_attributes_id', 'DESC')
                 ->get();
 
-
             return ($products_attributes);
 
         }
 
     }
 
-
     //deleteproductattribute
 
     public function deletedefaultattribute(Request $request)
     {
-
 
         if (session('products_delete') == 0) {
 
@@ -2117,18 +1993,15 @@ class AdminProductsController extends Controller
 
         } else {
 
-
             $language_id = '1';
-
 
             $checkRecord = DB::table('products_attributes')->where([
 
                 'products_attributes_id' => $request->products_attributes_id,
 
-                'products_id' => $request->products_id
+                'products_id' => $request->products_id,
 
             ])->delete();
-
 
             $products_attributes = DB::table('products_attributes')
                 ->join('products_options', 'products_options.products_options_id', '=', 'products_attributes.options_id')
@@ -2143,13 +2016,11 @@ class AdminProductsController extends Controller
                 ->orderBy('products_attributes_id', 'DESC')
                 ->get();
 
-
             return ($products_attributes);
 
         }
 
     }
-
 
     //addnewproductimage
 
@@ -2162,14 +2033,11 @@ class AdminProductsController extends Controller
 
         } else {
 
-
             $myVar = new AdminSiteSettingController();
 
             $extensions = $myVar->imageType();
 
-
             if ($request->hasFile('newImage') and in_array($request->newImage->extension(), $extensions)) {
-
 
                 $image = $request->newImage;
 
@@ -2178,7 +2046,6 @@ class AdminProductsController extends Controller
                 $image->move('resources/assets/images/product_images/', $fileName);
 
                 $uploadImage = 'resources/assets/images/product_images/' . $fileName;
-
 
                 DB::table('products_images')->insert([
 
@@ -2192,12 +2059,10 @@ class AdminProductsController extends Controller
 
                 ]);
 
-
                 $products_images = DB::table('products_images')
                     ->where('products_id', '=', $request->products_id)
                     ->orderBy('sort_order', 'ASC')
                     ->get();
-
 
             } else {
 
@@ -2211,20 +2076,16 @@ class AdminProductsController extends Controller
 
     }
 
-
     public function editproductimage(Request $request)
     {
-
 
         $products_images = DB::table('products_images')
             ->where('id', '=', $request->id)
             ->get();
 
-
         return view("admin/editproductimageform")->with('result', $products_images);
 
     }
-
 
     //updateproductimage
 
@@ -2257,7 +2118,6 @@ class AdminProductsController extends Controller
 
             }
 
-
             DB::table('products_images')->where('products_id', '=', $request->products_id)->where('id', '=', $request->id)
                 ->update([
 
@@ -2269,12 +2129,10 @@ class AdminProductsController extends Controller
 
                 ]);
 
-
             $products_images = DB::table('products_images')
                 ->where('products_id', '=', $request->products_id)
                 ->orderBy('sort_order', 'ASC')
                 ->get();
-
 
             return ($products_images);
 
@@ -2282,25 +2140,20 @@ class AdminProductsController extends Controller
 
     }
 
-
     //deleteproductimagemodal
 
     public function deleteproductimagemodal(Request $request)
     {
 
-
         $products_id = $request->products_id;
 
         $id = $request->id;
 
-
         $result['data'] = array('products_id' => $products_id, 'id' => $id);
-
 
         return view("admin/deleteproductimagemodal")->with('result', $result);
 
     }
-
 
     //deleteproductimage
 
@@ -2317,23 +2170,20 @@ class AdminProductsController extends Controller
 
                 'products_id' => $request->products_id,
 
-                'id' => $request->id
+                'id' => $request->id,
 
             ])->delete();
-
 
             $products_images = DB::table('products_images')
                 ->where('products_id', '=', $request->products_id)
                 ->orderBy('sort_order', 'ASC')
                 ->get();
 
-
             return ($products_images);
 
         }
 
     }
-
 
     //manageoptionsvalues
 
@@ -2356,9 +2206,7 @@ class AdminProductsController extends Controller
 
             $products_options_id = $request->id;
 
-
             $value = DB::table('products_options_values')->where('products_options_id', $products_options_id)->get();
-
 
             $result = array();
 
@@ -2370,7 +2218,6 @@ class AdminProductsController extends Controller
 
                 $languages = $myVar->getLanguages();
 
-
                 $result2 = array();
 
                 $index2 = 0;
@@ -2379,19 +2226,16 @@ class AdminProductsController extends Controller
 
                     array_push($result2, $language);
 
-
                     $values = DB::table('products_options_values_descriptions')
                         ->where('products_options_values_id', '=', $values_data->products_options_values_id)
                         ->where('language_id', '=', $language->languages_id)
                         ->get();
-
 
                     $result2[$index2]->values = $values;
 
                     $index2++;
 
                 }
-
 
                 $result[$index]->data = $result2;
 
@@ -2407,14 +2251,11 @@ class AdminProductsController extends Controller
                 ->join('products_options_descriptions', 'products_options_descriptions.products_options_id', '=', 'products_options.products_options_id')
                 ->where('products_options.products_options_id', $products_options_id)->get();
 
-
             return view("admin.manageoptionsvalues", $title)->with('result', $data);
-
 
         }
 
     }
-
 
     //addnewoptions
 
@@ -2427,16 +2268,13 @@ class AdminProductsController extends Controller
 
         } else {
 
-
             $result = array();
-
 
             //get function from other controller
 
             $myVar = new AdminSiteSettingController();
 
             $languages = $myVar->getLanguages();
-
 
             $i = 0;
 
@@ -2446,14 +2284,13 @@ class AdminProductsController extends Controller
 
                 $products_options_values_name = 'ValuesName_' . $languages_data->languages_id;
 
-
                 if ($i == 0) {
 
                     $products_options_values_id = DB::table('products_options_values')->insertGetId([
 
                         'products_options_values_name' => $request->$products_options_values_name,
 
-                        'products_options_id' => $request->products_options_id
+                        'products_options_id' => $request->products_options_id,
 
                     ]);
 
@@ -2461,26 +2298,23 @@ class AdminProductsController extends Controller
 
                 }
 
-
                 DB::table('products_options_values_descriptions')->insert([
 
                     'options_values_name' => $request->$products_options_values_name,
 
                     'products_options_values_id' => $products_options_values_id,
 
-                    'language_id' => $languages_data->languages_id
+                    'language_id' => $languages_data->languages_id,
 
                 ]);
 
             }
-
 
             return redirect()->back()->withErrors([Lang::get("labels.ValuesAddedMessage")]);
 
         }
 
     }
-
 
     //editvalues
 
@@ -2495,19 +2329,15 @@ class AdminProductsController extends Controller
 
             $title = array('pageTitle' => Lang::get("labels.Manage Options"));
 
-
             $myVar = new AdminSiteSettingController();
 
             $result['languages'] = $myVar->getLanguages();
 
-
             $edit = DB::table('products_options_values')->where('products_options_values_id', $request->id)->get();
-
 
             $description_data = array();
 
             foreach ($result['languages'] as $languages_data) {
-
 
                 $description = DB::table('products_options_values_descriptions')->where([
 
@@ -2516,7 +2346,6 @@ class AdminProductsController extends Controller
                     ['products_options_values_id', '=', $request->id],
 
                 ])->get();
-
 
                 if (count($description) > 0) {
 
@@ -2538,18 +2367,15 @@ class AdminProductsController extends Controller
 
             }
 
-
             $result['description'] = $description_data;
 
             $result['editoptions'] = $edit;
-
 
             return view("admin.editvalues", $title)->with('result', $result);
 
         }
 
     }
-
 
     //updateoptions
 
@@ -2562,19 +2388,15 @@ class AdminProductsController extends Controller
 
         } else {
 
-
             $products_options_values_id = $request->products_options_values_id;
-
 
             $myVar = new AdminSiteSettingController();
 
             $languages = $myVar->getLanguages();
 
-
             foreach ($languages as $languages_data) {
 
                 $options_values_name = 'options_values_name_' . $languages_data->languages_id;
-
 
                 $checkExist = DB::table('products_options_values_descriptions')->where('products_options_values_id', '=', $products_options_values_id)->where('language_id', '=', $languages_data->languages_id)->get();
 
@@ -2602,13 +2424,11 @@ class AdminProductsController extends Controller
 
             }
 
-
             return redirect()->back()->withErrors([Lang::get("labels.valueshasbeenupdatedMessage")]);
 
         }
 
     }
-
 
     //productsAttributes
 
@@ -2621,9 +2441,7 @@ class AdminProductsController extends Controller
 
         } else {
 
-
             $title = array('pageTitle' => Lang::get("labels.attributes"));
-
 
             //get function from other controller
 
@@ -2631,9 +2449,7 @@ class AdminProductsController extends Controller
 
             $extensions = $myVar->imageType();
 
-
             $attributes = DB::table('products_options')->get();
-
 
             $result = array();
 
@@ -2643,9 +2459,7 @@ class AdminProductsController extends Controller
 
                 array_push($result, $attributes_data);
 
-
                 $languages = $myVar->getLanguages();
-
 
                 $result2 = array();
 
@@ -2655,15 +2469,12 @@ class AdminProductsController extends Controller
 
                     array_push($result2, $language);
 
-
                     $attributes = DB::table('products_options_descriptions')
                         ->where('products_options_id', '=', $attributes_data->products_options_id)
                         ->where('language_id', '=', $language->languages_id)
                         ->get();
 
-
                     $result2[$index2]->attributes = $attributes;
-
 
                     $values = DB::table('products_options_values')
                         ->join('products_options_values_descriptions', 'products_options_values_descriptions.products_options_values_id', '=', 'products_options_values.products_options_values_id')
@@ -2671,13 +2482,11 @@ class AdminProductsController extends Controller
                         ->where('language_id', '=', $language->languages_id)
                         ->where('products_options_values.products_options_id', '=', $attributes_data->products_options_id)->get();
 
-
                     $result2[$index2]->values = $values;
 
                     $index2++;
 
                 }
-
 
                 $result[$index]->data = $result2;
 
@@ -2685,19 +2494,16 @@ class AdminProductsController extends Controller
 
             }
 
-
             return view("admin.attributes", $title)->with('result', $result);
 
         }
 
     }
 
-
     //common controller to show attributes
 
     public function displayattributes()
     {
-
 
         //get function from other controller
 
@@ -2707,9 +2513,7 @@ class AdminProductsController extends Controller
 
         $defaultLanguage_id = $resutls['languages'][0]->languages_id;
 
-
         foreach ($resutls['languages'] as $languages) {
-
 
             if (!empty($languages->languages_id)) {
 
@@ -2721,19 +2525,15 @@ class AdminProductsController extends Controller
 
             }
 
-
             $attributeOptions = DB::table('products_options')->where('products_options.language_id', '=', $language_id)->get();
 
             $resutls['attributeOptions_' . $languages->languages_id] = $attributeOptions;
 
         }
 
-
         return $resutls;
 
-
     }
-
 
     //addoptions
 
@@ -2748,9 +2548,7 @@ class AdminProductsController extends Controller
 
             $title = array('pageTitle' => Lang::get("labels.AddOptions"));
 
-
             $result = array();
-
 
             //get function from other controller
 
@@ -2758,13 +2556,11 @@ class AdminProductsController extends Controller
 
             $result['languages'] = $myVar->getLanguages();
 
-
             return view("admin.addoptions", $title)->with('result', $result);
 
         }
 
     }
-
 
     //addnewoptions
 
@@ -2777,16 +2573,13 @@ class AdminProductsController extends Controller
 
         } else {
 
-
             $result = array();
-
 
             //get function from other controller
 
             $myVar = new AdminSiteSettingController();
 
             $languages = $myVar->getLanguages();
-
 
             $i = 0;
 
@@ -2795,7 +2588,6 @@ class AdminProductsController extends Controller
             foreach ($languages as $languages_data) {
 
                 $OptionsName = 'OptionsName_' . $languages_data->languages_id;
-
 
                 if ($i == 0) {
 
@@ -2809,26 +2601,23 @@ class AdminProductsController extends Controller
 
                 }
 
-
                 DB::table('products_options_descriptions')->insert([
 
                     'options_name' => $request->$OptionsName,
 
                     'products_options_id' => $products_options_id,
 
-                    'language_id' => $languages_data->languages_id
+                    'language_id' => $languages_data->languages_id,
 
                 ]);
 
             }
-
 
             return redirect()->back()->withErrors([Lang::get("labels.OptionsAddedMessage")]);
 
         }
 
     }
-
 
     //manageoptions
 
@@ -2841,22 +2630,17 @@ class AdminProductsController extends Controller
 
         } else {
 
-
             $title = array('pageTitle' => Lang::get("labels.Manage Options"));
-
 
             $myVar = new AdminSiteSettingController();
 
             $result['languages'] = $myVar->getLanguages();
 
-
             $editoptions = DB::table('products_options')->where('products_options_id', $request->id)->get();
-
 
             $description_data = array();
 
             foreach ($result['languages'] as $languages_data) {
-
 
                 $description = DB::table('products_options_descriptions')->where([
 
@@ -2865,7 +2649,6 @@ class AdminProductsController extends Controller
                     ['products_options_id', '=', $request->id],
 
                 ])->get();
-
 
                 if (count($description) > 0) {
 
@@ -2887,19 +2670,15 @@ class AdminProductsController extends Controller
 
             }
 
-
             $result['description'] = $description_data;
 
             $result['editoptions'] = $editoptions;
 
-
             return view("admin.manageoptions", $title)->with('result', $result);
-
 
         }
 
     }
-
 
     //updateoptions
 
@@ -2912,19 +2691,15 @@ class AdminProductsController extends Controller
 
         } else {
 
-
             $products_options_id = $request->products_options_id;
-
 
             $myVar = new AdminSiteSettingController();
 
             $languages = $myVar->getLanguages();
 
-
             foreach ($languages as $languages_data) {
 
                 $options_name = 'options_name_' . $languages_data->languages_id;
-
 
                 $checkExist = DB::table('products_options_descriptions')->where('products_options_id', '=', $products_options_id)->where('language_id', '=', $languages_data->languages_id)->get();
 
@@ -2952,13 +2727,11 @@ class AdminProductsController extends Controller
 
             }
 
-
             return redirect()->back()->withErrors([Lang::get("labels.optionhasbeenupdatedMessage")]);
 
         }
 
     }
-
 
     //addattributevalue
     public function addattributevalue(Request $request)
@@ -2979,19 +2752,17 @@ class AdminProductsController extends Controller
             ]);
 
             /*DB::table('products_options_values_to_products_options')->insertGetId([
-							'products_options_id'  				=>   $request->products_options_id,
-							'products_options_values_id'		=>   $products_options_values_id,
-							]);*/
-
+            'products_options_id'                  =>   $request->products_options_id,
+            'products_options_values_id'        =>   $products_options_values_id,
+            ]);*/
 
             /*$attributes = DB::table('products_options_values_to_products_options')
-				->leftJoin('products_options_values', 'products_options_values.products_options_values_id','=', 'products_options_values_to_products_options.products_options_values_id')
-				->where('products_options_values_to_products_options.products_options_id','=',$request->products_options_id)->where('products_options_values.language_id','=',$request->language_id)->get();*/
+            ->leftJoin('products_options_values', 'products_options_values.products_options_values_id','=', 'products_options_values_to_products_options.products_options_values_id')
+            ->where('products_options_values_to_products_options.products_options_id','=',$request->products_options_id)->where('products_options_values.language_id','=',$request->language_id)->get();*/
 
             return view("admin.attributesTable")->with('attributes', $attributes);
         }
     }
-
 
     //updateattributevalue
 
@@ -3010,14 +2781,13 @@ class AdminProductsController extends Controller
                 ->update(['products_options_values_name' => $request->products_options_values_name]);
 
             /*$attributes = DB::table('products_options_values_to_products_options')
-			->leftJoin('products_options_values', 'products_options_values.products_options_values_id','=', 'products_options_values_to_products_options.products_options_values_id')
-			->where('products_options_values_to_products_options.products_options_id','=',$request->products_options_id)->where('products_options_values.language_id','=',$request->language_id)->get();*/
+            ->leftJoin('products_options_values', 'products_options_values.products_options_values_id','=', 'products_options_values_to_products_options.products_options_values_id')
+            ->where('products_options_values_to_products_options.products_options_id','=',$request->products_options_id)->where('products_options_values.language_id','=',$request->language_id)->get();*/
 
             //attributesTable
             return view("admin.attributesTable")->with('attributes', $attributes);
         }
     }
-
 
     //check association of attribute with products
 
@@ -3033,12 +2803,11 @@ class AdminProductsController extends Controller
             ->groupBy('products_attributes.products_id')
             ->get();
 
-
         if (count($products) > 0) {
 
             foreach ($products as $products_data) {
 
-                print ("<li style='display:inline-block; width: 30%'>" . $products_data->products_name . "</li>");
+                print("<li style='display:inline-block; width: 30%'>" . $products_data->products_name . "</li>");
 
             }
 
@@ -3047,7 +2816,6 @@ class AdminProductsController extends Controller
         }
 
     }
-
 
     //deleteattribute
 
@@ -3071,7 +2839,6 @@ class AdminProductsController extends Controller
         }
     }
 
-
     //check association of attribute/option value with products
     public function checkvalueassociate(Request $request)
     {
@@ -3086,13 +2853,12 @@ class AdminProductsController extends Controller
 
         if (count($products) > 0) {
             foreach ($products as $products_data) {
-                print ("<li style='display:inline-block; width: 30%'>" . $products_data->products_name . "</li>");
+                print("<li style='display:inline-block; width: 30%'>" . $products_data->products_name . "</li>");
 
             }
         }
 
     }
-
 
     //deleteattributeValue
 
