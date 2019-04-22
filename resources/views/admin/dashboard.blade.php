@@ -4,7 +4,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        {{ trans('labels.title_dashboard') }}  
+        {{ trans('labels.title_dashboard') }}
         <small>{{ trans('labels.title_dashboard') }} 1.1</small>
       </h1>
       <ol class="breadcrumb">
@@ -13,7 +13,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">   
+    <section class="content">
     <div class="row" style="display: none">
         <div class="col-md-12">
           <div class="box box-default">
@@ -81,7 +81,7 @@
         </div>
         <!-- ./col -->
         <div class="col-lg-4 col-xs-6">
-        
+
           <div class="small-box bg-red">
             <div class="inner">
               <h3>{{ $result['outOfStock'] }} </h3>
@@ -124,7 +124,7 @@
           </div>
         </div>
         <!-- ./col -->
-        
+
       </div>
 
       <div class="row">
@@ -144,11 +144,11 @@
               <li style="width: 33%"><a href="#" data-toggle="tab">
                   <div class="input-group ">
                   	 <div class="input-group-btn">
-                        <button type="button" class="btn btn-default" aria-label="Help">{{ trans('labels.custom') }}</button> 
+                        <button type="button" class="btn btn-default" aria-label="Help">{{ trans('labels.custom') }}</button>
                      </div>
-                     
+
                      <input class="form-control reservation dateRange" readonly value="" name="dateRange" aria-label="Text input with multiple buttons ">
-                     <div class="input-group-btn"><button type="button" class="btn btn-primary getRange" >{{ trans('labels.go') }}</button> </div> 
+                     <div class="input-group-btn"><button type="button" class="btn btn-primary getRange" >{{ trans('labels.go') }}</button> </div>
                    </div>
                 </a></li>
             </ul>
@@ -171,16 +171,16 @@
           <div class="box">
             <div class="box-header with-border">
               <!--<h3 class="box-title pull-left">Monthly Report</h3>-->
-            
-              <div class="col-xs-12 col-lg-4"> 
+
+              <div class="col-xs-12 col-lg-4">
               	<div class="input-group">
                    	<div class="input-group-btn">
-                    	<button type="button" class="btn btn-default" aria-label="Help">{{ trans('labels.customDate') }}</button> 
+                    	<button type="button" class="btn btn-default" aria-label="Help">{{ trans('labels.customDate') }}</button>
                     </div>
                 	<input class="form-control" aria-label="Text input with multiple buttons">
-                    <div class="input-group-btn">                    	
-                        <button type="button" class="btn btn-primary">{{ trans('labels.go') }}</button> 
-                    </div> 
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-primary">{{ trans('labels.go') }}</button>
+                    </div>
                 </div>
               </div>
 
@@ -216,7 +216,7 @@
                   <!-- /.chart-responsive -->
                 </div>
                 <!-- /.col -->
-                
+
                 <!-- /.col -->
               </div>
               <!-- /.row -->
@@ -274,7 +274,7 @@
       <div class="row">
         <!-- Left col -->
         <div class="col-md-8">
-          <!-- MAP & BOX PANE -->          
+          <!-- MAP & BOX PANE -->
           <!-- /.box -->
           <div class="row">
             <!-- /.col -->
@@ -299,7 +299,7 @@
                   <ul class="users-list clearfix">
                      <?php $i = 1; ?>
                       @foreach ($result['recentCustomers']  as $recent)
-                      	
+
                        	@foreach ($recent  as $recentCustomers)
                        	@if($i<=21)
                         <li>
@@ -378,22 +378,22 @@
                             @endif
                             {{ $orders->orders_status }}
                                  </span>
-                                 
-                           
+
+
                          </td>
                       </tr>
                       @endif
                     @endforeach
                     @endforeach
-                    
+
                     @else
                     	<tr>
 							<td colspan="4">{{ trans('labels.noOrderPlaced') }}</td>
-							
+
 						</tr>
                     @endif
-                  
-                  
+
+
                   </tbody>
                 </table>
               </div>
@@ -411,9 +411,9 @@
         <!-- /.col -->
 
         <div class="col-md-4">
-         
+
           <!-- PRODUCT LIST -->
-          
+
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">{{ trans('labels.GoalCompletion') }}</h3>
@@ -426,7 +426,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              
+
                   <div class="progress-group">
                     <span class="progress-text">{{ trans('labels.AddProductstoCart') }}</span>
                     <span class="progress-number"><b>{{ $result['cart'] }}</b>/500</span>
