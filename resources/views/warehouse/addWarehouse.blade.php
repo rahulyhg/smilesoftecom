@@ -57,7 +57,8 @@
                                                 <div class="col-sm-10 col-md-4">
                                                     <input type="text" name="name" id="name" autocomplete="off"
                                                            class="form-control field-validate"
-                                                           placeholder="Enter Name">
+                                                           placeholder="Enter Name"
+                                                    maxlength="50">
                                                     <span class="help-block"
                                                           style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                                         Warehouse such as "Samsung or iphone" etc.</span>
@@ -70,7 +71,8 @@
                                                     <div class="col-sm-10 col-md-4">
                                                         <input type="text" name="location" id="location" autocomplete="off"
                                                                class="form-control field-validate"
-                                                               placeholder="Enter Location">
+                                                               placeholder="Enter Location"
+                                                        maxlength="100">
                                                         <span class="help-block"
                                                               style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                                         Location such as Area/Street/City/State (Pincode)</span>
@@ -81,7 +83,7 @@
                                                 <label for="username"
                                                        class="col-sm-2 col-md-3 control-label">Username</label>
                                                 <div class="col-sm-10 col-md-4">
-                                                    <input type="text" name="username" id="username" autocomplete="off"
+                                                    <input type="email" name="username" id="username" autocomplete="off"
                                                            class="form-control field-validate"
                                                            placeholder="Enter Username">
                                                     <span class="help-block"
@@ -94,9 +96,11 @@
                                                 <label for="password"
                                                        class="col-sm-2 col-md-3 control-label">Create Password</label>
                                                 <div class="col-sm-10 col-md-4">
-                                                    <input type="text" name="password" id="password" autocomplete="off"
+                                                    <input type="password" name="password" id="password" autocomplete="off"
                                                            class="form-control field-validate"
-                                                           placeholder="Enter Name">
+                                                           placeholder="Enter Name"
+                                                    minlength="6"
+                                                    maxlength="16">
                                                     <span class="help-block"
                                                           style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                                         Your password must be at least 8 characters in length and contain an uppercase letter, a lower case letter, at least one number and one special character (i.e. !, $, #, *) </span>

@@ -45,8 +45,7 @@ class AdminWareHouseController extends Controller
         }
     }
 
-    public
-    function deletewarehouse()
+    public function deletewarehouse()
     {
         DB::table('warehouse')->where('id', request('warehouse_id'))->first();
 
