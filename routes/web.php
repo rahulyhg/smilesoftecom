@@ -437,6 +437,11 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('store_pos', 'AdminPosController@store_pos');
             /******************POS Bijendra**********************/
 
+            /******************Customer Ashish **********************/
+            Route::post('customer_add', 'AdminPosController@customer_add');
+            Route::get('getCustomer', 'AdminPosController@getCustomer');
+            /******************Customer Ashish**********************/
+
         });
 
         //log in
