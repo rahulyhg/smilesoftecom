@@ -83,6 +83,18 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/deletesupplier', 'AdminSupplierController@deletesupplier');
             ///////////////////////////////////////////////////////////////////
 
+            //---------------------------------- Start Warehouse ----------------------------------
+
+            Route::get('/warehouse', 'AdminWareHouseController@warehouse');
+            Route::get('/addwarehouse', 'AdminWareHouseController@addwarehouse');
+//            Route::post('/addnewwarehouse', 'AdminWareHouseController@addnewwarehouse');
+            Route::get('/editWarehouse/{id}', 'AdminWareHouseController@editWarehouse');
+            Route::post('/updatewarehouse', 'AdminWareHouseController@updatewarehouse');
+            Route::post('/insert_warehouse', 'AdminWareHouseController@insert_warehouse');
+            Route::post('/deletewarehouse', 'AdminWareHouseController@deletewarehouse');
+            //---------------------------------- End Warehouse ----------------------------------
+
+
             //main categories
             Route::get('/categories', 'AdminCategoriesController@categories');
             Route::get('/addcategory', 'AdminCategoriesController@addcategory');

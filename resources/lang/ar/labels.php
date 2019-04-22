@@ -197,9 +197,18 @@ return [
 	'Description' => 'Description',
 	'Error' => 'Error',
 	'PageSlug' => 'Page Slug',
-	
-	
-	'Manufacturers' => 'Manufacturers',
+
+//    ----------------------------- Start Warehouses -----------------------------
+    'Warehouse' => 'Warehouses',
+    'warehouseDeletedMessage' => 'Warehouse has been deleted successfully!',
+    'DeleteWarehouse' => 'Delete Warehouse',
+    'DeleteManufacturerText' => 'Are you sure you want to delete this manufacturer?',
+    'AddNewWarehouse' => 'Add New Warehouse',
+    'AddWarehouse' => 'Add Warehouse',
+    'DeleteWarehouse' => 'Delete Warehouse',
+//    ----------------------------- End Warehouses -----------------------------
+
+    'Manufacturers' => 'Manufacturers',
 	'EditManufacturers' => 'Edit Manufacturers',
 	'manuFacturerAddeddMessage' => 'Manufacturer has been added successfully!',
 	'AddManufacturer' => 'Add Manufacturer',
@@ -954,7 +963,7 @@ return [
 	'DeleteManufacturer' => 'Delete Manufacturer',
 	'DeleteManufacturerText' => 'Are you sure you want to delete this manufacturer?',
 	'manufacturersDeletedMessage' => 'Manufacturer has been deleted successfully!',
-	
+
 	'shareapp'=>'ShareApp',
 	'shareappText'=>'Please choose show to display ShareApp.',
 	

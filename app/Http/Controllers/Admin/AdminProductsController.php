@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\App\CategoriesController;
 
+use Carbon\Carbon;
 use Validator;
 use App;
 use Lang;
@@ -203,6 +204,18 @@ class AdminProductsController extends Controller
             }
 
             $products_id = DB::table('products')->insertGetId([
+                'product_id' => $request->product_id,
+                'quantity' => $request->quantity,
+                'cost_price' => $request->cost_price,
+                'selling_price' => $request->selling_price,
+                'barcode' => $request->barcode,
+                'pdf_path' => $request->pdf_path,
+                'created_at' => Carbon::now()->format('Y-m-d'),
+                'updated_at' => Carbon::now()->format('Y-m-d')
+            ]);
+
+            $barcode = DB::table('barcode')->insertGetId([
+                'barcode' => $request->barcode,
                 'products_image' => $uploadImage,
                 'manufacturers_id' => $request->manufacturers_id,
                 'products_quantity' => 0,
@@ -236,7 +249,6 @@ class AdminProductsController extends Controller
 
                     $leftStartDate = str_replace('/', '-', $request->$products_left_banner_start_date);
                     $leftStartDateFormat = strtotime($leftStartDate);
-
                 } else {
                     $leftStartDateFormat = '';
                 }
