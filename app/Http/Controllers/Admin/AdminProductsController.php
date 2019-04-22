@@ -13,6 +13,7 @@ use App\BarcodeModel;
 use App\Http\Controllers\Controller;
 use App\WarehouseModel;
 use App\Warehouse_Inventory_Model;
+use PDF;
 //for password encryption or hash protected
 use Auth;
 
@@ -139,6 +140,22 @@ class AdminProductsController extends Controller
             $currentTime = array('currentTime' => time());
             return view("admin.products", $title)->with('results', $results);
         }
+    }
+
+    function barcode_generate(Request $request)
+    {
+        // return $_REQUEST;
+        $bid  = request('bid');
+        $barcount  = request('barcount');
+        $request->session()->put('bar_id', $bid);
+        $request->session()->put('bar_qty', $barcount);
+
+         $data = ['Ashish'];
+        $pdf = PDF::loadView('printbarcode', $data);
+         return  $pdf->stream();
+        //   $pdfname = $barcode->pdf;
+        //   PDF::loadView('printbarcode')->setPaper('a4')->save('allbarcode/'.$pdfname);
+        //   return back()->with('message', 'Product Has Been Saved');
     }
 
     public function addproduct(Request $request)

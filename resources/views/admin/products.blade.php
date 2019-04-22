@@ -81,6 +81,7 @@
                     <tr>
                       <th>{{ trans('labels.ID') }}</th>
                       <th>{{ trans('labels.Image') }}</th>
+                      <th>BarCode</th>
                       <th>{{ trans('labels.ProductDescription') }}</th>
                       <th>{{ trans('labels.AddedLastModifiedDate') }}</th>
                       <th></th>
@@ -92,6 +93,7 @@
                     	<tr>
                             <td>{{ $product->products_id }}</td>
                             <td><img src="{{asset('').'/'.$product->products_image}}" alt="" width=" 100px" height="100px"></td>
+                            <td><Button  onclick="getbarcode({{ $product->products_id }});" class="btn btn-primary btn-sm">Download Barcode</Button></td>
                             <td width="45%">
                             	<strong>{{ $product->products_name }} @if(!empty($product->products_model)) ( {{ $product->products_model }} ) @endif</strong><br>
                                 
@@ -196,7 +198,32 @@
 		  {!! Form::close() !!}
 		</div>
 	  </div>
-	</div>
+  </div>
+  <form action="{{ url('admin/barcode-generate') }}" method="get">
+  <div class="modal fade" id="myModalcc" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Enter Barcode Count</h4>
+        </div>
+        <div class="modal-body">
+         <input type="hidden"  name="bid" id="bid">
+         <input type="text" class="form-control" value="10" name="barcount" id="barcount">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" >Done</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  </form>
+</div>
+
     <!-- /.row --> 
     
     <!-- Main row --> 
@@ -205,4 +232,11 @@
   </section>
   <!-- /.content --> 
 </div>
+<script>
+function getbarcode(id){
+// alert(id);
+$('#myModalcc').modal('show');
+$('#bid').val(id);
+}
+</script>
 @endsection 
