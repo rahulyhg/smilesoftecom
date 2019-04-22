@@ -274,7 +274,7 @@
                                                            value="1">
                                                     <input type="hidden" id="default_customer_name"
                                                            value="Walk-In Customer">
-                                                    {{--<input type="text" name="tags" id="tags">--}}
+                                                    {{--<input type="text" name="customer_id" id="tags">--}}
                                                     @php
                                                         $customer = \App\CustomerModel::where(['is_del'=>0])->get();
                                                     @endphp

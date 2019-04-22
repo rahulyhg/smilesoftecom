@@ -58,7 +58,7 @@ class AdminPosController extends Controller
                     $stock = new POSModel();
                     $stock->invoice_no = "SP" . rand(1000, 9999);
                     $stock->invoice_date = Carbon::now('Asia/Kolkata');
-                    $stock->customer_id = 1;
+                    $stock->customer_id = request('customer_id');
                     $stock->grand_total = request('final_total');
                     $stock->wid = 1;
                     $stock->sid = 1;
@@ -108,24 +108,22 @@ class AdminPosController extends Controller
         $contact = request('contact');
         $address = request('address');
 
-        if (isset($contact))
-        {
+        if (isset($contact)) {
             $customer = new CustomerModel();
             $customer->name = $customer_name;
             $customer->contact = $contact;
             $customer->address = $address;
             $customer->save();
             return Redirect('admin/pos')->with('message', 'Customer Added Successfully:)');
-        }
-        else
-            {
+        } else {
             return Redirect('admin/pos')->with('errmessage', 'Customer Registration Failed:(');
         }
 
     }
+
     public function getCustomer()
     {
-        $customer = CustomerModel::where(['is_del'=>0])->get();
+        $customer = CustomerModel::where(['is_del' => 0])->get();
         return $customer;
     }
 
