@@ -428,6 +428,13 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/updatecategoriesroles', 'AdminController@updateCategoriesRoles');
             Route::get('/deletecategoriesroles/{id}', 'AdminController@deleteCategoriesRoles');
 
+
+            /******************POS**********************/
+            Route::get('pos', 'AdminPosController@create_pos');
+            Route::get('getproducts', 'AdminPosController@getproducts');
+            Route::get('product_list_body', 'AdminPosController@product_list_body');
+            /******************POS**********************/
+
         });
 
         //log in
