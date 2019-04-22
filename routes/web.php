@@ -438,6 +438,7 @@ Route::group(['prefix' => 'admin'], function () {
             /******************Customer Ashish **********************/
             Route::post('customer_add', 'AdminPosController@customer_add');
             Route::get('getCustomer', 'AdminPosController@getCustomer');
+            Route::get('getCustID', 'AdminPosController@getCustID');
             /******************Customer Ashish**********************/
 
         });

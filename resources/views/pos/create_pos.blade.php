@@ -74,15 +74,24 @@
         $(function () {
             var availableTags = [];
 
-            $.get('{{ url('getCustomer') }}', function (data) {
+            $.get('{{ url('admin/getCustomer') }}', function (data) {
                 for (var i = 0; i < data.length; i++) {
-                    availableTags[i] = data[i].name-data[i].contact;
+                    availableTags[i] = data[i].name;
+//                    custids[i] = data[i].id;
                 }
             });
             $("#tags").autocomplete({
                 source: availableTags,
             });
         });
+
+        {{--function cust_id() {--}}
+            {{--$.get('{{ url('admin/getCustID') }}', function (data) {--}}
+                {{--for (var i = 0; i < data.length; i++) {--}}
+                    {{--availableTags[i] = data[i].name;--}}
+                {{--}--}}
+            {{--});--}}
+        {{--}--}}
     </script>
 
     <!-- Facebook Pixel Code -->
@@ -274,7 +283,8 @@
                                                            value="1">
                                                     <input type="hidden" id="default_customer_name"
                                                            value="Walk-In Customer">
-                                                    {{--<input type="text" name="customer_id" id="tags">--}}
+                                                    {{--<input type="text" class="form-control" name="tags" id="tags" onchange="cust_id();">--}}
+                                                    {{--<input type="hidden" class="form-control" name="customer_id" id="customer_id">--}}
                                                     @php
                                                         $customer = \App\CustomerModel::where(['is_del'=>0])->get();
                                                     @endphp
