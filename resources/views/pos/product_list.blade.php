@@ -13,5 +13,5 @@
                 {{rand(10000,99999)}}
             </small>
         </div>
-    </div>
+    </div>  `
 @endforeach
