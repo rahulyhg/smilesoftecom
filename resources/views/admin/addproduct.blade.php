@@ -259,7 +259,7 @@
 
                                                                         <span class="help-block"
                                                                               style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
->>>>>>> .merge_file_a10320
+
                                                                             {{ trans('labels.ChooseCatgoryText') }}
                                                                             .</span>
                                                                         <span class="help-block hidden">{{ trans('labels.textRequiredFieldMessage') }}</span>
@@ -344,7 +344,7 @@
                                                                         <div class="col-sm-10 col-md-2">
                                                                             <input class="form-control datepicker"
                                                                                    readonly type="text"
-                                                                                   readonly name="flash_expires_date"
+                                                                                    name="flash_expires_date"
                                                                                    id="flash_expires_date" value="">
                                                                             <span class="help-block"
                                                                                   style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
