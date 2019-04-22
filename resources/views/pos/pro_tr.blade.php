@@ -46,11 +46,11 @@
 
     </td>
     <td class="">
-        <input type="text" readonly name="products[1][unit_price_inc_tax]"
+        <input type="text" readonly name="price[]"
                class="form-control pos_unit_price_inc_tax input_number" value="{{$prod->products_price}}">
     </td>
     <td class="text-center v-center">
-        <input type="hidden" class="form-control pos_line_total " value="{{$prod->products_price}}">
+        <input type="hidden" name="totalAmt[]" class="form-control pos_line_total " value="{{$prod->products_price}}">
         <span class="display_currency pos_line_total_text " data-currency_symbol="true">₹ {{$prod->products_price}}</span>
     </td>
     <td class="text-center">

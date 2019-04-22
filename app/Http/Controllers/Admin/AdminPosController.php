@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\POSInfoModel;
+use App\POSModel;
 use App\CustomerModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -49,68 +51,53 @@ class AdminPosController extends Controller
 
     public function store_pos()
     {
-        dd($_REQUEST);
-        $count = count($_POST["partyId"]);
-        if ($count > 0) {
-            try {
-                $stock = new Voucher();
-                $stock->voucher_no = request('voucher_no');
-                $stock->dispatch_no = request('dispatch_no');
-                $stock->supplier_id = request('supplier_id');
-                $stock->voucher_date = Carbon::parse(request('voucher_date'))->format('Y-m-d');
-                $stock->created_time = Carbon::now('Asia/Kolkata');
-                $stock->save();
-                $this->addNewRows($stock->id, $count);
-                return redirect('voucher')->with('message', 'Voucher has been added...!');
-            } catch (\Exception $e) {
-                echo $e;
+        if (isset($_POST["products_id"]) && count($_POST["products_id"]) > 0) {
+            $count = count($_POST["products_id"]);
+            if ($count > 0) {
+                try {
+                    $stock = new POSModel();
+                    $stock->invoice_no = "SP" . rand(1000, 9999);
+                    $stock->invoice_date = Carbon::now('Asia/Kolkata');
+                    $stock->customer_id = 1;
+                    $stock->grand_total = request('final_total');
+                    $stock->wid = 1;
+                    $stock->sid = 1;
+                    $stock->created_time = Carbon::now('Asia/Kolkata');
+                    $stock->save();
+                    $this->addNewRows($stock->id, $count);
+                    return redirect('admin/pos')->with('message', 'POS has been added...!');
+                } catch (\Exception $e) {
+                    echo $e;
+                }
+            } else {
+                return Redirect::back()->with('errmessage', 'Please select any goods');
             }
         } else {
-            return Redirect::back()->with('errmessage', 'Please select any goods');
+            return Redirect::back()->with('errmessage', 'Please select any products');
         }
     }
 
     public function addNewRows($id, $count)
     {
         for ($i = 0; $i < $count; $i++) {
-            if (trim($_POST["partyId"][$i]) != "") {
-                $vouchers = VoucherDetails::where(['invoice_id' => $_POST["invoice_id"][$i], 'partyId' => $_POST["partyId"][$i]])->first();
+            if (trim($_POST["products_id"][$i]) != "") {
+                $vouchers = POSInfoModel::where(['product_id' => $_POST["products_id"][$i], 'pos_id' => $id])->first();
                 if (!isset($vouchers)) {
-                    $trn = Transaction::find($_POST["invoice_id"][$i]);
-                    $trn->is_voucher_created = 1;
-                    $trn->save();
-                    $stock_info = new VoucherDetails();
-                    $stock_info->voucher_id = $id;
-                    $stock_info->partyId = $_POST["partyId"][$i];
-                    $stock_info->invoice_id = $_POST["invoice_id"][$i];
-                    $stock_info->bank = $_POST["bank"][$i];
-//                    $stock_info->amount = $_POST["amount"][$i];
-                    $stock_info->dd = $_POST["dd"][$i];
-                    $stock_info->ddAmt = $_POST["ddAmt"][$i];
-                    $stock_info->remark = $_POST["remark"][$i];
+                    $stock_info = new POSInfoModel();
+                    $stock_info->pos_id = $id;
+                    $stock_info->product_id = $_POST["products_id"][$i];
+                    $stock_info->qty = $_POST["quantity"][$i];
+                    $stock_info->price = $_POST["price"][$i];
+                    $stock_info->total = $_POST["totalAmt"][$i];
                     $stock_info->save();
                 } else {
-                    $vouchers->voucher_id = $id;
-                    $vouchers->partyId = $_POST["partyId"][$i];
-                    $vouchers->invoice_id = $_POST["invoice_id"][$i];
-                    $vouchers->bank = $_POST["bank"][$i];
-//                    $vouchers->amount = $_POST["amount"][$i];
-                    $vouchers->dd = $_POST["dd"][$i];
-                    $vouchers->ddAmt = $_POST["ddAmt"][$i];
-                    $vouchers->remark = $_POST["remark"][$i];
+                    $vouchers->pos_id = $id;
+                    $vouchers->product_id = $_POST["products_id"][$i];
+                    $vouchers->qty = $_POST["quantity"][$i];
+                    $vouchers->price = $_POST["price"][$i];
+                    $vouchers->total = $_POST["totalAmt"][$i];
                     $vouchers->save();
                 }
-//                $product_godown = GodownProduct::where(['godown_id' => session('godownmaster')->id, 'product_id' => $stock_info->product_id])->first();
-//                if (isset($product_godown)) {
-//                    $item = GodownProductSize::where(['product_godown_id' => $product_godown->id, 'size_id' => $stock_info->size_id])->first();
-//                    $item->available_qty += $stock_info->qty;
-//                    $item->save();
-//
-//                    $product_size = ProductSize::where(['product_id' => $stock_info->product_id, 'size_id' => $stock_info->size_id])->first();
-//                    $product_size->stock += $stock_info->qty;
-//                    $product_size->save();
-//                }
-
             }
         }
     }
