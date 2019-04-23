@@ -86,11 +86,11 @@
         });
 
         {{--function cust_id() {--}}
-            {{--$.get('{{ url('admin/getCustID') }}', function (data) {--}}
-                {{--for (var i = 0; i < data.length; i++) {--}}
-                    {{--availableTags[i] = data[i].name;--}}
-                {{--}--}}
-            {{--});--}}
+        {{--$.get('{{ url('admin/getCustID') }}', function (data) {--}}
+        {{--for (var i = 0; i < data.length; i++) {--}}
+        {{--availableTags[i] = data[i].name;--}}
+        {{--}--}}
+        {{--});--}}
         {{--}--}}
     </script>
 
@@ -292,7 +292,8 @@
                                                     <select class="form-control" id="" required
                                                             style="width: 100%;" name="customer_id">
                                                         @foreach($customer as $cust)
-                                                            <option value="{{$cust->id}}">{{$cust->name}}-{{$cust->contact}}</option>
+                                                            <option value="{{$cust->id}}">{{$cust->name}}
+                                                                -{{$cust->contact}}</option>
                                                         @endforeach
                                                     </select>
                                                     <span class="input-group-btn">
@@ -313,7 +314,8 @@
 									<span class="input-group-addon">
 										<i class="fa fa-barcode"></i>
 									</span>
-                                                    <input class="form-control mousetrap" id="search_product"
+                                                    <input class="form-control mousetrap"
+                                                           onkeypress="getProductRowScan(this);" id="search_product"
                                                            placeholder="Enter Product name / SKU / Scan bar code"
                                                            autofocus name="search_product"
                                                            type="text">
@@ -1537,10 +1539,10 @@
                                                         class="fa fa-check"></i> Final</b></a></li>
 
                                     {{--<li class=""><a href="#tab_quotation" data-toggle="tab" aria-expanded="false"><b><i--}}
-                                                        {{--class="fa fa-terminal"></i> Quotation</b></a></li>--}}
+                                    {{--class="fa fa-terminal"></i> Quotation</b></a></li>--}}
 
                                     {{--<li class=""><a href="#tab_draft" data-toggle="tab" aria-expanded="false"><b><i--}}
-                                                        {{--class="fa fa-terminal"></i> Draft</b></a></li>--}}
+                                    {{--class="fa fa-terminal"></i> Draft</b></a></li>--}}
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="tab_final">
@@ -1581,7 +1583,8 @@
                                             <span class="input-group-addon">
                                                 <i class="fa fa-user"></i>
                                             </span>
-                                            <input class="form-control" placeholder="Customer's Full Name" required name="cname"
+                                            <input class="form-control" placeholder="Customer's Full Name" required
+                                                   name="cname"
                                                    type="text" id="cname">
                                         </div>
                                     </div>
@@ -1594,7 +1597,8 @@
                                             <span class="input-group-addon">
                                                 <i class="fa fa-mobile"></i>
                                             </span>
-                                            <input class="form-control" required placeholder="Enter Contact No." name="contact"
+                                            <input class="form-control" required placeholder="Enter Contact No."
+                                                   name="contact"
                                                    type="text" id="contact">
                                         </div>
                                     </div>
@@ -1869,7 +1873,7 @@
     });
 
     var append_norecord_e = '<div class="col-sm-12 no_block" id="no_record_found_block_e"><div class="adver_list_row"><span class="list_no_record">' +
-        '< No Record Available ></span></div></div>';
+            '< No Record Available ></span></div></div>';
     function getBuyEItem() {
         var check_rowcount = $('.target').length;
         if (check_rowcount > 0) {
@@ -1904,6 +1908,19 @@
 //            $('#product_list_body').html(data);
             $('table#pos_table tbody').append(data).find('input.pos_quantity');
             pos_total_row();
+        });
+    }
+    function getProductRowScan(dis) {
+        $.get('{{ url('admin/getProductRowScan') }}', {barcode: $(dis).val()}, function (data) {
+//            $('#product_list_body').html(data);
+            console.log(data);
+            if (data != 'Not Available') {
+                $(dis).val('');
+                $('table#pos_table tbody').append(data).find('input.pos_quantity');
+                pos_total_row();
+            } else {
+                toastr.error('Product Not Available');
+            }
         });
     }
 
@@ -2016,7 +2033,7 @@
     });
 
 
-//    toastr.success(result.msg);
+    //    toastr.success(result.msg);
 </script>
 @if(session()->has('message'))
     <script type="text/javascript">
