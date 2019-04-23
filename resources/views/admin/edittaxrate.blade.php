@@ -88,16 +88,74 @@
 								</div>
 							</div>
                             
-                            <div class="form-group">
-								<label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.AddTaxRatePercentage') }}
-                                </label>
-								<div class="col-sm-10 col-md-4">
-									{!! Form::text('tax_rate',  $result['taxClass'][0]->tax_rate, array('class'=>'form-control number-validate', 'id'=>'tax_rate'))!!}
-                                	<span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">{{ trans('labels.AddTaxRatePercentageText') }}</span>
-                                    <span class="help-block hidden">{{ trans('labels.NumericValueError') }}</span>
-								</div>
-							</div>
-							
+                            {{--<div class="form-group">--}}
+								{{--<label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.AddTaxRatePercentage') }}--}}
+                                {{--</label>--}}
+								{{--<div class="col-sm-10 col-md-4">--}}
+									{{--{!! Form::text('tax_rate',  $result['taxClass'][0]->tax_rate, array('class'=>'form-control number-validate', 'id'=>'tax_rate'))!!}--}}
+                                	{{--<span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">{{ trans('labels.AddTaxRatePercentageText') }}</span>--}}
+                                    {{--<span class="help-block hidden">{{ trans('labels.NumericValueError') }}</span>--}}
+								{{--</div>--}}
+							{{--</div>--}}
+
+                             {{----}}
+                             <div class="form-group" style="margin-top: -15px;">
+                                 <label for="name" style="margin-top: 26px;" class="col-sm-2 col-md-3 control-label">GST Rate (%)
+                                 </label>
+                                 <div class="col-sm-10 col-md-2" style="margin-top: 27px;">
+                                     <input type="text"
+                                            name="tax_rate"
+                                            id="tax_rate"
+                                            minlength="1"
+                                            maxlength="2"
+                                            onkeyup="ratecalc();"
+                                            value="{{$result['taxClass'][0]->tax_rate}}"
+                                            class="form-control number-validate">
+                                     <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">{{ trans('labels.AddTaxRatePercentageText') }}</span>
+                                     <span class="help-block hidden">{{ trans('labels.NumericValueError') }}</span>
+                                 </div>
+                                 <div class="col-sm-10 col-md-2" id="cgst_id">
+                                     <label for="cgst" class="control-label">CGST </label>
+                                     <input type="text"
+                                            name="cgst"
+                                            id="cgst"
+                                            value="{{$result['taxClass'][0]->cgst}}"
+                                            {{--readonly="readonly"--}}
+                                            class="form-control number-validate">
+                                     {{--{!! Form::text('cgst',  '', array('class'=>'form-control number-validate', 'id'=>'cgst'))!!}--}}
+                                     {{--<span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">{{ trans('labels.AddTaxRatePercentageText') }}</span>--}}
+                                     <span class="help-block hidden">{{ trans('labels.NumericValueError') }}</span>
+                                 </div>
+                                 <div class="col-sm-10 col-md-2">
+                                     <label for="sgst" class="control-label">SGST
+                                     </label>
+                                     <input type="text"
+                                            name="sgst"
+                                            id="sgst"
+                                            value="{{$result['taxClass'][0]->sgst}}"
+                                            readonly="readonly"
+                                            class="form-control number-validate">
+                                     {{--                                    {!! Form::text('sgst',  '', array('class'=>'form-control number-validate', 'id'=>'sgst'))!!}--}}
+                                     {{--<span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">{{ trans('labels.AddTaxRatePercentageText') }}</span>--}}
+                                     <span class="help-block hidden">{{ trans('labels.NumericValueError') }}</span>
+                                 </div>
+                                 <div class="col-sm-10 col-md-2" id="igst_id">
+                                     <label for="igst" class="control-label">IGST
+                                     </label>
+                                     <input type="text"
+                                            name="igst"
+                                            id="igst"
+                                            value="{{$result['taxClass'][0]->igst}}"
+                                            {{--readonly="readonly"--}}
+                                            class="form-control number-validate">
+                                     {{--                                    {!! Form::text('igst',  '', array('class'=>'form-control number-validate', 'id'=>'igst'))!!}--}}
+                                     {{--<span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">{{ trans('labels.AddTaxRatePercentageText') }}</span>--}}
+                                     <span class="help-block hidden">{{ trans('labels.NumericValueError') }}</span>
+                                 </div>
+                             </div>
+                             {{----}}
+
+
 							<div class="form-group">
 								<label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.Description') }}
                                 </label>
@@ -135,4 +193,16 @@
   </section>
   <!-- /.content --> 
 </div>
+<script>
+    function ratecalc()
+    {
+        var tax = $('#tax_rate').val();
+//            alert(tax);
+        var temp = parseFloat(tax/2);
+
+        $('#sgst').val(temp);
+        $('#cgst').val(temp);
+        $('#igst').val(0);
+    }
+</script>
 @endsection 

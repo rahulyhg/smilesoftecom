@@ -502,7 +502,7 @@ return [
 	'TaxClass' => 'Tax Class',
 	'AddTaxRateText' => 'Tax will be applied only to the selected zones.',
 	'AddTaxRatePercentage' => 'Tax Rate (%)',
-	'AddTaxRatePercentageText' => 'Enter tax value in digits without any symbal. i.e: 7',
+	'AddTaxRatePercentageText' => 'Enter tax value in digits without any symbal. i.e: 5',
 	'TaxDescription' => 'Enter tax description',
 	'Zones' => 'Zones',
 	'Pickups' => 'Pickups',

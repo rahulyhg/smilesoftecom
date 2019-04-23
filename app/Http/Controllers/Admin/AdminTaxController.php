@@ -319,11 +319,15 @@ class AdminTaxController extends Controller
 	
 	//addNewTaxRate	
 	public function addnewtaxrate(Request $request){
+//	    dd($_REQUEST);
 		DB::table('tax_rates')->insert([
 				'tax_class_id'  	 =>   $request->tax_class_id,
 				'tax_zone_id'		 =>   $request->tax_zone_id,
 				'tax_description'	 =>   $request->tax_description,
 				'tax_rate'	 		 =>   $request->tax_rate,
+				'sgst'	 		     =>   request('sgst'),
+				'cgst'	    		 =>   request('cgst'),
+				'igst'	 		     =>   request('igst'),
 				'date_added'	 	 =>   date('Y-m-d H:i:s')
 				]);
 										
@@ -356,6 +360,9 @@ class AdminTaxController extends Controller
 				'tax_zone_id'		 =>   $request->tax_zone_id,
 				'tax_description'	 =>   $request->tax_description,
 				'tax_rate'	 		 =>   $request->tax_rate,
+				'sgst'	 		     =>   $request->sgst,
+				'cgst'	 		     =>   $request->cgst,
+				'igst'	 		     =>   $request->igst,
 				'last_modified'	 	 =>   date('Y-m-d H:i:s')
 				]); 
 										
