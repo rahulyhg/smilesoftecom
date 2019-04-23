@@ -38,16 +38,11 @@ class AdminPosController extends Controller
 
     public function product_list_body(Request $request)
     {
-        if($request->session()->has('warehouse'))
-        {
-            $products = Products_Description::where(['language_id'=>1])->get();
-        }
-        elseif ($request->session()->has('staff'))
-        {
-            $products = Products_Description::where(['language_id'=>1, 'w_id'=>session('staff')->warehouse_id])->get();
-        }
-        else
-        {
+        if ($request->session()->has('warehouse')) {
+            $products = Products_Description::where(['language_id' => 1])->get();
+        } elseif ($request->session()->has('staff')) {
+            $products = Products_Description::where(['language_id' => 1, 'w_id' => session('staff')->warehouse_id])->get();
+        } else {
             $products = Products_Description::where(['language_id' => 1])->get();
         }
 //        $products = DB::select("select * from products_description");
@@ -163,6 +158,13 @@ class AdminPosController extends Controller
             return Redirect('admin/pos')->with('errmessage', 'Customer Registration Failed:(');
         }
 
+    }
+
+    public function print_pos($id)
+    {
+        $pos = POSModel::find($id);
+        $pos_info = POSInfoModel::where(['pos_id' => $id])->get();
+        return view('pos.print_invoice')->with(['pos' => $pos, 'pos_info' => $pos_info]);
     }
 
     public function getCustomer()

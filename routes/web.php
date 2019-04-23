@@ -438,6 +438,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('getProductRow', 'AdminPosController@getProductRow');
             Route::get('getProductRowScan', 'AdminPosController@getProductRowScan');
             Route::post('store_pos', 'AdminPosController@store_pos');
+            Route::get('print_pos/{id}', 'AdminPosController@print_pos');
             /******************POS Bijendra**********************/
 
             /******************Customer Ashish **********************/
