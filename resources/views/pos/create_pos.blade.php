@@ -1860,7 +1860,7 @@
 {{--<script src="https://pos.ultimatefosters.com/js/printer.js?v=35"></script>--}}
 {{--<script src="https://pos.ultimatefosters.com/js/product.js?v=35"></script>--}}
 {{--<script src="https://pos.ultimatefosters.com/js/opening_stock.js?v=35"></script>--}}
-{{--<script src="https://pos.ultimatefosters.com/plugins/mousetrap/mousetrap.min.js?v=35"></script>--}}
+<script src="https://pos.ultimatefosters.com/plugins/mousetrap/mousetrap.min.js?v=35"></script>
 
 <script type="text/javascript">
 
@@ -1933,7 +1933,8 @@
 
         product_list_body();
         //shortcut for express checkout
-        Mousetrap.bind('shift+e', function (e) {
+        Mousetrap.bind('f9', function (e, combo) {
+//        Mousetrap.bind('shift+e', function (e) {
             e.preventDefault();
 //            $('button.pos-express-finalize[data-pay_method="cash"]').trigger('click');
 //            btnStorePOS
