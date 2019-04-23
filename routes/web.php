@@ -846,20 +846,7 @@ Route::group(['middleware' => 'warehouse'], function () {
     Route::post('/staff_update', 'WareHouseController@staff_update');
     Route::post('/staff_del', 'WareHouseController@staff_del');
 
-//    /******************POS  Bijendra**********************/
-//    Route::get('pos', 'WarehousePOSController@create_pos');
-//    Route::get('getproducts', 'WarehousePOSController@getproducts');
-//    Route::get('product_list_body', 'WarehousePOSController@product_list_body');
-//    Route::get('recent_invoice', 'WarehousePOSController@recent_invoice');
-//    Route::get('getProductRow', 'WarehousePOSController@getProductRow');
-//    Route::get('getProductRowScan', 'WarehousePOSController@getProductRowScan');
-//    Route::post('store_pos', 'WarehousePOSController@store_pos');
-//    /******************POS Bijendra**********************/
-//
-//    /******************Customer Ashish **********************/
-//    Route::post('customer_add', 'WarehousePOSController@customer_add');
-//    Route::get('getCustomer', 'WarehousePOSController@getCustomer');
-//    Route::get('getCustID', 'WarehousePOSController@getCustID');
+//    store_pos
     /******************Customer Ashish**********************/
 });
 
