@@ -41,6 +41,15 @@ class AdminPosController extends Controller
 
     }
 
+    public function recent_invoice()
+    {
+//        $warehouse_id = request('wid');
+//        $staff_id = request('sid');
+        $invoice = POSModel::all();
+//        $invoice = DB::select("select * from pos");
+        return view('pos.pos_list')->with(['invoice' => $invoice]);
+    }
+
     public function getProductRow()
     {
         $pid = request('pid');
@@ -126,6 +135,7 @@ class AdminPosController extends Controller
         $customer = CustomerModel::where(['is_del' => 0])->get();
         return $customer;
     }
+
     public function getCustID()
     {
         $customer = CustomerModel::where()->get();

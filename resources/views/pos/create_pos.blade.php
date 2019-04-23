@@ -1899,6 +1899,12 @@
         });
     }
 
+    function recent_invoice() {
+        $.get('{{ url('admin/recent_invoice') }}', {tid: 1}, function (data) {
+            $('#tab_final').html(data);
+        });
+    }
+
     function getProductRow(pid) {
         $.get('{{ url('admin/getProductRow') }}', {pid: pid}, function (data) {
 //            $('#product_list_body').html(data);
@@ -1908,7 +1914,7 @@
     }
 
     $(document).ready(function () {
-
+        recent_invoice();
         product_list_body();
         //shortcut for express checkout
         Mousetrap.bind('shift+e', function (e) {

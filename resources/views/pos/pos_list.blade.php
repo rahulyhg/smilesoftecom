@@ -1,33 +1,36 @@
+
 <div>
-    <table id="dtTable" class="table table-bordered table-condensed" style="text-align: center">
+    <table id="scc" class="table table-bordered table-condensed" style="text-align: center">
         <thead>
         <tr>
             <th>Sr. No.</th>
-            <th>Product Name</th>
-            <th>Size</th>
-            <th>BatchID</th>
-            <th>Quantity</th>
-            <th>Product Price</th>
-            <th>Total Amount</th>
+            <th>Invoice No.</th>
+            <th>Invoice Date</th>
+            <th>Customer Name</th>
+            <th>Total Bill Amount</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
-        <?php $i = 1; $tamt = 0;?>
-        @foreach($purchase_details as $list)
+        @foreach($invoice as $key => $inv)
+            @php
+                $cid = $inv->customer_id;
+                $customer = \App\CustomerModel::where(['id'=>$cid])->first();
+            @endphp
             <tr>
-                <td>{{$i}}</td>
-                <td>{{ $list->product->product_name }}</td>
-                <td>{{ $list->size->size_name }}</td>
-                <td>{{ $list->batch_id }}</td>
-                <td>{{ $list->qty }}</td>
-                <td>{{ $list->price }}</td>
-                <td>{{ $list->total }}</td>
+                <td>{{++$key}}</td>
+                <td>{{ $inv->invoice_no }}</td>
+                <td>{{ date('d-M-Y', strtotime($inv->invoice_date)) }}</td>
+                {{--<td>{{ $inv->customer->name }}</td>--}}
+                <td>{{ $customer->name}}</td>
+                <td>{{ $inv->grand_total }}</td>
+                <td>
+                    <button class="btn btn-primary hidden-print" onclick="window.print();"><span class="fa fa-print" aria-hidden="true"></span> </button>
+                </td>
             </tr>
-        <?php $i++; $tamt += $list->total; ?>
         @endforeach
         <tbody>
     </table>
-    <h4>Total Amount : {{$tamt}}</h4>
 </div>
 <script>
     $(document).ready(function () {
