@@ -74,7 +74,7 @@
         $(function () {
             var availableTags = [];
 
-            $.get('{{ url('admin/getCustomer') }}', function (data) {
+            $.get('{{ url('getCustomer') }}', function (data) {
                 for (var i = 0; i < data.length; i++) {
                     availableTags[i] = data[i].name;
 //                    custids[i] = data[i].id;
@@ -86,7 +86,7 @@
         });
 
         {{--function cust_id() {--}}
-        {{--$.get('{{ url('admin/getCustID') }}', function (data) {--}}
+        {{--$.get('{{ url('getCustID') }}', function (data) {--}}
         {{--for (var i = 0; i < data.length; i++) {--}}
         {{--availableTags[i] = data[i].name;--}}
         {{--}--}}
@@ -256,9 +256,9 @@
                         </div>
 
                         <div class="box-body">
-                            <form action="{{ url('admin/store_pos') }}" id="store_pos" method="post"
+                            <form action="{{ url('store_pos') }}" id="store_pos" method="post"
                                   enctype="multipart/form-data">
-                                {{--<form method="POST" action="{{url('admin/store_pos')}}" accept-charset="UTF-8"--}}
+                                {{--<form method="POST" action="{{url('store_pos')}}" accept-charset="UTF-8"--}}
                                 {{--id="">--}}
                                 <input name="_token" type="hidden"
                                        value="aVMpzwECPpX04VJ7m6cZfcnnGQyy6bicxVym2RYP">
@@ -1566,7 +1566,7 @@
         <div class="modal fade contact_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <form method="post" action="{{url('admin/customer_add')}}">
+                    <form method="post" action="{{url('customer_add')}}">
                         <input name="_token" type="hidden" value="{{@csrf_token()}}">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -1867,7 +1867,7 @@
     $(function () {
         var availableTags = [];
 
-        $.get('{{ url('admin/getproducts') }}', function (data) {
+        $.get('{{ url('getproducts') }}', function (data) {
             for (var i = 0; i < data.length; i++) {
                 availableTags[i] = data[i].products_name;
             }
@@ -1903,26 +1903,26 @@
     }
 
     function product_list_body() {
-        $.get('{{ url('admin/product_list_body') }}', {tid: 1}, function (data) {
+        $.get('{{ url('product_list_body') }}', {tid: 1}, function (data) {
             $('#product_list_body').html(data);
         });
     }
 
     function recent_invoice() {
-        $.get('{{ url('admin/recent_invoice') }}', {tid: 1}, function (data) {
+        $.get('{{ url('recent_invoice') }}', {tid: 1}, function (data) {
             $('#tab_final').html(data);
         });
     }
 
     function getProductRow(pid) {
-        $.get('{{ url('admin/getProductRow') }}', {pid: pid}, function (data) {
+        $.get('{{ url('getProductRow') }}', {pid: pid}, function (data) {
 //            $('#product_list_body').html(data);
             $('table#pos_table tbody').append(data).find('input.pos_quantity');
             pos_total_row();
         });
     }
     function getProductRowScan(dis) {
-        $.get('{{ url('admin/getProductRowScan') }}', {barcode: $(dis).val()}, function (data) {
+        $.get('{{ url('getProductRowScan') }}', {barcode: $(dis).val()}, function (data) {
 //            $('#product_list_body').html(data);
 //            console.log(data);
             if (data != 'Not Available') {

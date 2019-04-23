@@ -38,25 +38,49 @@ class AdminPosController extends Controller
 
     public function product_list_body(Request $request)
     {
-        if ($request->session()->has('warehouse')) {
-            $products = Products_Description::where(['language_id' => 1])->get();
-        } elseif ($request->session()->has('staff')) {
-            $products = Products_Description::where(['language_id' => 1, 'w_id' => session('staff')->warehouse_id])->get();
-        } else {
-            $products = Products_Description::where(['language_id' => 1])->get();
+        if ($request->session()->has('warehouse'))
+        {
+            $warehouse_id = session('warehouse')->id;
+
+            $products = DB::select("SELECT a.w_id, b.products_id, b.language_id, b.products_name, b.products_description, b.products_url, b.products_viewed,b.products_left_banner, b.products_left_banner_start_date, b.products_left_banner_expire_date, b.products_right_banner, b.products_right_banner_start_date, b.products_right_banner_expire_date FROM warehouse_inventory a, products_description b WHERE a.pid = b.products_id AND a.w_id = $warehouse_id");
         }
+        elseif ($request->session()->has('staff'))
+        {
+            $warehouse_id = session('staff')->warehouse_id;
+            $products = DB::select("SELECT a.w_id, b.products_id, b.language_id, b.products_name, b.products_description, b.products_url, b.products_viewed,b.products_left_banner, b.products_left_banner_start_date, b.products_left_banner_expire_date, b.products_right_banner, b.products_right_banner_start_date, b.products_right_banner_expire_date FROM warehouse_inventory a, products_description b WHERE a.pid = b.products_id AND a.w_id = $warehouse_id");
+        }
+        else
+            {
+//            $products = Products_Description::where(['language_id' => 1])->get();
+        }
+
+//        $warehouse_id = session('staff')->warehouse_id;
+//        $products = DB::select("select * from warehouse_inventory WHERE w_id = (SELECT * FROM products_description ) ");
+
+
 //        $products = DB::select("select * from products_description");
         //DB::table('products_description')->where('products_description.products_name', 'LIKE', "%$pro_name%")->get('products_name');
         return view('pos.product_list')->with(['products' => $products]);
 
     }
 
-    public function recent_invoice()
+    public function recent_invoice(Request $request)
     {
-//        $warehouse_id = session('warehouse')->id;
-//        $staff_id = session('staff')->id;
-        $invoice = POSModel::all();
-//        $invoice = DB::select("select * from pos");
+        if ($request->session()->has('staff'))
+        {
+            $warehouse_id = session('staff')->warehouse_id;
+            $staff_id = session('staff')->id;
+            $invoice = POSModel::where(['sid'=>$staff_id, 'wid'=>$warehouse_id])->limit(5)->get();
+        }
+        elseif ($request->session()->has('warehouse'))
+        {
+            $warehouse_id = session('warehouse')->id;
+            $invoice = POSModel::where(['wid'=>$warehouse_id])->limit(5)->get();
+        }
+        else
+        {
+            $invoice = POSModel::limit(5)->get();
+        }
         return view('pos.pos_list')->with(['invoice' => $invoice]);
     }
 

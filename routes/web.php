@@ -429,8 +429,14 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/updatecategoriesroles', 'AdminController@updateCategoriesRoles');
             Route::get('/deletecategoriesroles/{id}', 'AdminController@deleteCategoriesRoles');
 
-
             /******************POS  Bijendra**********************/
+            Route::get('pos', 'POSController@create_pos');
+            Route::get('getproducts', 'POSController@getproducts');
+            Route::get('product_list_body', 'POSController@product_list_body');
+            Route::get('recent_invoice', 'POSController@recent_invoice');
+            Route::get('getProductRow', 'POSController@getProductRow');
+            Route::get('getProductRowScan', 'POSController@getProductRowScan');
+            Route::post('store_pos', 'POSController@store_pos');
             Route::get('pos', 'AdminPosController@create_pos');
             Route::get('getproducts', 'AdminPosController@getproducts');
             Route::get('product_list_body', 'AdminPosController@product_list_body');
@@ -442,10 +448,11 @@ Route::group(['prefix' => 'admin'], function () {
             /******************POS Bijendra**********************/
 
             /******************Customer Ashish **********************/
-            Route::post('customer_add', 'AdminPosController@customer_add');
-            Route::get('getCustomer', 'AdminPosController@getCustomer');
-            Route::get('getCustID', 'AdminPosController@getCustID');
+            Route::post('customer_add', 'POSController@customer_add');
+            Route::get('getCustomer', 'POSController@getCustomer');
+            Route::get('getCustID', 'POSController@getCustID');
             /******************Customer Ashish**********************/
+
 
         });
 
@@ -838,12 +845,44 @@ Route::group(['middleware' => 'warehouse'], function () {
     Route::get('/staff_edit/{id}', 'WareHouseController@staff_edit');
     Route::post('/staff_update', 'WareHouseController@staff_update');
     Route::post('/staff_del', 'WareHouseController@staff_del');
+
+//    /******************POS  Bijendra**********************/
+//    Route::get('pos', 'WarehousePOSController@create_pos');
+//    Route::get('getproducts', 'WarehousePOSController@getproducts');
+//    Route::get('product_list_body', 'WarehousePOSController@product_list_body');
+//    Route::get('recent_invoice', 'WarehousePOSController@recent_invoice');
+//    Route::get('getProductRow', 'WarehousePOSController@getProductRow');
+//    Route::get('getProductRowScan', 'WarehousePOSController@getProductRowScan');
+//    Route::post('store_pos', 'WarehousePOSController@store_pos');
+//    /******************POS Bijendra**********************/
+//
+//    /******************Customer Ashish **********************/
+//    Route::post('customer_add', 'WarehousePOSController@customer_add');
+//    Route::get('getCustomer', 'WarehousePOSController@getCustomer');
+//    Route::get('getCustID', 'WarehousePOSController@getCustID');
+    /******************Customer Ashish**********************/
 });
 
 Route::group(['middleware' => 'staff'], function () {
     Route::get('/staff_dashboard', 'StaffController@staff_dashboard');
     Route::get('/staff_logout', 'StaffController@logout');
     Route::get('/staff_staff', 'StaffController@warehouse_staff');
+
+    /******************POS  Bijendra**********************/
+    Route::get('pos', 'POSController@create_pos');
+    Route::get('getproducts', 'POSController@getproducts');
+    Route::get('product_list_body', 'POSController@product_list_body');
+    Route::get('recent_invoice', 'POSController@recent_invoice');
+    Route::get('getProductRow', 'POSController@getProductRow');
+    Route::get('getProductRowScan', 'POSController@getProductRowScan');
+    Route::post('store_pos', 'POSController@store_pos');
+    /******************POS Bijendra**********************/
+
+    /******************Customer Ashish **********************/
+    Route::post('customer_add', 'POSController@customer_add');
+    Route::get('getCustomer', 'POSController@getCustomer');
+    Route::get('getCustID', 'POSController@getCustID');
+    /******************Customer Ashish**********************/
 });
 
 
