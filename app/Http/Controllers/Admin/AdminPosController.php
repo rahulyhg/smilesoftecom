@@ -53,9 +53,18 @@ class AdminPosController extends Controller
     public function getProductRowScan()
     {
         $pid = request('barcode');
+
         $barcode = BarcodeModel::where(['barcode' => $pid])->first();
         if (isset($barcode)) {
             $products = DB::selectOne("select * from products_description WHERE products_id = $barcode->product_id");
+            return view('pos.pro_tr')->with(['products' => $products]);
+        } /*elseif (preg_match('~[0-9]~', $pid) == false) {
+            $products = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
+            return view('pos.pro_tr')->with(['products' => $products]);
+        }*/
+        $desc = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
+        if (isset($desc)) {
+            $products = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
             return view('pos.pro_tr')->with(['products' => $products]);
         } else {
             return 'Not Available';

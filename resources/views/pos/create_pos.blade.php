@@ -315,7 +315,7 @@
 										<i class="fa fa-barcode"></i>
 									</span>
                                                     <input class="form-control mousetrap"
-                                                           onkeypress="getProductRowScan(this);" id="search_product"
+                                                           onchange="getProductRowScan(this);" id="search_product"
                                                            placeholder="Enter Product name / SKU / Scan bar code"
                                                            autofocus name="search_product"
                                                            type="text">
@@ -1913,7 +1913,7 @@
     function getProductRowScan(dis) {
         $.get('{{ url('admin/getProductRowScan') }}', {barcode: $(dis).val()}, function (data) {
 //            $('#product_list_body').html(data);
-            console.log(data);
+//            console.log(data);
             if (data != 'Not Available') {
                 $(dis).val('');
                 $('table#pos_table tbody').append(data).find('input.pos_quantity');
