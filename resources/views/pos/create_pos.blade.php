@@ -11,7 +11,7 @@
 
     <title>POS - Smile Shop</title>
 
-    <link rel="stylesheet" href="https://pos.ultimatefosters.com/AdminLTE/plugins/pace/pace.css?v=35">
+    <link rel="stylesheet" href="{{url('public/pos/css/pace.css?v=35')}}">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -19,15 +19,15 @@
     <!-- Styles -->
 {{--<link rel="stylesheet" href="https://pos.ultimatefosters.com/plugins/jquery-ui/jquery-ui.min.css?v=35">--}}
 <!-- Bootstrap 3.3.6 -->
-    <link rel="stylesheet" href="https://pos.ultimatefosters.com/bootstrap/css/bootstrap.min.css?v=35">
+    <link rel="stylesheet" href="{{url('public/pos/css/bootstrap.min.css?v=35')}}">
 
 
     <!-- Ionicons -->
 {{--<link rel="stylesheet" href="https://pos.ultimatefosters.com/plugins/ionicons/css/ionicons.min.css?v=35">--}}
 <!-- Select2 -->
-    <link rel="stylesheet" href="https://pos.ultimatefosters.com/AdminLTE/plugins/select2/select2.min.css?v=35">
+    <link rel="stylesheet" href="{{url('public/pos/css/select2.min.css?v=35')}}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="https://pos.ultimatefosters.com/AdminLTE/css/AdminLTE.min.css?v=35">
+    <link rel="stylesheet" href="{{url('public/pos/css/AdminLTE.min.css?v=35')}}">
     <!-- iCheck -->
 {{--<link rel="stylesheet" href="https://pos.ultimatefosters.com/AdminLTE/plugins/iCheck/square/blue.css?v=35">--}}
 
@@ -39,9 +39,9 @@
 {{--<link rel="stylesheet" href="https://pos.ultimatefosters.com/AdminLTE/plugins/DataTables/datatables.min.css?v=35">--}}
 
 <!-- Toastr -->
-    <link rel="stylesheet" href="https://pos.ultimatefosters.com/plugins/toastr/toastr.min.css?v=35">
+    <link rel="stylesheet" href="{{url('public/pos/css/toastr.min.css?v=35')}}">
     <!-- Bootstrap file input -->
-    <link rel="stylesheet" href="https://pos.ultimatefosters.com/plugins/bootstrap-fileinput/fileinput.min.css?v=35">
+    <link rel="stylesheet" href="{{url('public/pos/css/fileinput.min.css?v=35')}}">
 
 {{--<!-- AdminLTE Skins.-->--}}
 {{--<link rel="stylesheet" href="https://pos.ultimatefosters.com/AdminLTE/css/skins/_all-skins.min.css?v=35">--}}
@@ -54,7 +54,7 @@
 {{--<link rel="stylesheet" href="https://pos.ultimatefosters.com/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css?v=35">--}}
 
 <!-- app css -->
-    <link rel="stylesheet" href="https://pos.ultimatefosters.com/css/app.css?v=35">
+    <link rel="stylesheet" href="{{url('public/pos/css/app.css?v=35')}}">
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -86,11 +86,11 @@
         });
 
         {{--function cust_id() {--}}
-            {{--$.get('{{ url('admin/getCustID') }}', function (data) {--}}
-                {{--for (var i = 0; i < data.length; i++) {--}}
-                    {{--availableTags[i] = data[i].name;--}}
-                {{--}--}}
-            {{--});--}}
+        {{--$.get('{{ url('admin/getCustID') }}', function (data) {--}}
+        {{--for (var i = 0; i < data.length; i++) {--}}
+        {{--availableTags[i] = data[i].name;--}}
+        {{--}--}}
+        {{--});--}}
         {{--}--}}
     </script>
 
@@ -292,7 +292,8 @@
                                                     <select class="form-control" id="" required
                                                             style="width: 100%;" name="customer_id">
                                                         @foreach($customer as $cust)
-                                                            <option value="{{$cust->id}}">{{$cust->name}}-{{$cust->contact}}</option>
+                                                            <option value="{{$cust->id}}">{{$cust->name}}
+                                                                -{{$cust->contact}}</option>
                                                         @endforeach
                                                     </select>
                                                     <span class="input-group-btn">
@@ -313,7 +314,8 @@
 									<span class="input-group-addon">
 										<i class="fa fa-barcode"></i>
 									</span>
-                                                    <input class="form-control mousetrap" id="search_product"
+                                                    <input class="form-control mousetrap"
+                                                           onchange="getProductRowScan(this);" id="search_product"
                                                            placeholder="Enter Product name / SKU / Scan bar code"
                                                            autofocus name="search_product"
                                                            type="text">
@@ -1537,10 +1539,10 @@
                                                         class="fa fa-check"></i> Final</b></a></li>
 
                                     {{--<li class=""><a href="#tab_quotation" data-toggle="tab" aria-expanded="false"><b><i--}}
-                                                        {{--class="fa fa-terminal"></i> Quotation</b></a></li>--}}
+                                    {{--class="fa fa-terminal"></i> Quotation</b></a></li>--}}
 
                                     {{--<li class=""><a href="#tab_draft" data-toggle="tab" aria-expanded="false"><b><i--}}
-                                                        {{--class="fa fa-terminal"></i> Draft</b></a></li>--}}
+                                    {{--class="fa fa-terminal"></i> Draft</b></a></li>--}}
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="tab_final">
@@ -1581,7 +1583,8 @@
                                             <span class="input-group-addon">
                                                 <i class="fa fa-user"></i>
                                             </span>
-                                            <input class="form-control" placeholder="Customer's Full Name" required name="cname"
+                                            <input class="form-control" placeholder="Customer's Full Name" required
+                                                   name="cname"
                                                    type="text" id="cname">
                                         </div>
                                     </div>
@@ -1594,7 +1597,8 @@
                                             <span class="input-group-addon">
                                                 <i class="fa fa-mobile"></i>
                                             </span>
-                                            <input class="form-control" required placeholder="Enter Contact No." name="contact"
+                                            <input class="form-control" required placeholder="Enter Contact No."
+                                                   name="contact"
                                                    type="text" id="contact">
                                         </div>
                                     </div>
@@ -1748,7 +1752,7 @@
 </div>
 
 <script type="text/javascript">
-    base_path = "https://pos.ultimatefosters.com";
+    base_path = 'http://13.126.237.21/smileshop';
 </script>
 
 <!--[if lt IE 9]>
@@ -1756,65 +1760,68 @@
 <!--<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js?v=$asset_v"></script>-->
 {{--<![endif]-->--}}
 
-<script src="https://pos.ultimatefosters.com/AdminLTE/plugins/pace/pace.min.js?v=35"></script>
+<script src="{{url('public/pos/js/pace.min.js?v=35')}}"></script>
 
 <!-- jQuery 2.2.3 -->
-<script src="https://pos.ultimatefosters.com/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js?v=35"></script>
-<script src="https://pos.ultimatefosters.com/plugins/jquery-ui/jquery-ui.min.js?v=35"></script>
+<script src="{{url('public/pos/js/jquery-2.2.3.min.js?v=35')}}"></script>
+<script src="{{url('public/pos/js/jquery-ui.min.js?v=35')}}"></script>
+
 <!-- Bootstrap 3.3.6 -->
-<script src="https://pos.ultimatefosters.com/bootstrap/js/bootstrap.min.js?v=35"></script>
+<script src="{{url('public/pos/js/bootstrap.min.js?v=35')}}"></script>
 <!-- iCheck -->
-<script src="https://pos.ultimatefosters.com/AdminLTE/plugins/iCheck/icheck.min.js?v=35"></script>
+<script src="{{url('public/pos/js/icheck.min.js?v=35')}}"></script>
 <!-- Select2 -->
-<script src="https://pos.ultimatefosters.com/AdminLTE/plugins/select2/select2.full.min.js?v=35"></script>
+<script src="{{url('public/pos/js/select2.full.min.js?v=35')}}"></script>
 <!-- Add language file for select2 -->
-<script src="https://pos.ultimatefosters.com/AdminLTE/plugins/select2/lang/en.js?v=35"></script>
+<script src="{{url('public/pos/js/en.js?v=35')}}"></script>
 <!-- bootstrap datepicker -->
-<script src="https://pos.ultimatefosters.com/AdminLTE/plugins/datepicker/bootstrap-datepicker.min.js?v=35"></script>
+<script src="{{url('public/pos/js/en.js?v=35')}}"></script>
+<script src="{{url('public/pos/js/bootstrap-datepicker.min.js?v=35')}}"></script>
 <!-- DataTables -->
-<script src="https://pos.ultimatefosters.com/AdminLTE/plugins/DataTables/datatables.min.js?v=35"></script>
-<script src="https://pos.ultimatefosters.com/AdminLTE/plugins/DataTables/pdfmake-0.1.32/pdfmake.min.js?v=35"></script>
-<script src="https://pos.ultimatefosters.com/AdminLTE/plugins/DataTables/pdfmake-0.1.32/vfs_fonts.js?v=35"></script>
+<script src="{{url('public/pos/js/datatables.min.js?v=35')}}"></script>
+<script src="{{url('public/pos/js/pdfmake.min.js?v=35')}}"></script>
+<script src="{{url('public/pos/js/vfs_fonts.js?v=35')}}"></script>
 
 <!-- jQuery Validator -->
-<script src="https://pos.ultimatefosters.com/js/jquery-validation-1.16.0/dist/jquery.validate.min.js?v=35"></script>
-<script src="https://pos.ultimatefosters.com/js/jquery-validation-1.16.0/dist/additional-methods.min.js?v=35"></script>
+<script src="{{url('public/pos/js/vfs_fonts.js?v=35')}}"></script>
+<script src="{{url('public/pos/js/jquery.validate.min.js?v=35')}}"></script>
+<script src="{{url('public/pos/js/additional-methods.min.js?v=35')}}"></script>
 
 <!-- Toastr -->
-<script src="https://pos.ultimatefosters.com/plugins/toastr/toastr.min.js?v=35"></script>
+<script src="{{url('public/pos/js/toastr.min.js?v=35')}}"></script>
 <!-- Bootstrap file input -->
-<script src="https://pos.ultimatefosters.com/plugins/bootstrap-fileinput/fileinput.min.js?v=35"></script>
+<script src="{{url('public/pos/js/fileinput.min.js?v=35')}}"></script>
 <!--accounting js-->
-<script src="https://pos.ultimatefosters.com/plugins/accounting.min.js?v=35"></script>
+<script src="{{url('public/pos/js/accounting.min.js?v=35')}}"></script>
 
-<script src="https://pos.ultimatefosters.com/AdminLTE/plugins/daterangepicker/moment.min.js?v=35"></script>
+<script src="{{url('public/pos/js/moment.min.js?v=35')}}"></script>
 
-<script src="https://pos.ultimatefosters.com/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js?v=35"></script>
+<script src="{{url('public/pos/js/bootstrap-datetimepicker.min.js?v=35')}}"></script>
 
-<script src="https://pos.ultimatefosters.com/AdminLTE/plugins/daterangepicker/daterangepicker.js?v=35"></script>
+<script src="{{url('public/pos/js/daterangepicker.js?v=35')}}"></script>
 
 {{--<script src="https://pos.ultimatefosters.com/AdminLTE/plugins/ckeditor/ckeditor.js?v=35"></script>--}}
 
-<script src="https://pos.ultimatefosters.com/plugins/sweetalert/sweetalert.min.js?v=35"></script>
+{{--<script src="https://pos.ultimatefosters.com/plugins/sweetalert/sweetalert.min.js?v=35"></script>--}}
 
-<script src="https://pos.ultimatefosters.com/plugins/bootstrap-tour/bootstrap-tour.min.js?v=35"></script>
+{{--<script src="{{url('public/pos/js/bootstrap-tour.min.js?v=35')}}"></script>--}}
 
-<script src="https://pos.ultimatefosters.com/plugins/printThis.js?v=35"></script>
+{{--<script src="https://pos.ultimatefosters.com/plugins/printThis.js?v=35"></script>--}}
 
-<script src="https://pos.ultimatefosters.com/plugins/screenfull.min.js?v=35"></script>
+{{--<script src="https://pos.ultimatefosters.com/plugins/screenfull.min.js?v=35"></script>--}}
 
-<script src="https://pos.ultimatefosters.com/plugins/moment-timezone-with-data.min.js?v=35"></script>
+{{--<script src="https://pos.ultimatefosters.com/plugins/moment-timezone-with-data.min.js?v=35"></script>--}}
 <script>
-    moment.tz.setDefault('America/Phoenix');
-    $(document).ready(function () {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $.fn.dataTable.ext.errMode = 'throw';
-    });
+//    moment.tz.setDefault('America/Phoenix');
+//    $(document).ready(function () {
+//        $.ajaxSetup({
+//            headers: {
+//                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//            }
+//        });
+//
+//        $.fn.dataTable.ext.errMode = 'throw';
+//    });
 
     var financial_year = {
         start: moment('2019-01-01'),
@@ -1835,22 +1842,24 @@
 </script>
 
 <!-- Scripts -->
-<script src="https://pos.ultimatefosters.com/js/AdminLTE-app.js?v=35"></script>
+<script src="{{url('public/pos/js/AdminLTE-app.js?v=35')}}"></script>
+<script src="{{url('public/pos/js/en2.js?v=35')}}"></script>
 
-<script src="https://pos.ultimatefosters.com/js/lang/en.js?v=35"></script>
+
+{{--<script src="https://pos.ultimatefosters.com/js/lang/en.js?v=35"></script>--}}
 
 {{--<script src="https://pos.ultimatefosters.com/js/functions.js?v=35"></script>--}}
-<script src="{!! URL::to('public/pos/js/functions.js?v=35') !!}"></script>
-
+<script src="{{url('public/pos/js/functions.js?v=35')}}"></script>
+{{--<script src="{{url('public/pos/js/common.js?v=35')}}"></script>--}}
 <script src="https://pos.ultimatefosters.com/js/common.js?v=35"></script>
-<script src="https://pos.ultimatefosters.com/js/app.js?v=35"></script>
-<script src="https://pos.ultimatefosters.com/js/help-tour.js?v=35"></script>
-<script src="https://pos.ultimatefosters.com/plugins/calculator/calculator.js?v=35"></script>
 
-<script src="{!! URL::to('public/js/pos.js?v=35') !!}"></script>
-<script src="https://pos.ultimatefosters.com/js/printer.js?v=35"></script>
-<script src="https://pos.ultimatefosters.com/js/product.js?v=35"></script>
-<script src="https://pos.ultimatefosters.com/js/opening_stock.js?v=35"></script>
+{{--<script src="https://pos.ultimatefosters.com/js/app.js?v=35"></script>--}}
+{{--<script src="https://pos.ultimatefosters.com/js/help-tour.js?v=35"></script>--}}
+{{--<script src="https://pos.ultimatefosters.com/plugins/calculator/calculator.js?v=35"></script>--}}
+<script src="{{url('public/js/pos.js?v=35')}}"></script>
+{{--<script src="https://pos.ultimatefosters.com/js/printer.js?v=35"></script>--}}
+{{--<script src="https://pos.ultimatefosters.com/js/product.js?v=35"></script>--}}
+{{--<script src="https://pos.ultimatefosters.com/js/opening_stock.js?v=35"></script>--}}
 <script src="https://pos.ultimatefosters.com/plugins/mousetrap/mousetrap.min.js?v=35"></script>
 
 <script type="text/javascript">
@@ -1869,7 +1878,7 @@
     });
 
     var append_norecord_e = '<div class="col-sm-12 no_block" id="no_record_found_block_e"><div class="adver_list_row"><span class="list_no_record">' +
-        '< No Record Available ></span></div></div>';
+            '< No Record Available ></span></div></div>';
     function getBuyEItem() {
         var check_rowcount = $('.target').length;
         if (check_rowcount > 0) {
@@ -1912,12 +1921,26 @@
             pos_total_row();
         });
     }
+    function getProductRowScan(dis) {
+        $.get('{{ url('admin/getProductRowScan') }}', {barcode: $(dis).val()}, function (data) {
+//            $('#product_list_body').html(data);
+//            console.log(data);
+            if (data != 'Not Available') {
+                $(dis).val('');
+                $('table#pos_table tbody').append(data).find('input.pos_quantity');
+                pos_total_row();
+            } else {
+                toastr.error('Product Not Available');
+            }
+        });
+    }
 
     $(document).ready(function () {
         recent_invoice();
         product_list_body();
         //shortcut for express checkout
-        Mousetrap.bind('shift+e', function (e) {
+        Mousetrap.bind('f9', function (e, combo) {
+//        Mousetrap.bind('shift+e', function (e) {
             e.preventDefault();
 //            $('button.pos-express-finalize[data-pay_method="cash"]').trigger('click');
 //            btnStorePOS
@@ -2022,7 +2045,7 @@
     });
 
 
-//    toastr.success(result.msg);
+    //    toastr.success(result.msg);
 </script>
 @if(session()->has('message'))
     <script type="text/javascript">

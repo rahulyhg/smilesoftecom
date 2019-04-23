@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\BarcodeModel;
 use App\POSInfoModel;
 use App\POSModel;
 use App\CustomerModel;
@@ -69,6 +70,27 @@ class AdminPosController extends Controller
         $pid = request('pid');
         $products = DB::selectOne("select * from products_description WHERE products_id = $pid");
         return view('pos.pro_tr')->with(['products' => $products]);
+    }
+
+    public function getProductRowScan()
+    {
+        $pid = request('barcode');
+
+        $barcode = BarcodeModel::where(['barcode' => $pid])->first();
+        if (isset($barcode)) {
+            $products = DB::selectOne("select * from products_description WHERE products_id = $barcode->product_id");
+            return view('pos.pro_tr')->with(['products' => $products]);
+        } /*elseif (preg_match('~[0-9]~', $pid) == false) {
+            $products = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
+            return view('pos.pro_tr')->with(['products' => $products]);
+        }*/
+        $desc = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
+        if (isset($desc)) {
+            $products = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
+            return view('pos.pro_tr')->with(['products' => $products]);
+        } else {
+            return 'Not Available';
+        }
     }
 
     public function store_pos()
