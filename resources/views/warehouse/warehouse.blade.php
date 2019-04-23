@@ -69,14 +69,15 @@
                                                     <td>{{ $warehouselists->password }}</td>
                                                     <td>{{ $warehouselists->location }}</td>
                                                     <td>
+                                                        <a data-toggle="tooltip" data-placement="bottom" title="View Stocks"
+                                                           href="{{ url('admin/ViewStock').'/'.$warehouselists->id  }}"
+                                                           class="badge bg-light-green"><i class="fa fa-eye"
+                                                                                           aria-hidden="true"></i></a>
                                                         <a data-toggle="tooltip" data-placement="bottom" title="Edit"
                                                            href="editWarehouse/{{ $warehouselists->id }}"
                                                            class="badge bg-light-blue"><i class="fa fa-pencil-square-o"
                                                                                           aria-hidden="true"></i></a>
-                                                        <a data-toggle="tooltip" data-placement="bottom" title="View Stocks"
-                                                           href="{{ url('admin/ViewStock').'/'.$warehouselists->id  }}"
-                                                           class="badge bg-light-green"><i class="fa fa-pencil-square-o"
-                                                                                          aria-hidden="true"></i></a>
+
                                                         <a id="manufacturerFrom"
                                                            warehouse_id='{{ $warehouselists->id }}'
                                                            data-toggle="tooltip" data-placement="bottom" title="Delete"
