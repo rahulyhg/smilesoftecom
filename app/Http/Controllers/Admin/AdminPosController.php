@@ -184,6 +184,13 @@ class AdminPosController extends Controller
 
     }
 
+    public function print_pos($id)
+    {
+        $pos = POSModel::find($id);
+        $pos_info = POSInfoModel::where(['pos_id' => $id])->get();
+        return view('pos.print_invoice')->with(['pos' => $pos, 'pos_info' => $pos_info]);
+    }
+
     public function getCustomer()
     {
         $customer = CustomerModel::where(['is_del' => 0])->get();

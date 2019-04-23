@@ -115,6 +115,7 @@ Route::group(['prefix' => 'admin'], function () {
             //products
             Route::get('/products', 'AdminProductsController@products');
             Route::get('/barcode-generate', 'AdminProductsController@barcode_generate');
+            Route::get('/barcode_generate_view', 'AdminProductsController@barcode_generate_view');
             Route::get('/addproduct', 'AdminProductsController@addproduct');
             Route::post('/addnewproduct', 'AdminProductsController@addnewproduct');
 
@@ -436,6 +437,14 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('getProductRow', 'POSController@getProductRow');
             Route::get('getProductRowScan', 'POSController@getProductRowScan');
             Route::post('store_pos', 'POSController@store_pos');
+            Route::get('pos', 'AdminPosController@create_pos');
+            Route::get('getproducts', 'AdminPosController@getproducts');
+            Route::get('product_list_body', 'AdminPosController@product_list_body');
+            Route::get('recent_invoice', 'AdminPosController@recent_invoice');
+            Route::get('getProductRow', 'AdminPosController@getProductRow');
+            Route::get('getProductRowScan', 'AdminPosController@getProductRowScan');
+            Route::post('store_pos', 'AdminPosController@store_pos');
+            Route::get('print_pos/{id}', 'AdminPosController@print_pos');
             /******************POS Bijendra**********************/
 
             /******************Customer Ashish **********************/

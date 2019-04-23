@@ -25,7 +25,7 @@
                 <td>{{ $customer->name}}</td>
                 <td>{{ $inv->grand_total }}</td>
                 <td>
-                    <button class="btn btn-primary hidden-print" onclick="window.print();"><span class="fa fa-print" aria-hidden="true"></span> </button>
+                    <a class="btn btn-primary hidden-print" href="{{url('admin/print_pos').'/'.$inv->id}}"><span class="fa fa-print" aria-hidden="true"></span> </a>
                 </td>
             </tr>
         @endforeach
@@ -33,15 +33,5 @@
     </table>
 </div>
 <script>
-    $(document).ready(function () {
-        var table = $('#dtTable').DataTable({
-            "columnDefs": [
-                {"width": "20px", "targets": 0}
-            ]
-        });
 
-        $('.datatable-col').on('keyup change', function () {
-            table.column($(this).attr('id')).search($(this).val()).draw();
-        });
-    });
 </script>
