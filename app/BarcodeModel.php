@@ -9,4 +9,9 @@ class BarcodeModel extends Model
     protected $table = 'barcode';
     public $timestamps = false;
 
+    public function prodis()
+    {
+        return $this->belongsTo('App\Products_Description','product_id');
+    }
+
 }

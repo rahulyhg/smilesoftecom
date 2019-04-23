@@ -115,6 +115,7 @@ Route::group(['prefix' => 'admin'], function () {
             //products
             Route::get('/products', 'AdminProductsController@products');
             Route::get('/barcode-generate', 'AdminProductsController@barcode_generate');
+            Route::get('/barcode_generate_view', 'AdminProductsController@barcode_generate_view');
             Route::get('/addproduct', 'AdminProductsController@addproduct');
             Route::post('/addnewproduct', 'AdminProductsController@addnewproduct');
 

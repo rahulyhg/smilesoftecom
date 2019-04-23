@@ -18,29 +18,35 @@
 </head>
 
 <body>
-    <div class="row">
-            @php 
-            $b_id = session('bar_id'); 
-            $mqty = session('bar_qty'); 
-            $data = \App\BarcodeModel::whereproduct_id($b_id)->first(); 
+    <div style="width:100%;">
+
+        <table width="100%" cellspacing="0" cellpadding="0">
+
+            @php $b_id = session('bar_id'); $mqty = session('bar_qty'); $data = \App\BarcodeModel::whereproduct_id($b_id)->first(); $i=1;
             @endphp 
-            @for($i = 1; $i<=$mqty; $i++) 
-            <div style="margin-bottom: 15px; width:640;">
-                    <b>{{ $data->product_id }}</b>
-                    {!! \Milon\Barcode\DNS1D::getBarcodeHTML($data->barcode, 'C128A') !!} 
-                    <b>{{$data->barcode}} - MRP: {{ $data->selling_price }} Rs.</b>
-                    
-            </div>
-        
-            @endfor
+            <tr>
+                @for($j = 1; $j
+                <=$mqty; $j++)
+                 <td style="padding:15px 20px"><b>{{ $data->prodis->products_name }}</b> {!! \Milon\Barcode\DNS1D::getBarcodeHTML($data->barcode, 'C128A',1.2,23) !!}
+                    <b>{{$data->barcode}} - MRP: {{ $data->selling_price }} Rs</b></td>
+                    @if($i==3)
+            </tr>
+            <tr>
+@php $i=0; 
+@endphp @endif
+ @php $i++; 
+@endphp @endfor 
+
+        </table>
+
     </div>
-       
 
-      
-        
-    
 
-  
+
+
+
+
+
 
 
 
