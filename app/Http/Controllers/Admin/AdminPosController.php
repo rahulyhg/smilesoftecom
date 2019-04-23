@@ -126,5 +126,10 @@ class AdminPosController extends Controller
         $customer = CustomerModel::where(['is_del' => 0])->get();
         return $customer;
     }
+    public function getCustID()
+    {
+        $customer = CustomerModel::where()->get();
+        return $customer;
+    }
 
 }
