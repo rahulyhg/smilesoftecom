@@ -38,7 +38,7 @@
         </div>
 
         <input type="hidden" name="products[1][product_unit_id]" value="1">
-        Pc(s)
+        {{--Pc(s)--}}
 
         <input type="hidden" class="base_unit_multiplier" name="products[1][base_unit_multiplier]" value="1">
 
