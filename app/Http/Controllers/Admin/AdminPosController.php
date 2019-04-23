@@ -6,6 +6,7 @@ use App\BarcodeModel;
 use App\POSInfoModel;
 use App\POSModel;
 use App\CustomerModel;
+use App\Products_Description;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -35,11 +36,33 @@ class AdminPosController extends Controller
         return $product;
     }
 
-    public function product_list_body()
+    public function product_list_body(Request $request)
     {
-        $products = DB::select("select * from products_description"); //DB::table('products_description')->where('products_description.products_name', 'LIKE', "%$pro_name%")->get('products_name');
+        if($request->session()->has('warehouse'))
+        {
+            $products = Products_Description::where(['language_id'=>1])->get();
+        }
+        elseif ($request->session()->has('staff'))
+        {
+            $products = Products_Description::where(['language_id'=>1, 'w_id'=>session('staff')->warehouse_id])->get();
+        }
+        else
+        {
+            $products = Products_Description::where(['language_id' => 1])->get();
+        }
+//        $products = DB::select("select * from products_description");
+        //DB::table('products_description')->where('products_description.products_name', 'LIKE', "%$pro_name%")->get('products_name');
         return view('pos.product_list')->with(['products' => $products]);
 
+    }
+
+    public function recent_invoice()
+    {
+//        $warehouse_id = session('warehouse')->id;
+//        $staff_id = session('staff')->id;
+        $invoice = POSModel::all();
+//        $invoice = DB::select("select * from pos");
+        return view('pos.pos_list')->with(['invoice' => $invoice]);
     }
 
     public function getProductRow()
@@ -47,7 +70,6 @@ class AdminPosController extends Controller
         $pid = request('pid');
         $products = DB::selectOne("select * from products_description WHERE products_id = $pid");
         return view('pos.pro_tr')->with(['products' => $products]);
-
     }
 
     public function getProductRowScan()
