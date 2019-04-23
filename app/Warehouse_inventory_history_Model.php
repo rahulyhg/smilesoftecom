@@ -13,4 +13,9 @@ class Warehouse_inventory_history_Model extends Model
     */
    protected $table = 'warehouse_inventory_history';
    public $timestamps = false;
+
+   public function pname()
+   {
+      return $this->belongsTo('App\Products_Description' , 'pid');
+   }
 }
