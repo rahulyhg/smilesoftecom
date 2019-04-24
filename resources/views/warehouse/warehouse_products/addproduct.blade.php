@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('warehouse.warehouse_master')
 @section('content')
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -7,9 +7,9 @@
                 <small>{{ trans('labels.AddProduct') }}...</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="{{ URL::to('admin/dashboard/this_month') }}"><i
+                <li><a href="{{ URL::to('warehouse_dashboard') }}"><i
                                 class="fa fa-dashboard"></i> {{ trans('labels.breadcrumb_dashboard') }}</a></li>
-                <li><a href="{{ URL::to('admin/products')}}"><i
+                <li><a href="{{ URL::to('products')}}"><i
                                 class="fa fa-dashboard"></i> {{ trans('labels.ListingAllProducts') }}</a></li>
                 <li class="active">{{ trans('labels.AddProduct') }}</li>
             </ol>
@@ -46,7 +46,7 @@
                                                 @endforeach
                                             @endif
 
-                                            {!! Form::open(array('url' =>'admin/addnewproduct', 'method'=>'post', 'class' => 'form-horizontal form-validate', 'enctype'=>'multipart/form-data')) !!}
+                                            {!! Form::open(array('url' =>'addnewproduct', 'method'=>'post', 'class' => 'form-horizontal form-validate', 'enctype'=>'multipart/form-data')) !!}
                                             <div class="form-group">
                                                 <label for="name"
                                                        class="col-sm-2 col-md-3 control-label">Barcode</label>
@@ -452,8 +452,8 @@
                                                     <select class="form-control field-validate" name="tax_class_id" onchange="rateChange();">
                                                         {{--{{$rate_id = $result['taxClass']->id}}--}}
                                                         {{--@php--}}
-                                                            {{--$rate_id = $result['taxClass']->id;--}}
-                                                            {{--$rates = \App\TaxRatesModel::where(['tax_class_id'=>$rate_id])->first();--}}
+                                                        {{--$rate_id = $result['taxClass']->id;--}}
+                                                        {{--$rates = \App\TaxRatesModel::where(['tax_class_id'=>$rate_id])->first();--}}
                                                         {{--@endphp--}}
                                                         @foreach ($result['taxClass'] as $taxClass)
                                                             <option value="{{ $taxClass->tax_class_id }}">{{ $taxClass->tax_class_title }}</option>
@@ -467,47 +467,47 @@
                                                 </div>
                                             </div>
 
-                                                {{--<div class="form-group" id="tax-class">--}}
-                                                {{--<div class="container" style="margin-left: 308px;">--}}
-                                                {{--<div class="col-sm-4 col-md-2">--}}
-                                                {{--<label for="cgst"--}}
-                                                {{--class="col-sm-2 col-md-2 control-label">CGST </label>--}}
-                                                {{--<input type="text"--}}
-                                                {{--name="cgst"--}}
-                                                {{--id="cgst"--}}
-                                                {{--placeholder="CSGT in %"--}}
-                                                {{--minlength="1"--}}
-                                                {{--maxlength="2"--}}
-                                                {{--value="{{$rates->cgst}}"--}}
-                                                {{--class="form-control number-validate">--}}
-                                                {{--</div>--}}
+                                            {{--<div class="form-group" id="tax-class">--}}
+                                            {{--<div class="container" style="margin-left: 308px;">--}}
+                                            {{--<div class="col-sm-4 col-md-2">--}}
+                                            {{--<label for="cgst"--}}
+                                            {{--class="col-sm-2 col-md-2 control-label">CGST </label>--}}
+                                            {{--<input type="text"--}}
+                                            {{--name="cgst"--}}
+                                            {{--id="cgst"--}}
+                                            {{--placeholder="CSGT in %"--}}
+                                            {{--minlength="1"--}}
+                                            {{--maxlength="2"--}}
+                                            {{--value="{{$rates->cgst}}"--}}
+                                            {{--class="form-control number-validate">--}}
+                                            {{--</div>--}}
 
-                                                {{--<div class="col-sm-4 col-md-2">--}}
-                                                {{--<label for="sgst"--}}
-                                                {{--class="col-sm-2 col-md-3 control-label">SGST </label>--}}
-                                                {{--<input type="text"--}}
-                                                {{--name="sgst"--}}
-                                                {{--id="sgst"--}}
-                                                {{--minlength="1"--}}
-                                                {{--maxlength="2"--}}
-                                                {{--value="{{$rates->sgst}}"--}}
-                                                {{--placeholder="SSGT in %"--}}
-                                                {{--class="form-control number-validate">--}}
-                                                {{--</div>--}}
-                                                {{--<div class="col-sm-4 col-md-2">--}}
-                                                {{--<label for="igst"--}}
-                                                {{--class="col-sm-2 col-md-2 control-label">IGST </label>--}}
-                                                {{--<input type="text"--}}
-                                                {{--name="igst"--}}
-                                                {{--id="igst"--}}
-                                                {{--minlength="1"--}}
-                                                {{--maxlength="2"--}}
-                                                {{--value="{{$rates->igst}}"--}}
-                                                {{--placeholder="ISGT in %"--}}
-                                                {{--class="form-control number-validate">--}}
-                                                {{--</div>--}}
-                                                {{--</div>--}}
-                                                {{--<div class="container" style="margin-left: 322px;">Please enter numbers only for CGST, SGST and IGST taxes</div>--}}
+                                            {{--<div class="col-sm-4 col-md-2">--}}
+                                            {{--<label for="sgst"--}}
+                                            {{--class="col-sm-2 col-md-3 control-label">SGST </label>--}}
+                                            {{--<input type="text"--}}
+                                            {{--name="sgst"--}}
+                                            {{--id="sgst"--}}
+                                            {{--minlength="1"--}}
+                                            {{--maxlength="2"--}}
+                                            {{--value="{{$rates->sgst}}"--}}
+                                            {{--placeholder="SSGT in %"--}}
+                                            {{--class="form-control number-validate">--}}
+                                            {{--</div>--}}
+                                            {{--<div class="col-sm-4 col-md-2">--}}
+                                            {{--<label for="igst"--}}
+                                            {{--class="col-sm-2 col-md-2 control-label">IGST </label>--}}
+                                            {{--<input type="text"--}}
+                                            {{--name="igst"--}}
+                                            {{--id="igst"--}}
+                                            {{--minlength="1"--}}
+                                            {{--maxlength="2"--}}
+                                            {{--value="{{$rates->igst}}"--}}
+                                            {{--placeholder="ISGT in %"--}}
+                                            {{--class="form-control number-validate">--}}
+                                            {{--</div>--}}
+                                            {{--</div>--}}
+                                            {{--<div class="container" style="margin-left: 322px;">Please enter numbers only for CGST, SGST and IGST taxes</div>--}}
                                             {{--</div>--}}
                                             <hr>
                                             <div class="form-group">

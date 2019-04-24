@@ -133,15 +133,20 @@
               <!--<li class="footer"><a href="#">See All Messages</a></li>-->
             </ul>
           </li>
-          
+
+
+
+
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="{{asset('').auth()->guard('admin')->user()->image}}" class="user-image" alt="{{ auth()->guard('admin')->user()->first_name }} {{ auth()->guard('admin')->user()->last_name }} Image">
               <span class="hidden-xs">{{ auth()->guard('admin')->user()->first_name }} {{ auth()->guard('admin')->user()->last_name }} </span>
             </a>
+
+
             <ul class="dropdown-menu">
-              <!-- User image -->
+              {{--<!-- User image -->--}}
               <li class="user-header">
                 <img src="{{asset('').auth()->guard('admin')->user()->image}}" class="img-circle" alt="{{ auth()->guard('admin')->user()->first_name }} {{ auth()->guard('admin')->user()->last_name }} Image">
 
