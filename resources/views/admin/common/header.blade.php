@@ -151,7 +151,7 @@
                 <img src="{{asset('').auth()->guard('admin')->user()->image}}" class="img-circle" alt="{{ auth()->guard('admin')->user()->first_name }} {{ auth()->guard('admin')->user()->last_name }} Image">
 
                 <p>
-                  {{ auth()->guard('admin')->user()->first_name }} {{ auth()->guard('admin')->user()->last_name }} 
+                  {{ auth()->guard('admin')->user()->first_name }} {{ auth()->guard('admin')->user()->last_name }}
                   <small>{{ trans('labels.administrator')}}</small>
                 </p>
               </li>
@@ -174,7 +174,7 @@
               @if(session('profile_view')==1 or auth()->guard('admin')->user()->adminType=='1')
                 <div class="pull-left">
                   <a href="{{ URL::to('admin/profile')}}" class="btn btn-default btn-flat">{{ trans('labels.profile_link')}}</a>
-                </div>                
+                </div>
               @endif
                 <div class="pull-right">
                   <a href="{{ URL::to('admin/logout')}}" class="btn btn-default btn-flat">{{ trans('labels.sign_out') }}</a>
