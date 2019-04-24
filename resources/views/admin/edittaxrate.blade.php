@@ -105,7 +105,7 @@
                                  <div class="col-sm-10 col-md-2" style="margin-top: 27px;">
                                      <input type="text"
                                             name="tax_rate"
-                                            id="tax_rate"
+                                            id="tax_rate_gst"
                                             minlength="1"
                                             maxlength="2"
                                             onkeyup="ratecalc();"
@@ -196,13 +196,26 @@
 <script>
     function ratecalc()
     {
-        var tax = $('#tax_rate').val();
-//            alert(tax);
+        var tax = parseFloat($('#tax_rate_gst').val());
+        var cgst = $('#cgst').val();
+        var sgst = $('#sgst').val();
+        var igst = $('#igst').val();
+
         var temp = parseFloat(tax/2);
 
         $('#sgst').val(temp);
         $('#cgst').val(temp);
         $('#igst').val(0);
+        if(tax == '' || tax == 0)
+        {
+            $('#sgst').val(0);
+            $('#cgst').val(0);
+            $('#igst').val(0);
+        }
+        if(cgst == '' || cgst == 0)
+        {
+            $('#igst').val(sgst);
+        }
     }
 </script>
 @endsection 

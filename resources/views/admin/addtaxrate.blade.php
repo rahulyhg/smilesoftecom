@@ -176,18 +176,27 @@
 </div>
     <script>
         $(function () {
-            $('#sgst').val(temp);
-            $('#cgst').val(temp);
+            $('#sgst').val(0);
+            $('#cgst').val(0);
             $('#igst').val(0);
-        })
+        });
         function ratecalc()
         {
             var tax = $('#tax_rate').val();
-//            alert(tax);
+            var cgst = $('#cgst').val();
+            var sgst = $('#sgst').val();
+            var igst = $('#igst').val();
+
             var temp = parseFloat(tax/2);
             $('#sgst').val(temp);
             $('#cgst').val(temp);
             $('#igst').val(0);
+            if(tax == '' || tax == 0)
+            {
+                $('#sgst').val(0);
+                $('#cgst').val(0);
+                $('#igst').val(0);
+            }
         }
     </script>
 @endsection 
