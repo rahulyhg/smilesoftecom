@@ -157,7 +157,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/addnewoptions', 'AdminProductsController@addnewoptions');
             //
             Route::post('/addnewattributes', 'AdminProductsController@addnewattributes');
-            //Route::get('/editattributes/{id}/{language_id}', 'AdminProductsController@editattributes');
+            Route::get('/editattributes/{id}/{language_id}', 'AdminProductsController@editattributes');
             Route::get('/manage-options/{id}', 'AdminProductsController@manageoptions');
             Route::get('/edit-values/{id}', 'AdminProductsController@editvalues');
             Route::post('/updatevalue', 'AdminProductsController@updatevalue');
@@ -870,12 +870,12 @@ Route::group(['middleware' => 'warehouse'], function () {
     Route::post('/deletedefaultattribute', 'WarehouseProductController@deletedefaultattribute');
     Route::post('editproductattribute', 'WarehouseProductController@editproductattribute');
     Route::post('editdefaultattribute', 'WarehouseProductController@editdefaultattribute');
-    Route::post('addnewproductimagemodal', 'WarehouseProductController@addnewproductimagemodal');
+//    Route::post('addnewproductimagemodal', 'WarehouseProductController@addnewproductimagemodal');
     Route::post('deleteproductattributemodal', 'WarehouseProductController@deleteproductattributemodal');
     Route::post('deletedefaultattributemodal', 'WarehouseProductController@deletedefaultattributemodal');
 
     //product attribute
-    Route::post('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
+//    Route::post('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
     Route::post('editproductimage', 'WarehouseProductController@editproductimage');
     Route::post('/updateproductimage', 'WarehouseProductController@updateproductimage');
     Route::post('/deleteproductimagemodal', 'WarehouseProductController@deleteproductimagemodal');
@@ -890,8 +890,8 @@ Route::group(['middleware' => 'warehouse'], function () {
     Route::get('/addoptions', 'WarehouseProductController@addoptions');
     Route::post('/addnewoptions', 'WarehouseProductController@addnewoptions');
     //
-    Route::post('/addnewattributes', 'WarehouseProductController@addnewattributes');
-    //Route::get('/editattributes/{id}/{language_id}', 'WarehouseProductController@editattributes');
+//    Route::post('/addnewattributes', 'WarehouseProductController@addnewattributes');
+//    Route::get('/editattributes/{id}/{language_id}', 'WarehouseProductController@editattributes');
     Route::get('/manage-options/{id}', 'WarehouseProductController@manageoptions');
     Route::get('/edit-values/{id}', 'WarehouseProductController@editvalues');
     Route::post('/updatevalue', 'WarehouseProductController@updatevalue');

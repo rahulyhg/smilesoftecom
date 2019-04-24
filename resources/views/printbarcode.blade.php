@@ -18,36 +18,31 @@
 </head>
 
 <body>
-    <div style="width:100%;">
+<div style="width:100%;">
 
-        <table width="100%" cellspacing="0" cellpadding="0">
-
-            @php $b_id = session('bar_id'); $mqty = session('bar_qty'); $data = \App\BarcodeModel::whereproduct_id($b_id)->first(); $i=1;
-            @endphp 
-            <tr>
-                @for($j = 1; $j
-                <=$mqty; $j++)
-                 <td style="padding:15px 20px"><b>{{ $data->prodis->products_name }}</b> {!! \Milon\Barcode\DNS1D::getBarcodeHTML($data->barcode, 'C128A',1.2,23) !!}
+    <table width="100%" cellspacing="0" cellpadding="0">
+        @php $b_id = session('bar_id');
+            $mqty = session('bar_qty');
+            $data = \App\BarcodeModel::whereproduct_id($b_id)->first();
+            $i=1;
+        @endphp
+        <tr>
+            @for($j = 1; $j<=$mqty; $j++)
+                <td style="padding:15px 20px">
+                    <b>{{ $data->prodis->products_name }}</b> {!! \Milon\Barcode\DNS1D::getBarcodeHTML($data->barcode, 'C128A',1.2,23) !!}
                     <b>{{$data->barcode}} - MRP: {{ $data->selling_price }} Rs</b></td>
-                    @if($i==3)
-            </tr>
-            <tr>
-@php $i=0; 
-@endphp @endif
- @php $i++; 
-@endphp @endfor 
+                @if($i==3)
+        </tr>
+        <tr>
 
-        </table>
+        @php $i=0;
+        @endphp @endif
+        @php $i++;
+        @endphp @endfor
 
-    </div>
+    </table>
 
-
-
-
-
-
-
-
+</div>
 
 
 </body>

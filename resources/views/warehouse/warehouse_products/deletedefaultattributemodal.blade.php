@@ -1,7 +1,15 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Raghu
- * Date: 4/24/2019
- * Time: 5:13 PM
- */
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="deleteProductAttributeModalLabel">{{ trans('labels.DeleteOption') }}</h4>
+</div>
+{!! Form::open(array('url' =>'deleteDefaultAttributeForm', 'name'=>'AttributeForm', 'id'=>'deletedefaultattributeform', 'method'=>'post', 'class' => 'form-horizontal', 'enctype'=>'multipart/form-data')) !!}
+{!! Form::hidden('products_id',  $result['data']['products_id'], array('class'=>'form-control', 'id'=>'products_id')) !!}
+{!! Form::hidden('products_attributes_id',  $result['data']['products_attributes_id'], array('class'=>'form-control', 'id'=>'products_attributes_id')) !!}
+<div class="modal-body">
+    <p>{{ trans('labels.DeleteOptionText') }}</p>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans('labels.Cancel') }}</button>
+        <button type="button" class="btn btn-primary" id="deleteDefaultAttribute">{{ trans('labels.Delete') }}</button>
+    </div>
+    {!! Form::close() !!}
+</div>

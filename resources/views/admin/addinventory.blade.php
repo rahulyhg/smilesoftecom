@@ -130,7 +130,7 @@
                                          {{ trans('labels.Current Stock') }}                             	 
                                       </label>
                                       <div class="col-sm-10 col-md-8">
-                                          <p id="current_stocks" style="width:100%">{{ $wstock->stock }}</p><br>
+                                          {{--<p id="current_stocks" style="width:100%">{{ $wstock->stock }}</p><br>--}}
                                                                        
                                       </div>
                                    </div>

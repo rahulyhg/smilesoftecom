@@ -105,9 +105,7 @@
                                                                                             <label style="width:100%">
                                                                                                 <input id="attribute"
                                                                                                        type="hidden"
-                                                                                                       class="attributeid_<?=$attribute['option']['id']?>"
-                                                                                                       name="attributeid[]"
-                                                                                                       value=""> {{ $attribute['option']['name']}}
+                                                                                                       class="attributeid_<?=$attribute['option']['id']?>" name="attributeid[]" value=""> {{ $attribute['option']['name']}}
                                                                                             </label></li>
                                                                                         <ul class="list-group">
                                                                                             <li class="list-group-item">
