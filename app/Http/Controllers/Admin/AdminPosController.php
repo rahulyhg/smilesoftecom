@@ -6,6 +6,7 @@ use App\BarcodeModel;
 use App\POSInfoModel;
 use App\POSModel;
 use App\CustomerModel;
+use App\Products_Description;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -35,11 +36,52 @@ class AdminPosController extends Controller
         return $product;
     }
 
-    public function product_list_body()
+    public function product_list_body(Request $request)
     {
-        $products = DB::select("select * from products_description"); //DB::table('products_description')->where('products_description.products_name', 'LIKE', "%$pro_name%")->get('products_name');
+        if ($request->session()->has('warehouse'))
+        {
+            $warehouse_id = session('warehouse')->id;
+
+            $products = DB::select("SELECT a.w_id, b.products_id, b.language_id, b.products_name, b.products_description, b.products_url, b.products_viewed,b.products_left_banner, b.products_left_banner_start_date, b.products_left_banner_expire_date, b.products_right_banner, b.products_right_banner_start_date, b.products_right_banner_expire_date FROM warehouse_inventory a, products_description b WHERE a.pid = b.products_id AND a.w_id = $warehouse_id");
+        }
+        elseif ($request->session()->has('staff'))
+        {
+            $warehouse_id = session('staff')->warehouse_id;
+            $products = DB::select("SELECT a.w_id, b.products_id, b.language_id, b.products_name, b.products_description, b.products_url, b.products_viewed,b.products_left_banner, b.products_left_banner_start_date, b.products_left_banner_expire_date, b.products_right_banner, b.products_right_banner_start_date, b.products_right_banner_expire_date FROM warehouse_inventory a, products_description b WHERE a.pid = b.products_id AND a.w_id = $warehouse_id");
+        }
+        else
+            {
+//            $products = Products_Description::where(['language_id' => 1])->get();
+        }
+
+//        $warehouse_id = session('staff')->warehouse_id;
+//        $products = DB::select("select * from warehouse_inventory WHERE w_id = (SELECT * FROM products_description ) ");
+
+
+//        $products = DB::select("select * from products_description");
+        //DB::table('products_description')->where('products_description.products_name', 'LIKE', "%$pro_name%")->get('products_name');
         return view('pos.product_list')->with(['products' => $products]);
 
+    }
+
+    public function recent_invoice(Request $request)
+    {
+        if ($request->session()->has('staff'))
+        {
+            $warehouse_id = session('staff')->warehouse_id;
+            $staff_id = session('staff')->id;
+            $invoice = POSModel::where(['sid'=>$staff_id, 'wid'=>$warehouse_id])->limit(5)->get();
+        }
+        elseif ($request->session()->has('warehouse'))
+        {
+            $warehouse_id = session('warehouse')->id;
+            $invoice = POSModel::where(['wid'=>$warehouse_id])->limit(5)->get();
+        }
+        else
+        {
+            $invoice = POSModel::limit(5)->get();
+        }
+        return view('pos.pos_list')->with(['invoice' => $invoice]);
     }
 
     public function getProductRow()
@@ -47,15 +89,23 @@ class AdminPosController extends Controller
         $pid = request('pid');
         $products = DB::selectOne("select * from products_description WHERE products_id = $pid");
         return view('pos.pro_tr')->with(['products' => $products]);
-
     }
 
     public function getProductRowScan()
     {
         $pid = request('barcode');
+
         $barcode = BarcodeModel::where(['barcode' => $pid])->first();
         if (isset($barcode)) {
             $products = DB::selectOne("select * from products_description WHERE products_id = $barcode->product_id");
+            return view('pos.pro_tr')->with(['products' => $products]);
+        } /*elseif (preg_match('~[0-9]~', $pid) == false) {
+            $products = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
+            return view('pos.pro_tr')->with(['products' => $products]);
+        }*/
+        $desc = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
+        if (isset($desc)) {
+            $products = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
             return view('pos.pro_tr')->with(['products' => $products]);
         } else {
             return 'Not Available';
@@ -132,6 +182,13 @@ class AdminPosController extends Controller
             return Redirect('admin/pos')->with('errmessage', 'Customer Registration Failed:(');
         }
 
+    }
+
+    public function print_pos($id)
+    {
+        $pos = POSModel::find($id);
+        $pos_info = POSInfoModel::where(['pos_id' => $id])->get();
+        return view('pos.print_invoice')->with(['pos' => $pos, 'pos_info' => $pos_info]);
     }
 
     public function getCustomer()

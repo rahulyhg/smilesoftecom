@@ -73,8 +73,8 @@ class WareHouseController extends Controller
     function insert_staff()
     {
         $staff = new WarehouseStaffModel();
-        $staff->name = request('name');
         $staff->warehouse_id = request('warehouse_id');
+        $staff->name = request('name');
         $staff->contact = request('contact');
         $staff->username = request('username');
         $staff->password = request('password');

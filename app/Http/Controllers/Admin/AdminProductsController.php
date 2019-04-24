@@ -12,6 +12,8 @@ use App;
 use App\BarcodeModel;
 use App\Http\Controllers\Controller;
 use App\WarehouseModel;
+use App\TaxClassModel;
+use App\TaxRatesModel;
 use App\Warehouse_Inventory_Model;
 use PDF;
 //for password encryption or hash protected
@@ -160,10 +162,7 @@ class AdminProductsController extends Controller
 
     public function addproduct(Request $request)
     {
-        if (session('products_create') == 0) {
-            print Lang::get("labels.You do not have to access this route");
-        } else {
-            $title = array('pageTitle' => Lang::get("labels.AddProduct"));
+        $title = array('pageTitle' => Lang::get("labels.AddProduct"));
             $language_id = '1';
 
             $result = array();
@@ -177,8 +176,12 @@ class AdminProductsController extends Controller
             $result['manufacturer'] = $myVar->getManufacturer($language_id);
 
             //tax class
-            $taxClass = DB::table('tax_class')->get();
+//            $taxClass = DB::table('tax_class')->get();
+            $taxClass = TaxClassModel::get();
             $result['taxClass'] = $taxClass;
+
+            $taxRate = TaxRatesModel::get();
+            $result['taxRate'] = $taxRate;
 
             //get function from other controller
             $myVar = new AdminSiteSettingController();
@@ -186,7 +189,6 @@ class AdminProductsController extends Controller
             $result['units'] = $myVar->getUnits();
 
             return view("admin.addproduct", $title)->with('result', $result);
-        }
     }
 
     //addNewProduct
@@ -238,6 +240,9 @@ class AdminProductsController extends Controller
                 'products_weight' => $request->products_weight,
                 'products_status' => $request->products_status,
                 'products_tax_class_id' => $request->tax_class_id,
+//                'product_cgst' => $request->cgst,
+//                'product_sgst' => $request->sgst,
+//                'product_igst' => $request->igst,
                 'products_weight_unit' => $request->products_weight_unit,
                 'low_limit' => 0,
                 'products_type' => $request->products_type,

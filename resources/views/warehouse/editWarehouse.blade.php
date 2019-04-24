@@ -83,6 +83,38 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label for="latitude"
+                                                           class="col-sm-2 col-md-3 control-label">Latitude</label>
+                                                    <div class="col-sm-10 col-md-4">
+                                                        <input type="text" name="latitude" id="latitude"
+                                                               autocomplete="off"
+                                                               class="form-control field-validate"
+                                                               placeholder="Enter Latitude"
+                                                               value="{{$warehouse->latitude}}"
+                                                               maxlength="100">
+                                                        <span class="help-block"
+                                                              style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                        example 20.5937° N</span>
+                                                        <span class="help-block hidden">Latitude of the warehouse is mandaotry</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="longitude"
+                                                           class="col-sm-2 col-md-3 control-label">Longitude</label>
+                                                    <div class="col-sm-10 col-md-4">
+                                                        <input type="text" name="longitude" id="longitude"
+                                                               autocomplete="off"
+                                                               class="form-control field-validate"
+                                                               placeholder="Enter Longitude"
+                                                               value="{{$warehouse->longitude}}"
+                                                               maxlength="100">
+                                                        <span class="help-block"
+                                                              style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                        example 78.9629° E</span>
+                                                        <span class="help-block hidden">Longitude of the warehouse is mandaotry</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="username"
                                                            class="col-sm-2 col-md-3 control-label">Username</label>
                                                     <div class="col-sm-10 col-md-4">

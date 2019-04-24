@@ -18,5 +18,5 @@ class Products_Description extends Model
      */
     protected $table = 'products_description';
     public $timestamps = false;
-    protected $primaryKey = 'products_id';
+    public $primaryKey = 'products_id';
 }

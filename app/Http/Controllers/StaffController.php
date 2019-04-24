@@ -45,6 +45,7 @@ class StaffController extends Controller
     }
     public function staff_dashboard()
     {
+//        return session('staff')->warehouse_id;
         return view('staff.staff_dashboard');
     }
 

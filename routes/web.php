@@ -115,7 +115,7 @@ Route::group(['prefix' => 'admin'], function () {
             //products
             Route::get('/products', 'AdminProductsController@products');
             Route::get('/barcode-generate', 'AdminProductsController@barcode_generate');
-            Route::get('/barcode_generate_view', 'AdminProductsController@barcode_generate_view');
+//            Route::get('/barcode_generate_view', 'AdminProductsController@barcode_generate_view');
             Route::get('/addproduct', 'AdminProductsController@addproduct');
             Route::post('/addnewproduct', 'AdminProductsController@addnewproduct');
 
@@ -429,21 +429,30 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/updatecategoriesroles', 'AdminController@updateCategoriesRoles');
             Route::get('/deletecategoriesroles/{id}', 'AdminController@deleteCategoriesRoles');
 
-
             /******************POS  Bijendra**********************/
+            Route::get('pos', 'POSController@create_pos');
+            Route::get('getproducts', 'POSController@getproducts');
+            Route::get('product_list_body', 'POSController@product_list_body');
+            Route::get('recent_invoice', 'POSController@recent_invoice');
+            Route::get('getProductRow', 'POSController@getProductRow');
+            Route::get('getProductRowScan', 'POSController@getProductRowScan');
+            Route::post('store_pos', 'POSController@store_pos');
             Route::get('pos', 'AdminPosController@create_pos');
             Route::get('getproducts', 'AdminPosController@getproducts');
             Route::get('product_list_body', 'AdminPosController@product_list_body');
+            Route::get('recent_invoice', 'AdminPosController@recent_invoice');
             Route::get('getProductRow', 'AdminPosController@getProductRow');
             Route::get('getProductRowScan', 'AdminPosController@getProductRowScan');
             Route::post('store_pos', 'AdminPosController@store_pos');
+            Route::get('print_pos/{id}', 'AdminPosController@print_pos');
             /******************POS Bijendra**********************/
 
             /******************Customer Ashish **********************/
-            Route::post('customer_add', 'AdminPosController@customer_add');
-            Route::get('getCustomer', 'AdminPosController@getCustomer');
-            Route::get('getCustID', 'AdminPosController@getCustID');
+            Route::post('customer_add', 'POSController@customer_add');
+            Route::get('getCustomer', 'POSController@getCustomer');
+            Route::get('getCustID', 'POSController@getCustID');
             /******************Customer Ashish**********************/
+
 
         });
 
@@ -840,12 +849,89 @@ Route::group(['middleware' => 'warehouse'], function () {
     
     Route::get('/warehouse_products', 'WareHouseController@warehouse_products'); 
     Route::get('/addinventory/{id}/', 'WareHouseController@addinventory');
+
+    //products
+    Route::get('/products', 'WarehouseProductController@products');
+    Route::get('/barcode-generate', 'WarehouseProductController@barcode_generate');
+//    Route::get('/barcode_generate_view', 'WarehouseProductController@barcode_generate_view');
+    Route::get('/addproduct', 'WarehouseProductController@addproduct');
+    Route::post('/addnewproduct', 'WarehouseProductController@addnewproduct');
+
+    //add attribute against newly added product
+    Route::get('/addproductattribute/{id}/', 'WarehouseProductController@addproductattribute');
+    Route::get('/addinventory/{id}/', 'WarehouseProductController@addinventory');
+    Route::post('/currentstock', 'WarehouseProductController@currentstock');
+    Route::post('/addnewstock', 'WarehouseProductController@addnewstock');
+    Route::post('/addminmax', 'WarehouseProductController@addminmax');
+    Route::get('/addproductimages/{id}/', 'WarehouseProductController@addproductimages');
+    Route::post('/addnewdefaultattribute', 'WarehouseProductController@addnewdefaultattribute');
+    Route::post('/addnewproductattribute', 'WarehouseProductController@addnewproductattribute');
+    Route::post('/updateproductattribute', 'WarehouseProductController@updateproductattribute');
+    Route::post('/updatedefaultattribute', 'WarehouseProductController@updatedefaultattribute');
+    Route::post('/deleteproduct', 'WarehouseProductController@deleteproduct');
+    Route::post('/deleteproductattribute', 'WarehouseProductController@deleteproductattribute');
+    Route::post('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
+    Route::post('/deletedefaultattribute', 'WarehouseProductController@deletedefaultattribute');
+    Route::post('editproductattribute', 'WarehouseProductController@editproductattribute');
+    Route::post('editdefaultattribute', 'WarehouseProductController@editdefaultattribute');
+    Route::post('addnewproductimagemodal', 'WarehouseProductController@addnewproductimagemodal');
+    Route::post('deleteproductattributemodal', 'WarehouseProductController@deleteproductattributemodal');
+    Route::post('deletedefaultattributemodal', 'WarehouseProductController@deletedefaultattributemodal');
+
+    //product attribute
+    Route::post('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
+    Route::post('editproductimage', 'WarehouseProductController@editproductimage');
+    Route::post('/updateproductimage', 'WarehouseProductController@updateproductimage');
+    Route::post('/deleteproductimagemodal', 'WarehouseProductController@deleteproductimagemodal');
+    Route::post('/deleteproductimage', 'WarehouseProductController@deleteproductimage');
+    Route::get('/editproduct/{id}', 'WarehouseProductController@editproduct');
+    Route::post('/updateproduct', 'WarehouseProductController@updateproduct');
+    Route::post('/getOptions', 'WarehouseProductController@getOptions');
+    Route::post('/getOptionsValue', 'WarehouseProductController@getOptionsValue');
+
+    //Attribute
+    Route::get('/attributes', 'WarehouseProductController@attributes');
+    Route::get('/addoptions', 'WarehouseProductController@addoptions');
+    Route::post('/addnewoptions', 'WarehouseProductController@addnewoptions');
+    //
+    Route::post('/addnewattributes', 'WarehouseProductController@addnewattributes');
+    //Route::get('/editattributes/{id}/{language_id}', 'WarehouseProductController@editattributes');
+    Route::get('/manage-options/{id}', 'WarehouseProductController@manageoptions');
+    Route::get('/edit-values/{id}', 'WarehouseProductController@editvalues');
+    Route::post('/updatevalue', 'WarehouseProductController@updatevalue');
+    Route::post('/addnewvalues', 'WarehouseProductController@addnewvalues');
+
+    Route::get('/manage-options-values/{id}', 'WarehouseProductController@manageoptionsvalues');
+    Route::post('/updateoptions/', 'WarehouseProductController@updateoptions');
+    Route::post('/deleteattribute', 'WarehouseProductController@deleteattribute');
+    Route::post('/addattributevalue', 'WarehouseProductController@addattributevalue');
+    Route::post('/updateattributevalue', 'WarehouseProductController@updateattributevalue');
+    Route::post('/checkattributeassociate', 'WarehouseProductController@checkattributeassociate');
+    Route::post('/checkvalueassociate', 'WarehouseProductController@checkvalueassociate');
+    Route::post('/deletevalue', 'WarehouseProductController@deletevalue');
+
 });
 
 Route::group(['middleware' => 'staff'], function () {
     Route::get('/staff_dashboard', 'StaffController@staff_dashboard');
     Route::get('/staff_logout', 'StaffController@logout');
     Route::get('/staff_staff', 'StaffController@warehouse_staff');
+
+    /******************POS  Bijendra**********************/
+    Route::get('pos', 'POSController@create_pos');
+    Route::get('getproducts', 'POSController@getproducts');
+    Route::get('product_list_body', 'POSController@product_list_body');
+    Route::get('recent_invoice', 'POSController@recent_invoice');
+    Route::get('getProductRow', 'POSController@getProductRow');
+    Route::get('getProductRowScan', 'POSController@getProductRowScan');
+    Route::post('store_pos', 'POSController@store_pos');
+    /******************POS Bijendra**********************/
+
+    /******************Customer Ashish **********************/
+    Route::post('customer_add', 'POSController@customer_add');
+    Route::get('getCustomer', 'POSController@getCustomer');
+    Route::get('getCustID', 'POSController@getCustID');
+    /******************Customer Ashish**********************/
 });
 
 

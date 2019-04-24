@@ -16,6 +16,11 @@
         <ul class="sidebar-menu">
             <li class="header">NAVIGATION</li>
 
+            <li class="treeview">
+                <a href="{{ url('warehouse_dashboard')}}">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                </a>
+            </li>
                 <li class="treeview">
                     <a href="{{ url('warehouse_dashboard')}}">
                         <i class="fa fa-dashboard"></i> <span>Dashboard</span>
@@ -27,11 +32,26 @@
                     </a>
                 </li>
 
-                <li class="treeview">
-                    <a href="{{ url('warehouse_staff')}}">
-                        <i class="fa fa-home"></i> <span>Staff</span>
+                <li class="treeview {{ Request::is('products') ? 'active' : '' }} {{ Request::is('addproduct') ? 'active' : '' }} {{ Request::is('editattributes/*') ? 'active' : '' }} {{ Request::is('attributes') ? 'active' : '' }}  {{ Request::is('addattributes') ? 'active' : '' }} {{ Request::is('addproductattribute/*') ? 'active' : '' }} {{ Request::is('addinventory/*') ? 'active' : '' }} {{ Request::is('addproductimages/*') ? 'active' : '' }} ">
+                    <a href="#">
+                        <i class="fa fa-database"></i> <span>{{ trans('labels.link_products') }}</span> <i
+                                class="fa fa-angle-left pull-right"></i>
                     </a>
+                    <ul class="treeview-menu">
+                        <li class="{{ Request::is('products') ? 'active' : '' }} {{ Request::is('addproduct') ? 'active' : '' }} {{ Request::is('editproduct/*') ? 'active' : '' }} {{ Request::is('addproductattribute/*') ? 'active' : '' }} {{ Request::is('addinventory/*') ? 'active' : '' }} {{ Request::is('addproductimages/*') ? 'active' : '' }}">
+                            <a href="{{ URL::to('products')}}"><i
+                                        class="fa fa-circle-o"></i> {{ trans('labels.link_all_products') }}</a></li>
+
+                        <li class="{{ Request::is('attributes') ? 'active' : '' }}  {{ Request::is('addattributes') ? 'active' : '' }}  {{ Request::is('editattributes/*') ? 'active' : '' }}">
+                            <a href="{{ URL::to('attributes' )}}"><i
+                                        class="fa fa-circle-o"></i> {{ trans('labels.products_attributes') }}</a></li>
+                    </ul>
                 </li>
+            <li class="treeview">
+                <a href="{{ url('warehouse_staff')}}">
+                    <i class="fa fa-home"></i> <span>Staff</span>
+                </a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->
