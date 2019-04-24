@@ -10,7 +10,7 @@
 
             <h1> {{ trans('labels.Options') }} <small>{{ trans('labels.ListingAllOptions') }}...</small> </h1>
             <ol class="breadcrumb">
-                <li><a href="{{ URL::to('admin/dashboard/this_month')}}"><i class="fa fa-dashboard"></i> {{ trans('labels.breadcrumb_dashboard') }}</a></li>
+                <li><a href="{{ URL::to('warehouse_dashboard')}}"><i class="fa fa-dashboard"></i> {{ trans('labels.breadcrumb_dashboard') }}</a></li>
                 <li class="active">{{ trans('labels.Options') }}</li>
             </ol>
         </section>
@@ -27,7 +27,7 @@
                         <div class="box-header">
                             <h3 class="box-title"> {{ trans('labels.ListingAllOptions') }} </h3>
                             <div class="box-tools pull-right">
-                                <a href="{{ URL::to('admin/addoptions')}}" type="button" class="btn btn-block btn-primary">{{ trans('labels.AddNewOption') }}</a>
+                                <a href="{{ URL::to('addoptions')}}" type="button" class="btn btn-block btn-primary">{{ trans('labels.AddNewOption') }}</a>
                             </div>
                         </div>
 
@@ -75,7 +75,7 @@
                                                                 --- <br>
                                                             @endif
                                                         @endforeach
-                                                        <a href="{{ URL::to('admin/manage-options')}}/{{$data->products_options_id}}" >{{ trans('labels.Manage Options') }}</a><br>
+                                                        <a href="{{ URL::to('manage-options')}}/{{$data->products_options_id}}" >{{ trans('labels.Manage Options') }}</a><br>
                                                     </td>
                                                     <td dir="ltr">
                                                         @foreach($data->data as $language)
@@ -89,7 +89,7 @@
                                                             @endif
                                                             <br>
                                                         @endforeach
-                                                        <a href="{{ URL::to('admin/manage-options-values')}}/{{$data->products_options_id}}" >{{ trans('labels.Manage Values') }}</a><br>
+                                                        <a href="{{ URL::to('manage-options-values')}}/{{$data->products_options_id}}" >{{ trans('labels.Manage Values') }}</a><br>
                                                     </td>
                                                     <td><a option_id="{{$data->products_options_id}}" class="badge bg-red deleteOption"><i class="fa fa-trash " aria-hidden="true"></i></a></td>
                                                 </tr>
@@ -143,7 +143,7 @@
 
                         </div>
 
-                        {!! Form::open(array('url' =>'admin/deleteattribute', 'name'=>'deleteAttribute', 'id'=>'deleteAttribute', 'method'=>'post', 'class' => 'form-horizontal', 'enctype'=>'multipart/form-data')) !!}
+                        {!! Form::open(array('url' =>'deleteattribute', 'name'=>'deleteAttribute', 'id'=>'deleteAttribute', 'method'=>'post', 'class' => 'form-horizontal', 'enctype'=>'multipart/form-data')) !!}
 
                         {!! Form::hidden('action',  'delete', array('class'=>'form-control')) !!}
 

@@ -93,7 +93,7 @@
                                                 <tr>
                                                     <td>{{ $product->products_id }}</td>
                                                     <td><img src="{{asset('').'/'.$product->products_image}}" alt="" width=" 100px" height="100px"></td>
-                                                    <td><Button  onclick="getbarcode({{ $product->products_id }});" class="btn btn-primary btn-sm">Download Barcode</Button></td>
+                                                    <td><Button onclick="getbarcode({{ $product->products_id }});" class="btn btn-primary btn-sm">Download Barcode</Button></td>
                                                     <td width="45%">
                                                         <strong>{{ $product->products_name }} @if(!empty($product->products_model)) ( {{ $product->products_model }} ) @endif</strong><br>
 
@@ -199,7 +199,7 @@
                     </div>
                 </div>
             </div>
-            <form action="{{ url('barcode-generate') }}" method="get">
+            <form action="{{ url('barcode-generate') }}" target="_blank" method="get">
                 <div class="modal fade" id="myModalcc" role="dialog">
                     <div class="modal-dialog">
 

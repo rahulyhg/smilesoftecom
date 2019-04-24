@@ -1,7 +1,7 @@
 @extends('warehouse.warehouse_master')
 @section('content')
     <style>
-        .myrow{
+        .myrow {
             border-bottom: 1px solid #00000021;
             margin-top: 15px;
             margin-bottom: 15px;
@@ -10,12 +10,17 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1> {{ trans('labels.Inventory') }} <small>{{ trans('labels.Inventory') }}...</small> </h1>
+            <h1> {{ trans('labels.Inventory') }}
+                <small>{{ trans('labels.Inventory') }}...</small>
+            </h1>
             <ol class="breadcrumb">
-                <li><a href="{{ URL::to('warehouse_dashboard') }}"><i class="fa fa-dashboard"></i> {{ trans('labels.breadcrumb_dashboard') }}</a></li>
+                <li><a href="{{ URL::to('warehouse_dashboard') }}"><i
+                                class="fa fa-dashboard"></i> {{ trans('labels.breadcrumb_dashboard') }}</a></li>
                 <li><a href="{{ URL::to('products') }}">{{ trans('labels.ListingAllProducts') }}</a></li>
                 @if($result['products'][0]->products_type==1)
-                    <li><a href="{{ URL::to('addproductattribute/'.$result['products'][0]->products_id) }}">{{ trans('labels.AddOptions') }}</a></li>
+                    <li>
+                        <a href="{{ URL::to('addproductattribute/'.$result['products'][0]->products_id) }}">{{ trans('labels.AddOptions') }}</a>
+                    </li>
                 @endif
                 <li class="active">{{ trans('labels.Inventory') }}</li>
             </ol>
@@ -40,7 +45,9 @@
                                     @if (count($errors) > 0)
                                         @if($errors->any())
                                             <div class="alert alert-success alert-dismissible" role="alert">
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                </button>
                                                 {{$errors->first()}}
                                             </div>
                                         @endif
@@ -54,7 +61,8 @@
                                     <div class="box box-info">
                                         <!-- form start -->
                                         <div class="box-body">
-                                            <h4><strong>{{ trans('labels.productName') }}:</strong> {{ $result['products'][0]->products_name }}</h4>
+                                            <h4><strong>{{ trans('labels.productName') }}
+                                                    :</strong> {{ $result['products'][0]->products_name }}</h4>
                                             <br>
 
                                             <div class="row">
@@ -87,33 +95,54 @@
 
                                                                     @if($result['products'][0]->products_type==1)
                                                                         <div class="form-group">
-                                                                            <label for="name" class="col-sm-2 col-md-4 control-label">{{ trans('labels.products_attributes') }}</label>
+                                                                            <label for="name"
+                                                                                   class="col-sm-2 col-md-4 control-label">{{ trans('labels.products_attributes') }}</label>
                                                                             <div class="col-sm-10 col-md-8">
                                                                                 <ul class="list-group list-group-root well list-group-root2">
                                                                                     @foreach ($result['attributes'] as $attribute)
-                                                                                        <li href="#" class="list-group-item"><label style="width:100%">
-                                                                                                <input id="attribute" type="hidden" class="attributeid_<?=$attribute['option']['id']?>" name="attributeid[]" value="" > {{ $attribute['option']['name']}}</label></li>
+                                                                                        <li href="#"
+                                                                                            class="list-group-item">
+                                                                                            <label style="width:100%">
+                                                                                                <input id="attribute"
+                                                                                                       type="hidden"
+                                                                                                       class="attributeid_<?=$attribute['option']['id']?>"
+                                                                                                       name="attributeid[]"
+                                                                                                       value=""> {{ $attribute['option']['name']}}
+                                                                                            </label></li>
                                                                                         <ul class="list-group">
-                                                                                            <li class="list-group-item" >
-                                                                                                @foreach ($attribute['values'] as $value)<label><input name="values_<?=$attribute['option']['id']?>" type="radio" class="currentstock required_one" value="{{ $value['products_attributes_id'] }}" attributeid = "{{ $attribute['option']['id'] }}"> {{ $value['value'] }}</label> @endforeach</li>
+                                                                                            <li class="list-group-item">
+                                                                                                @foreach ($attribute['values'] as $value)
+                                                                                                    <label><input
+                                                                                                                name="values_<?=$attribute['option']['id']?>"
+                                                                                                                type="radio"
+                                                                                                                class="currentstock required_one"
+                                                                                                                value="{{ $value['products_attributes_id'] }}"
+                                                                                                                attributeid="{{ $attribute['option']['id'] }}"> {{ $value['value'] }}
+                                                                                                    </label> @endforeach
+                                                                                            </li>
                                                                                         </ul>
                                                                                     @endforeach
                                                                                 </ul>
-                                                                                <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                                                <span class="help-block"
+                                                                                      style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                           {{ trans('labels.Select Option values Text') }}.</span>
                                                                                 <span class="help-block hidden">{{ trans('labels.Select Option values Text') }}</span>
                                                                             </div>
                                                                         </div>
                                                                     @endif
                                                                     <div class="form-group">
-                                                                        <label for="name" class="col-sm-2 col-md-4 control-label">
+                                                                        <label for="name"
+                                                                               class="col-sm-2 col-md-4 control-label">
                                                                             All Over Stock
                                                                         </label>
                                                                         <div class="col-sm-10 col-md-8">
-                                                                            <p id="current_stocks" style="width:100%">{{$result['stocks']}}</p><br>
+                                                                            <p id="current_stocks"
+                                                                               style="width:100%">{{$result['stocks']}}</p>
+                                                                            <br>
 
                                                                         </div>
-                                                                        <input type="hidden" name="stock" id="stock" value="{{$result['stocks']}}">
+                                                                        <input type="hidden" name="stock" id="stock"
+                                                                               value="{{$result['stocks']}}">
                                                                     </div>
                                                                     @php
                                                                         $warehouseModel = \App\WarehouseModel::whereis_del(0)->get();
@@ -126,11 +155,12 @@
                                                                         @endphp
                                                                         <h4>{{  $wobject->name }}</h4>
                                                                         <div class="form-group">
-                                                                            <label for="name" class="col-sm-2 col-md-4 control-label">
+                                                                            <label for="name"
+                                                                                   class="col-sm-2 col-md-4 control-label">
                                                                                 {{ trans('labels.Current Stock') }}
                                                                             </label>
                                                                             <div class="col-sm-10 col-md-8">
-                                                                                <p id="current_stocks" style="width:100%">{{ $wstock->stock }}</p><br>
+                                                                                {{--<p id="current_stocks" style="width:100%">{{ $wstock->stock }}</p><br>--}}
 
                                                                             </div>
                                                                         </div>
@@ -144,12 +174,18 @@
 
                                                                             </div> --}}
                                                                         </div>
-                                                                        <input type="hidden" name="w_id[]" value="{{ $wobject->id }}">
+                                                                        <input type="hidden" name="w_id[]"
+                                                                               value="{{ $wobject->id }}">
                                                                         <div class="form-group">
-                                                                            <label for="name" class="col-sm-2 col-md-4 control-label">{{ trans('labels.Enter Stock') }}</label>
+                                                                            <label for="name"
+                                                                                   class="col-sm-2 col-md-4 control-label">{{ trans('labels.Enter Stock') }}</label>
                                                                             <div class="col-sm-10 col-md-8">
-                                                                                <input type="text" onkeyup="totalstock();" name="w_stock[]" value="0"  class="form-control number-validate w_stock">
-                                                                                <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                                                <input type="text"
+                                                                                       onkeyup="totalstock();"
+                                                                                       name="w_stock[]" value="0"
+                                                                                       class="form-control number-validate w_stock">
+                                                                                <span class="help-block"
+                                                                                      style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                           {{ trans('labels.Enter Stock Text') }}</span>
                                                                             </div>
                                                                         </div>
@@ -158,23 +194,29 @@
                                                                     @endforeach
 
 
-
-
                                                                     <div class="myrow"></div>
                                                                     {{-- <hr> --}}
                                                                     <div class="form-group">
-                                                                        <label for="name" class="col-sm-2 col-md-4 control-label">{{ trans('labels.Purchase Price') }}</label>
+                                                                        <label for="name"
+                                                                               class="col-sm-2 col-md-4 control-label">{{ trans('labels.Purchase Price') }}</label>
                                                                         <div class="col-sm-10 col-md-8">
-                                                                            <input type="text" name="purchase_price" value=""  class="form-control number-validate">
-                                                                            <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                                            <input type="text" name="purchase_price"
+                                                                                   value=""
+                                                                                   class="form-control number-validate">
+                                                                            <span class="help-block"
+                                                                                  style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                           {{ trans('labels.Purchase Price Text') }}</span>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label for="name" class="col-sm-2 col-md-4 control-label">{{ trans('labels.Reference / Purchase Code') }}</label>
+                                                                        <label for="name"
+                                                                               class="col-sm-2 col-md-4 control-label">{{ trans('labels.Reference / Purchase Code') }}</label>
                                                                         <div class="col-sm-10 col-md-8">
-                                                                            <input type="text" name="reference_code" value=""  class="form-control field-required">
-                                                                            <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                                            <input type="text" name="reference_code"
+                                                                                   value=""
+                                                                                   class="form-control field-required">
+                                                                            <span class="help-block"
+                                                                                  style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                           {{ trans('labels.Reference / Purchase Code Text') }}</span>
                                                                         </div>
                                                                     </div>
@@ -184,7 +226,8 @@
                                                             @if(count($result['attributes'])>0 and $result['products'][0]->products_type==1 or $result['products'][0]->products_type==0)
                                                                 <!-- /.box-body -->
                                                                     <div class="box-footer text-center">
-                                                                        <button type="submit" class="btn btn-primary pull-right">{{ trans('labels.Add Stock') }}</button>
+                                                                        <button type="submit"
+                                                                                class="btn btn-primary pull-right">{{ trans('labels.Add Stock') }}</button>
                                                                     </div>
 
                                                             @endif
@@ -223,35 +266,51 @@
 
 
                                                                     <div class="form-group">
-                                                                        <label for="name" class="col-sm-2 col-md-4 control-label">
+                                                                        <label for="name"
+                                                                               class="col-sm-2 col-md-4 control-label">
                                                                             {{ trans('labels.Min Level') }}
                                                                         </label>
                                                                         <div class="col-sm-10 col-md-8">
-                                                                            <input type="text" name="min_level" id="min_level" value="{{$result['min_level']}}"  class="form-control number-validate-level">
-                                                                            <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                                            <input type="text" name="min_level"
+                                                                                   id="min_level"
+                                                                                   value="{{$result['min_level']}}"
+                                                                                   class="form-control number-validate-level">
+                                                                            <span class="help-block"
+                                                                                  style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                             {{ trans('labels.Min Level Text') }}</span>
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="form-group">
-                                                                        <label for="name" class="col-sm-2 col-md-4 control-label">
+                                                                        <label for="name"
+                                                                               class="col-sm-2 col-md-4 control-label">
                                                                             {{ trans('labels.Max Level') }}
                                                                         </label>
                                                                         <div class="col-sm-10 col-md-8">
-                                                                            <input type="text" name="max_level" id="max_level" value="{{$result['max_level']}}"  class="form-control number-validate-level">
-                                                                            <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                                            <input type="text" name="max_level"
+                                                                                   id="max_level"
+                                                                                   value="{{$result['max_level']}}"
+                                                                                   class="form-control number-validate-level">
+                                                                            <span class="help-block"
+                                                                                  style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                             {{ trans('labels.Min Level Text') }}</span>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="alert alert-danger alert-dismissible" id="minmax-error" role="alert" style="display: none">
-                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                    <div class="alert alert-danger alert-dismissible"
+                                                                         id="minmax-error" role="alert"
+                                                                         style="display: none">
+                                                                        <button type="button" class="close"
+                                                                                data-dismiss="alert" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
                                                                         {{ trans('labels.This stock is not asscociated with any attributes. Please choose products attributes first') }}
                                                                     </div>
                                                                     <!-- /.users-list -->
                                                                 </div>
                                                                 <!-- /.box-body -->
                                                                 <div class="box-footer text-center">
-                                                                    <button type="submit" class="btn btn-primary pull-right">{{ trans('labels.Update') }}</button>
+                                                                    <button type="submit"
+                                                                            class="btn btn-primary pull-right">{{ trans('labels.Update') }}</button>
                                                                 </div>
 
                                                             {!! Form::close() !!}
@@ -267,18 +326,23 @@
 
                                                 <div class="box-footer col-xs-12">
                                                     @if($result['products'][0]->products_type==1)
-                                                        <a href="{{ URL::to('addproductattribute/'.$result['products'][0]->products_id) }}"  class="btn btn-default pull-left">{{ trans('labels.AddOptions') }}</a>
+                                                        <a href="{{ URL::to('addproductattribute/'.$result['products'][0]->products_id) }}"
+                                                           class="btn btn-default pull-left">{{ trans('labels.AddOptions') }}</a>
                                                     @else
-                                                        <a href="{{ URL::to("products")}}" class="btn btn-default pull-left"> <i class="fa fa-angle-left"></i> {{ trans('labels.back') }}</a>
+                                                        <a href="{{ URL::to("products")}}"
+                                                           class="btn btn-default pull-left"> <i
+                                                                    class="fa fa-angle-left"></i> {{ trans('labels.back') }}
+                                                        </a>
                                                     @endif
-                                                    <a href="{{ URL::to("addproductimages/{$result['products'][0]->products_id}")}}" class="btn btn-primary pull-right">  {{ trans('labels.AddImages') }} <i class="fa fa-angle-right"></i></a>
+                                                    <a href="{{ URL::to("addproductimages/{$result['products'][0]->products_id}")}}"
+                                                       class="btn btn-primary pull-right">  {{ trans('labels.AddImages') }}
+                                                        <i class="fa fa-angle-right"></i></a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
 
 
                         </div>
@@ -300,9 +364,8 @@
 
     <!-- /.row -->
     <script>
-        function totalstock()
-        {
-            var grandTotal = 0 ;
+        function totalstock() {
+            var grandTotal = 0;
             // debugger;
             $('.w_stock').each(function () {
                 if ($(this).val() != '') {
