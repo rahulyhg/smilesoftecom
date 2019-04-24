@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-xs-6">
+                {{-- <div class="col-lg-4 col-xs-6">
                     <!-- small box -->
                     <div class="small-box bg-aqua">
                         <div class="inner">
@@ -77,9 +77,9 @@
                            title="{{ trans('labels.viewAllProducts') }}">{{ trans('labels.viewAllProducts') }} <i
                                     class="fa fa-arrow-circle-right"></i></a>
                     </div>
-                </div>
+                </div> --}}
                 <!-- ./col -->
-                <div class="col-lg-4 col-xs-6">
+                {{-- <div class="col-lg-4 col-xs-6">
                     <!-- small box -->
                     <div class="small-box bg-teal">
                         <div class="inner">
@@ -147,7 +147,7 @@
                            title="{{ trans('labels.viewAllProducts') }}">{{ trans('labels.viewAllProducts') }} <i
                                     class="fa fa-arrow-circle-right"></i></a>
                     </div>
-                </div>
+                </div> --}}
                 <!-- ./col -->
 
             </div>

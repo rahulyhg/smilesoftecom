@@ -73,7 +73,7 @@ class AdminWareHouseController extends Controller
         $warehouse->location = request('location');
         $warehouse->username = request('username');
         $warehouse->password = request('password');
-        $warehouse->updated_at = Carbon::now();
+        // $warehouse->updated_at = Carbon::now();
         $warehouse->save();
 
         return redirect()->back()->withErrors('Manufacturer has been updated successfully!');

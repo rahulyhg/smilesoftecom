@@ -836,6 +836,10 @@ Route::group(['middleware' => 'warehouse'], function () {
     Route::get('/staff_edit/{id}', 'WareHouseController@staff_edit');
     Route::post('/staff_update', 'WareHouseController@staff_update');
     Route::post('/staff_del', 'WareHouseController@staff_del');
+    
+    
+    Route::get('/warehouse_products', 'WareHouseController@warehouse_products'); 
+    Route::get('/addinventory/{id}/', 'WareHouseController@addinventory');
 });
 
 Route::group(['middleware' => 'staff'], function () {

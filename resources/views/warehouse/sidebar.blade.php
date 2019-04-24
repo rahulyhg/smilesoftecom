@@ -21,6 +21,11 @@
                         <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                     </a>
                 </li>
+                <li class="treeview">
+                    <a href="{{ url('warehouse_products')}}">
+                        <i class="fa fa-dashboard"></i> <span>Products</span>
+                    </a>
+                </li>
 
                 <li class="treeview">
                     <a href="{{ url('warehouse_staff')}}">
