@@ -115,7 +115,7 @@ Route::group(['prefix' => 'admin'], function () {
             //products
             Route::get('/products', 'AdminProductsController@products');
             Route::get('/barcode-generate', 'AdminProductsController@barcode_generate');
-            Route::get('/barcode_generate_view', 'AdminProductsController@barcode_generate_view');
+//            Route::get('/barcode_generate_view', 'AdminProductsController@barcode_generate_view');
             Route::get('/addproduct', 'AdminProductsController@addproduct');
             Route::post('/addnewproduct', 'AdminProductsController@addnewproduct');
 
@@ -157,7 +157,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/addnewoptions', 'AdminProductsController@addnewoptions');
             //
             Route::post('/addnewattributes', 'AdminProductsController@addnewattributes');
-            //Route::get('/editattributes/{id}/{language_id}', 'AdminProductsController@editattributes');
+            Route::get('/editattributes/{id}/{language_id}', 'AdminProductsController@editattributes');
             Route::get('/manage-options/{id}', 'AdminProductsController@manageoptions');
             Route::get('/edit-values/{id}', 'AdminProductsController@editvalues');
             Route::post('/updatevalue', 'AdminProductsController@updatevalue');
@@ -836,7 +836,7 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
 });
 
 //---------------------------  Ashish --------------------------------
-Route::group(['middleware' => 'warehouse'], function () {
+    Route::group(['middleware' => 'warehouse'], function () {
     Route::get('/warehouse_dashboard', 'WareHouseController@warehouse_dashboard');
     Route::get('/warehouse_logout', 'WareHouseController@logout');
     Route::get('/warehouse_staff', 'WareHouseController@warehouse_staff');
@@ -846,8 +846,66 @@ Route::group(['middleware' => 'warehouse'], function () {
     Route::post('/staff_update', 'WareHouseController@staff_update');
     Route::post('/staff_del', 'WareHouseController@staff_del');
 
-//    store_pos
-    /******************Customer Ashish**********************/
+    //products
+    Route::get('/products', 'WarehouseProductController@products');
+    Route::post('/barcode-generate', 'WarehouseProductController@barcode_generate');
+//    Route::get('/barcode_generate_view', 'WarehouseProductController@barcode_generate_view');
+    Route::get('/addproduct', 'WarehouseProductController@addproduct');
+    Route::post('/addnewproduct', 'WarehouseProductController@addnewproduct');
+
+    //add attribute against newly added product
+    Route::get('/addproductattribute/{id}/', 'WarehouseProductController@addproductattribute');
+    Route::get('/addinventory/{id}/', 'WarehouseProductController@addinventory');
+    Route::post('/currentstock', 'WarehouseProductController@currentstock');
+    Route::post('/addnewstock', 'WarehouseProductController@addnewstock');
+    Route::post('/addminmax', 'WarehouseProductController@addminmax');
+    Route::get('/addproductimages/{id}/', 'WarehouseProductController@addproductimages');
+    Route::post('/addnewdefaultattribute', 'WarehouseProductController@addnewdefaultattribute');
+    Route::post('/addnewproductattribute', 'WarehouseProductController@addnewproductattribute');
+    Route::post('/updateproductattribute', 'WarehouseProductController@updateproductattribute');
+    Route::post('/updatedefaultattribute', 'WarehouseProductController@updatedefaultattribute');
+    Route::post('/deleteproduct', 'WarehouseProductController@deleteproduct');
+    Route::post('/deleteproductattribute', 'WarehouseProductController@deleteproductattribute');
+    Route::post('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
+    Route::post('/deletedefaultattribute', 'WarehouseProductController@deletedefaultattribute');
+    Route::post('editproductattribute', 'WarehouseProductController@editproductattribute');
+    Route::post('editdefaultattribute', 'WarehouseProductController@editdefaultattribute');
+//    Route::post('addnewproductimagemodal', 'WarehouseProductController@addnewproductimagemodal');
+    Route::post('deleteproductattributemodal', 'WarehouseProductController@deleteproductattributemodal');
+    Route::post('deletedefaultattributemodal', 'WarehouseProductController@deletedefaultattributemodal');
+
+    //product attribute
+//    Route::post('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
+    Route::post('editproductimage', 'WarehouseProductController@editproductimage');
+    Route::post('/updateproductimage', 'WarehouseProductController@updateproductimage');
+    Route::post('/deleteproductimagemodal', 'WarehouseProductController@deleteproductimagemodal');
+    Route::post('/deleteproductimage', 'WarehouseProductController@deleteproductimage');
+    Route::get('/editproduct/{id}', 'WarehouseProductController@editproduct');
+    Route::post('/updateproduct', 'WarehouseProductController@updateproduct');
+    Route::post('/getOptions', 'WarehouseProductController@getOptions');
+    Route::post('/getOptionsValue', 'WarehouseProductController@getOptionsValue');
+
+    //Attribute
+    Route::get('/attributes', 'WarehouseProductController@attributes');
+    Route::get('/addoptions', 'WarehouseProductController@addoptions');
+    Route::post('/addnewoptions', 'WarehouseProductController@addnewoptions');
+    //
+//    Route::post('/addnewattributes', 'WarehouseProductController@addnewattributes');
+//    Route::get('/editattributes/{id}/{language_id}', 'WarehouseProductController@editattributes');
+    Route::get('/manage-options/{id}', 'WarehouseProductController@manageoptions');
+    Route::get('/edit-values/{id}', 'WarehouseProductController@editvalues');
+    Route::post('/updatevalue', 'WarehouseProductController@updatevalue');
+    Route::post('/addnewvalues', 'WarehouseProductController@addnewvalues');
+
+    Route::get('/manage-options-values/{id}', 'WarehouseProductController@manageoptionsvalues');
+    Route::post('/updateoptions/', 'WarehouseProductController@updateoptions');
+    Route::post('/deleteattribute', 'WarehouseProductController@deleteattribute');
+    Route::post('/addattributevalue', 'WarehouseProductController@addattributevalue');
+    Route::post('/updateattributevalue', 'WarehouseProductController@updateattributevalue');
+    Route::post('/checkattributeassociate', 'WarehouseProductController@checkattributeassociate');
+    Route::post('/checkvalueassociate', 'WarehouseProductController@checkvalueassociate');
+    Route::post('/deletevalue', 'WarehouseProductController@deletevalue');
+
 });
 
 Route::group(['middleware' => 'staff'], function () {

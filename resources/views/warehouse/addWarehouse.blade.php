@@ -10,7 +10,7 @@
                 <li><a href="{{ URL::to('admin/dashboard/this_month') }}"><i
                                 class="fa fa-dashboard"></i> Dashboard</a></li>
                 <li><a href="{{ URL::to('admin/warehouse')}}"><i
-                                class="fa fa-dashboard"></i>  List All Manufacturer </a></li>
+                                class="fa fa-dashboard"></i> List All Manufacturer </a></li>
                 <li class="active">Add Warehouse</li>
             </ol>
         </section>
@@ -51,71 +51,107 @@
                                                   class="form-horizontal form-validate"
                                                   id="insert_store">
 
-                                            <div class="form-group">
-                                                <label for="name"
-                                                       class="col-sm-2 col-md-3 control-label">Warehouse Name</label>
-                                                <div class="col-sm-10 col-md-4">
-                                                    <input type="text" name="name" id="name" autocomplete="off"
-                                                           class="form-control field-validate"
-                                                           placeholder="Enter Name"
-                                                    maxlength="50">
-                                                    <span class="help-block"
-                                                          style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                <div class="form-group">
+                                                    <label for="name"
+                                                           class="col-sm-2 col-md-3 control-label">Warehouse
+                                                        Name</label>
+                                                    <div class="col-sm-10 col-md-4">
+                                                        <input type="text" name="name" id="name" autocomplete="off"
+                                                               class="form-control field-validate"
+                                                               placeholder="Enter Name"
+                                                               maxlength="50">
+                                                        <span class="help-block"
+                                                              style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                                         Warehouse such as "Samsung or iphone" etc.</span>
-                                                    <span class="help-block hidden">Warehouse Name is mandaotry</span>
+                                                        <span class="help-block hidden">Warehouse Name is mandaotry</span>
+                                                    </div>
                                                 </div>
-                                            </div>
                                                 <div class="form-group">
                                                     <label for="location"
                                                            class="col-sm-2 col-md-3 control-label">Location</label>
                                                     <div class="col-sm-10 col-md-4">
-                                                        <input type="text" name="location" id="location" autocomplete="off"
+                                                        <input type="text" name="location" id="location"
+                                                               autocomplete="off"
                                                                class="form-control field-validate"
                                                                placeholder="Enter Location"
-                                                        maxlength="100">
+                                                               maxlength="100">
                                                         <span class="help-block"
                                                               style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                                         Location such as Area/Street/City/State (Pincode)</span>
                                                         <span class="help-block hidden">Warehouse Name is mandaotry</span>
                                                     </div>
                                                 </div>
-                                            <div class="form-group">
-                                                <label for="username"
-                                                       class="col-sm-2 col-md-3 control-label">Username</label>
-                                                <div class="col-sm-10 col-md-4">
-                                                    <input type="email" name="username" id="username" autocomplete="off"
-                                                           class="form-control field-validate"
-                                                           placeholder="Enter Username">
-                                                    <span class="help-block"
-                                                          style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
-                                                        Username such as ashu@7eye.com etc.</span>
-                                                    <span class="help-block hidden">Username is mandaotry</span>
+                                                <div class="form-group">
+                                                    <label for="latitude"
+                                                           class="col-sm-2 col-md-3 control-label">Latitude</label>
+                                                    <div class="col-sm-10 col-md-4">
+                                                        <input type="text" name="latitude" id="latitude"
+                                                               autocomplete="off"
+                                                               class="form-control field-validate"
+                                                               placeholder="Enter Latitude"
+                                                               maxlength="100">
+                                                        <span class="help-block"
+                                                              style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                        example 20.5937° N</span>
+                                                        <span class="help-block hidden">Latitude of the warehouse is mandaotry</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="password"
-                                                       class="col-sm-2 col-md-3 control-label">Create Password</label>
-                                                <div class="col-sm-10 col-md-4">
-                                                    <input type="password" name="password" id="password" autocomplete="off"
-                                                           class="form-control field-validate"
-                                                           placeholder="Enter Name"
-                                                    minlength="6"
-                                                    maxlength="16">
-                                                    <span class="help-block"
-                                                          style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                <div class="form-group">
+                                                    <label for="longitude"
+                                                           class="col-sm-2 col-md-3 control-label">Longitude</label>
+                                                    <div class="col-sm-10 col-md-4">
+                                                        <input type="text" name="longitude" id="longitude"
+                                                               autocomplete="off"
+                                                               class="form-control field-validate"
+                                                               placeholder="Enter Longitude"
+                                                               maxlength="100">
+                                                        <span class="help-block"
+                                                              style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                        example 78.9629° E</span>
+                                                        <span class="help-block hidden">Longitude of the warehouse is mandaotry</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="username"
+                                                           class="col-sm-2 col-md-3 control-label">Username</label>
+                                                    <div class="col-sm-10 col-md-4">
+                                                        <input type="email" name="username" id="username"
+                                                               autocomplete="off"
+                                                               class="form-control field-validate"
+                                                               placeholder="Enter Username">
+                                                        <span class="help-block"
+                                                              style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                        Username such as ashu@smileshop.com etc.</span>
+                                                        <span class="help-block hidden">Username is mandaotry</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="password"
+                                                           class="col-sm-2 col-md-3 control-label">Create
+                                                        Password</label>
+                                                    <div class="col-sm-10 col-md-4">
+                                                        <input type="password" name="password" id="password"
+                                                               autocomplete="off"
+                                                               class="form-control field-validate"
+                                                               placeholder="Enter Name"
+                                                               minlength="6"
+                                                               maxlength="16">
+                                                        <span class="help-block"
+                                                              style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                                         Your password must be at least 8 characters in length and contain an uppercase letter, a lower case letter, at least one number and one special character (i.e. !, $, #, *) </span>
-                                                    <span class="help-block hidden">Warehouse Name is mandaotry</span>
+                                                        <span class="help-block hidden">Warehouse Name is mandaotry</span>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <!-- /.box-body -->
-                                            <div class="box-footer text-center">
-                                                <button type="submit"
-                                                        class="btn btn-primary">Add Warehouse</button>
-                                                <a href="{{ URL::to('admin/manufacturers')}}" type="button"
-                                                   class="btn btn-default">Back</a>
-                                            </div>
-                                            <!-- /.box-footer -->
+                                                <!-- /.box-body -->
+                                                <div class="box-footer text-center">
+                                                    <button type="submit"
+                                                            class="btn btn-primary">Add Warehouse
+                                                    </button>
+                                                    <a href="{{ URL::to('admin/warehouse')}}" type="button"
+                                                       class="btn btn-default">Back</a>
+                                                </div>
+                                                <!-- /.box-footer -->
                                             </form>
                                         </div>
                                     </div>

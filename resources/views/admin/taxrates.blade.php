@@ -47,8 +47,11 @@
                     <tr>
                       <th>{{ trans('labels.ID') }}</th>
                       <th>{{ trans('labels.Zone') }}</th>
-                      <th>{{ trans('labels.TaxRates') }}</th>
-                      <th>{{ trans('labels.TaxClass') }}</th>
+                        <th>{{ trans('labels.TaxClass') }}</th>
+                        <th>{{ trans('labels.TaxRates') }} (%)</th>
+                      <th>SGST (%)</th>
+                      <th>CGST (%)</th>
+                      <th>IGST (%)</th>
                       <th>{{ trans('labels.Date') }}</th>
                       <th>{{ trans('labels.Action') }}</th>
                     </tr>
@@ -58,8 +61,11 @@
                         <tr>
                             <td>{{ $taxRate->tax_rates_id }}</td>
                             <td>{{ $taxRate->zone_name }}</td>
-                            <td>{{ $taxRate->tax_rate }}</td>
                             <td>{{ $taxRate->tax_class_title }}</td>
+                            <td>{{ $taxRate->tax_rate }}</td>
+                            <td>{{ $taxRate->sgst ? $taxRate->sgst : '-' }}</td>
+                            <td>{{ $taxRate->cgst ? $taxRate->cgst : '-' }}</td>
+                            <td>{{ $taxRate->igst ? $taxRate->igst : '-' }}</td>
                             <td>
                             	<strong>{{ trans('labels.AddedDate') }}: </strong>{{ $taxRate->date_added }}<br>
                                 <strong>{{ trans('labels.LastModified') }}: </strong>{{ $taxRate->last_modified }}

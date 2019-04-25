@@ -35,6 +35,8 @@ class AdminWareHouseController extends Controller
             $warehouse = new WarehouseModel();
             $warehouse->name = request('name');
             $warehouse->location = request('location');
+            $warehouse->latitude = request('latitude');
+            $warehouse->longitude = request('longitude');
             $warehouse->username = request('username');
             $warehouse->password = request('password');
             $warehouse->save();
@@ -71,6 +73,8 @@ class AdminWareHouseController extends Controller
 
         $warehouse->name = request('name');
         $warehouse->location = request('location');
+        $warehouse->latitude = request('latitude');
+        $warehouse->longitude = request('longitude');
         $warehouse->username = request('username');
         $warehouse->password = request('password');
         $warehouse->updated_at = Carbon::now();

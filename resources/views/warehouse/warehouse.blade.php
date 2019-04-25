@@ -56,6 +56,8 @@
                                             <th>Username</th>
                                             <th>Password</th>
                                             <th>Location</th>
+                                            <th>Latitude</th>
+                                            <th>Longitude</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
@@ -68,8 +70,16 @@
                                                     <td>{{ $warehouselists->username }}</td>
                                                     <td>{{ $warehouselists->password }}</td>
                                                     <td>{{ $warehouselists->location }}</td>
+                                                    @if($warehouselists->latitude != '')
+                                                        <td>{{ $warehouselists->latitude }}° N</td>
+                                                        <td>{{ $warehouselists->longitude }}° E</td>
+                                                        @else
+                                                        <td>-</td>
+                                                        <td>-</td>
+                                                    @endif
                                                     <td>
-                                                        <a data-toggle="tooltip" data-placement="bottom" title="View Stocks"
+                                                        <a data-toggle="tooltip" data-placement="bottom"
+                                                           title="View Stocks"
                                                            href="{{ url('admin/ViewStock').'/'.$warehouselists->id  }}"
                                                            class="badge bg-light-green"><i class="fa fa-eye"
                                                                                            aria-hidden="true"></i></a>
@@ -128,7 +138,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default"
-                                        data-dismiss="modal">Close</button>
+                                        data-dismiss="modal">Close
+                                </button>
                                 <button type="submit" class="btn btn-primary">Delete</button>
                             </div>
                         </form>
