@@ -131,20 +131,19 @@ class WarehouseProductController extends Controller
         $barcount = request('barcount');
         $request->session()->put('bar_id', $bid);
         $request->session()->put('bar_qty', $barcount);
+        $pdf = PDF::loadView('printbarcode');
+        return $pdf->stream();
 
-//        $data = ['Ashish'];
-//        $pdf = PDF::loadView('printbarcode', $data);
-
-        $data = \App\BarcodeModel::whereproduct_id($bid)->first();
-        $i = 1;
-        for ($j = 1; $j <= $barcount; $j++) {
-            echo '<img src="data:image/png;base64,' . \Milon\Barcode\DNS1D::getBarcodePNG($data->barcode, "C39+", 2, 33, array(1, 1, 1), true) . '" alt="barcode"   />';
-            echo '<br>';
-            if ($i == 3) {
-                $i = 0;
-            }
-            $i++;
-        }
+//        $data = \App\BarcodeModel::whereproduct_id($bid)->first();
+//        $i = 1;
+//        for ($j = 1; $j <= $barcount; $j++) {
+//            echo '<img src="data:image/png;base64,' . \Milon\Barcode\DNS1D::getBarcodePNG($data->barcode, "C39+", 2, 33, array(1, 1, 1), true) . '" alt="barcode"   />';
+//            echo '<br>';
+//            if ($i == 3) {
+//                $i = 0;
+//            }
+//            $i++;
+//        }
 //        return $pdf->stream();
     }
 

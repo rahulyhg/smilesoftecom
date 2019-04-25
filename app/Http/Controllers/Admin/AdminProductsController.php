@@ -146,15 +146,14 @@ class AdminProductsController extends Controller
 
     function barcode_generate(Request $request)
     {
-        // return $_REQUEST;
-        $bid  = request('bid');
-        $barcount  = request('barcount');
+//         return $_REQUEST;
+        $bid = request('bid');
+        $barcount = request('barcount');
         $request->session()->put('bar_id', $bid);
         $request->session()->put('bar_qty', $barcount);
 
-         $data = ['Ashish'];
-        $pdf = PDF::loadView('printbarcode', $data);
-         return  $pdf->stream();
+        $pdf = PDF::loadView('printbarcode');
+        return $pdf->stream();
         //   $pdfname = $barcode->pdf;
         //   PDF::loadView('printbarcode')->setPaper('a4')->save('allbarcode/'.$pdfname);
         //   return back()->with('message', 'Product Has Been Saved');
@@ -163,32 +162,32 @@ class AdminProductsController extends Controller
     public function addproduct(Request $request)
     {
         $title = array('pageTitle' => Lang::get("labels.AddProduct"));
-            $language_id = '1';
+        $language_id = '1';
 
-            $result = array();
+        $result = array();
 
-            //get function from other controller
-            $myVar = new AdminCategoriesController();
-            $result['categories'] = $myVar->allCategories($language_id);
+        //get function from other controller
+        $myVar = new AdminCategoriesController();
+        $result['categories'] = $myVar->allCategories($language_id);
 
-            //get function from other controller
-            $myVar = new AdminManufacturerController();
-            $result['manufacturer'] = $myVar->getManufacturer($language_id);
+        //get function from other controller
+        $myVar = new AdminManufacturerController();
+        $result['manufacturer'] = $myVar->getManufacturer($language_id);
 
-            //tax class
+        //tax class
 //            $taxClass = DB::table('tax_class')->get();
-            $taxClass = TaxClassModel::get();
-            $result['taxClass'] = $taxClass;
+        $taxClass = TaxClassModel::get();
+        $result['taxClass'] = $taxClass;
 
-            $taxRate = TaxRatesModel::get();
-            $result['taxRate'] = $taxRate;
+        $taxRate = TaxRatesModel::get();
+        $result['taxRate'] = $taxRate;
 
-            //get function from other controller
-            $myVar = new AdminSiteSettingController();
-            $result['languages'] = $myVar->getLanguages();
-            $result['units'] = $myVar->getUnits();
+        //get function from other controller
+        $myVar = new AdminSiteSettingController();
+        $result['languages'] = $myVar->getLanguages();
+        $result['units'] = $myVar->getUnits();
 
-            return view("admin.addproduct", $title)->with('result', $result);
+        return view("admin.addproduct", $title)->with('result', $result);
     }
 
     //addNewProduct
@@ -692,18 +691,18 @@ class AdminProductsController extends Controller
             $ware_ids = request('w_id');
             $ware_stock = request('w_stock');
 
-            for($i = 0; $i < count($ware_ids); $i++) {
-                $warehouse_inventory = Warehouse_Inventory_Model::where(['pid' => $products_id,'w_id' =>$ware_ids[$i]])->first();
+            for ($i = 0; $i < count($ware_ids); $i++) {
+                $warehouse_inventory = Warehouse_Inventory_Model::where(['pid' => $products_id, 'w_id' => $ware_ids[$i]])->first();
 
                 // $warehouse_inventory->w_id = $ware_ids[$i];
                 // $warehouse_inventory->pid = $products_id;
-                $warehouse_inventory->stock =$warehouse_inventory->stock + $ware_stock[$i];
+                $warehouse_inventory->stock = $warehouse_inventory->stock + $ware_stock[$i];
                 $warehouse_inventory->save();
 
                 $Warehouse_inventory_history_Model = new Warehouse_inventory_history_Model();
                 $Warehouse_inventory_history_Model->w_id = $ware_ids[$i];
                 $Warehouse_inventory_history_Model->pid = $products_id;
-                $Warehouse_inventory_history_Model->stock =  $ware_stock[$i];
+                $Warehouse_inventory_history_Model->stock = $ware_stock[$i];
                 $Warehouse_inventory_history_Model->save();
             }
             if ($products[0]->products_type == 1) {
@@ -1339,7 +1338,7 @@ class AdminProductsController extends Controller
 
             } else {
 
-                $specialProduct[0] = (object) array('specials_id' => '', 'products_id' => '', 'specials_new_products_price' => '', 'status' => '', 'expires_date' => '');
+                $specialProduct[0] = (object)array('specials_id' => '', 'products_id' => '', 'specials_new_products_price' => '', 'status' => '', 'expires_date' => '');
 
             }
 
@@ -1353,7 +1352,7 @@ class AdminProductsController extends Controller
 
             } else {
 
-                $flashProduct[0] = (object) array('products_id' => '', 'products_id' => '', 'flash_sale_products_price' => '', 'flash_status' => '', 'flash_start_date' => '', 'flash_expires_date' => '');
+                $flashProduct[0] = (object)array('products_id' => '', 'products_id' => '', 'flash_sale_products_price' => '', 'flash_status' => '', 'flash_start_date' => '', 'flash_expires_date' => '');
 
             }
 
