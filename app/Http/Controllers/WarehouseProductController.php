@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\BarcodeModel;
-use App\Http\Controllers\Admin\AdminAlertController;
-use App\Http\Controllers\Admin\AdminCategoriesController;
-use App\Http\Controllers\Admin\AdminManufacturerController;
-use App\Http\Controllers\Admin\AdminSiteSettingController;
+use App\Http\Controllers\WarehouseAlertController;
+use App\Http\Controllers\WarehouseCategoriesController;
+use App\Http\Controllers\WarehouseManufacturerController;
+use App\Http\Controllers\WarehouseSiteSettingController;
 use App\TaxClassModel;
 use App\TaxRatesModel;
 use App\Warehouse_inventory_history_Model;
@@ -27,7 +27,7 @@ class WarehouseProductController extends Controller
         $results = array();
 
         //get function from other controller
-        $myVar = new AdminCategoriesController();
+        $myVar = new WarehouseCategoriesController();
         $subCategories = $myVar->getSubCategories($language_id);
 
         $data = DB::table('products')
@@ -73,7 +73,7 @@ class WarehouseProductController extends Controller
         $results['products'] = $products;
 
         //get function from other controller
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
         $results['currency'] = $myVar->getSetting();
         $results['units'] = $myVar->getUnits();
 
@@ -155,11 +155,11 @@ class WarehouseProductController extends Controller
         $result = array();
 
         //get function from other controller
-        $myVar = new AdminCategoriesController();
+        $myVar = new WarehouseCategoriesController();
         $result['categories'] = $myVar->allCategories($language_id);
 
         //get function from other controller
-        $myVar = new AdminManufacturerController();
+        $myVar = new WarehouseManufacturerController();
         $result['manufacturer'] = $myVar->getManufacturer($language_id);
 
         //tax class
@@ -171,7 +171,7 @@ class WarehouseProductController extends Controller
         $result['taxRate'] = $taxRate;
 
         //get function from other controller
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
         $result['languages'] = $myVar->getLanguages();
         $result['units'] = $myVar->getUnits();
 
@@ -181,12 +181,12 @@ class WarehouseProductController extends Controller
 //addNewProduct
     public function addnewproduct(Request $request)
     {
-        $title = array('pageTitle' => Lang::get("labels.AddAttributes"));
+        $title = array('pageTitle' => 'Add Attributes');
         $language_id = '1';
         $date_added = date('Y-m-d h:i:s');
 
         //get function from other controller
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
         $languages = $myVar->getLanguages();
         $extensions = $myVar->imageType();
 
@@ -426,7 +426,7 @@ class WarehouseProductController extends Controller
         $result['data'] = array('products_id' => $products_id, 'language_id' => $language_id);
 
         //notify users
-        $myVar = new AdminAlertController();
+        $myVar = new WarehouseAlertController();
         $alertSetting = $myVar->newProductNotification($products_id);
 
         if ($request->products_type == 1) {
@@ -445,7 +445,7 @@ class WarehouseProductController extends Controller
         $result = array();
         $message = array();
         $errorMessage = array();
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
         $result['currency'] = $myVar->getSetting();
 
         $result['products'] = $this->getProducts($products_id);
@@ -797,7 +797,7 @@ class WarehouseProductController extends Controller
 
         //get function from other controller
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $result['languages'] = $myVar->getLanguages();
 
@@ -1070,13 +1070,13 @@ class WarehouseProductController extends Controller
 
         //get categories from CategoriesController controller
 
-        $myVar = new AdminCategoriesController();
+        $myVar = new WarehouseCategoriesController();
 
         $result['categories'] = $myVar->allCategories($language_id);
 
         //get function from other controller
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $result['languages'] = $myVar->getLanguages();
 
@@ -1099,7 +1099,7 @@ class WarehouseProductController extends Controller
 
         //get function from ManufacturerController controller
 
-        $myVar = new AdminManufacturerController();
+        $myVar = new WarehouseManufacturerController();
 
         $result['manufacturer'] = $myVar->getManufacturer($language_id);
 
@@ -1254,7 +1254,7 @@ class WarehouseProductController extends Controller
 
         //get function from other controller
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $languages = $myVar->getLanguages();
 
@@ -1673,7 +1673,7 @@ class WarehouseProductController extends Controller
 
     public function editproductattribute(Request $request)
     {
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $languages = $myVar->getLanguages();
 
@@ -1685,7 +1685,7 @@ class WarehouseProductController extends Controller
 
         $options_id = $request->options_id;
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $languages = $myVar->getLanguages();
 
@@ -1744,7 +1744,7 @@ class WarehouseProductController extends Controller
 
         //get function from other controller
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $languages = $myVar->getLanguages();
 
@@ -1881,7 +1881,7 @@ class WarehouseProductController extends Controller
 
     public function addnewproductimage(Request $request)
     {
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $extensions = $myVar->imageType();
 
@@ -1934,7 +1934,7 @@ class WarehouseProductController extends Controller
 
     public function updateproductimage(Request $request)
     {
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $extensions = $myVar->imageType();
 
@@ -2014,7 +2014,7 @@ class WarehouseProductController extends Controller
 
         $data = array();
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $extensions = $myVar->imageType();
 
@@ -2076,7 +2076,7 @@ class WarehouseProductController extends Controller
 
         //get function from other controller
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $languages = $myVar->getLanguages();
 
@@ -2122,7 +2122,7 @@ class WarehouseProductController extends Controller
     {
         $title = array('pageTitle' => 'Manage Options');
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $result['languages'] = $myVar->getLanguages();
 
@@ -2173,7 +2173,7 @@ class WarehouseProductController extends Controller
     {
         $products_options_values_id = $request->products_options_values_id;
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $languages = $myVar->getLanguages();
 
@@ -2218,7 +2218,7 @@ class WarehouseProductController extends Controller
 
         //get function from other controller
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $extensions = $myVar->imageType();
 
@@ -2270,7 +2270,7 @@ class WarehouseProductController extends Controller
 
         //get function from other controller
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $resutls['languages'] = $myVar->getLanguages();
 
@@ -2308,7 +2308,7 @@ class WarehouseProductController extends Controller
 
         //get function from other controller
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $result['languages'] = $myVar->getLanguages();
 
@@ -2323,7 +2323,7 @@ class WarehouseProductController extends Controller
 
         //get function from other controller
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $languages = $myVar->getLanguages();
 
@@ -2368,7 +2368,7 @@ class WarehouseProductController extends Controller
     {
         $title = array('pageTitle' => Lang::get("labels.Manage Options"));
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $result['languages'] = $myVar->getLanguages();
 
@@ -2419,7 +2419,7 @@ class WarehouseProductController extends Controller
     {
         $products_options_id = $request->products_options_id;
 
-        $myVar = new AdminSiteSettingController();
+        $myVar = new WarehouseSiteSettingController();
 
         $languages = $myVar->getLanguages();
 
