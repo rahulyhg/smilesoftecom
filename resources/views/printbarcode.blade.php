@@ -29,7 +29,12 @@
         <tr>
             @for($j = 1; $j<=$mqty; $j++)
                 <td style="padding:15px 20px">
-                    <b>{{ $data->prodis->products_name }}</b> {!! \Milon\Barcode\DNS1D::getBarcodeHTML($data->barcode, 'C128A',1.2,23) !!}
+                    <b>{{ $data->prodis->products_name }}</b>
+
+                    {{--{!! \Milon\Barcode\DNS1D::getBarcodeHTML($data->barcode, 'C128A',1.2,23) !!}--}}
+
+                    {!! base64_decode(\Milon\Barcode\DNS2D::getBarcodePNG($data->barcode, "PDF417"))!!}
+
                     <b>{{$data->barcode}} - MRP: {{ $data->selling_price }} Rs</b></td>
                 @if($i==3)
         </tr>

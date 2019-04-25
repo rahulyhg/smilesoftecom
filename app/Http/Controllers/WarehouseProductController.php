@@ -127,18 +127,25 @@ class WarehouseProductController extends Controller
 
     function barcode_generate(Request $request)
     {
-        // return $_REQUEST;
         $bid = request('bid');
         $barcount = request('barcount');
         $request->session()->put('bar_id', $bid);
         $request->session()->put('bar_qty', $barcount);
 
-        $data = ['Ashish'];
-        $pdf = PDF::loadView('printbarcode', $data);
-        return $pdf->stream();
-        //   $pdfname = $barcode->pdf;
-        //   PDF::loadView('printbarcode')->setPaper('a4')->save('allbarcode/'.$pdfname);
-        //   return back()->with('message', 'Product Has Been Saved');
+//        $data = ['Ashish'];
+//        $pdf = PDF::loadView('printbarcode', $data);
+
+        $data = \App\BarcodeModel::whereproduct_id($bid)->first();
+        $i = 1;
+        for ($j = 1; $j <= $barcount; $j++) {
+            echo '<img src="data:image/png;base64,' . \Milon\Barcode\DNS1D::getBarcodePNG($data->barcode, "C39+", 2, 33, array(1, 1, 1), true) . '" alt="barcode"   />';
+            echo '<br>';
+            if ($i == 3) {
+                $i = 0;
+            }
+            $i++;
+        }
+//        return $pdf->stream();
     }
 
     public function addproduct(Request $request)
@@ -648,8 +655,9 @@ class WarehouseProductController extends Controller
             'products_id' => $products_id,
             'reference_code' => $request->reference_code,
             'stock' => $request->stock,
-//            'admin_id' => auth()->guard('admin')->user()->myid,
-            'admin_id' => 1,
+            'admin_id' => auth()->guard('admin')->user()->myid,
+//            'admin_id' => 1,    //To be changed (Ashish)
+//            'warehouse_id' => session('warehouse')->id,
             'added_date' => time(),
             'purchase_price' => $request->purchase_price,
             'stock_type' => 'in',

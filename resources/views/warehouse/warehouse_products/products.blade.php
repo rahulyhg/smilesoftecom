@@ -202,10 +202,9 @@
                     </div>
                 </div>
             </div>
-            <form action="{{ url('barcode-generate') }}" target="_blank" method="get">
+            <form action="{{ url('barcode-generate') }}" target="_blank" method="post">
                 <div class="modal fade" id="myModalcc" role="dialog">
                     <div class="modal-dialog">
-
                         <!-- Modal content-->
                         <div class="modal-content">
                             <div class="modal-header">
@@ -225,6 +224,7 @@
                     </div>
                 </div>
             </form>
+        </section>
     </div>
 
     <!-- /.row -->
@@ -232,9 +232,6 @@
     <!-- Main row -->
 
     <!-- /.row -->
-    </section>
-    <!-- /.content -->
-    </div>
     <script>
         function getbarcode(id){
 // alert(id);

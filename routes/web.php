@@ -836,7 +836,7 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
 });
 
 //---------------------------  Ashish --------------------------------
-Route::group(['middleware' => 'warehouse'], function () {
+    Route::group(['middleware' => 'warehouse'], function () {
     Route::get('/warehouse_dashboard', 'WareHouseController@warehouse_dashboard');
     Route::get('/warehouse_logout', 'WareHouseController@logout');
     Route::get('/warehouse_staff', 'WareHouseController@warehouse_staff');
@@ -848,7 +848,7 @@ Route::group(['middleware' => 'warehouse'], function () {
 
     //products
     Route::get('/products', 'WarehouseProductController@products');
-    Route::get('/barcode-generate', 'WarehouseProductController@barcode_generate');
+    Route::post('/barcode-generate', 'WarehouseProductController@barcode_generate');
 //    Route::get('/barcode_generate_view', 'WarehouseProductController@barcode_generate_view');
     Route::get('/addproduct', 'WarehouseProductController@addproduct');
     Route::post('/addnewproduct', 'WarehouseProductController@addnewproduct');
