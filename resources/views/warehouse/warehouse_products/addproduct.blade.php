@@ -449,7 +449,8 @@
                                                 <label for="name" class="col-sm-2 col-md-3 control-label">Tax
                                                     Class </label>
                                                 <div class="col-sm-8 col-md-4">
-                                                    <select class="form-control field-validate" name="tax_class_id" onchange="rateChange();">
+                                                    <select class="form-control field-validate" name="tax_class_id"
+                                                            onchange="rateChange();">
                                                         {{--{{$rate_id = $result['taxClass']->id}}--}}
                                                         {{--@php--}}
                                                         {{--$rate_id = $result['taxClass']->id;--}}

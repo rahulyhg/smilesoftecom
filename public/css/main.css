@@ -1,0 +1,315 @@
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+.story_textarea
+{
+    min-height: 100px;
+    resize: none;
+}
+.uploaded_image {
+    max-width: 300px;
+    margin: 10px 0px 0px 0px;
+}
+
+.profile-upload-pic {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    opacity: 0;
+    z-index: 3;
+    cursor: pointer;
+}
+.photoupload_containner {
+    width: 100%;
+    display: inline-block;
+    padding: 15px 5px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+.view_photo_containner {
+    width: 100%;
+    max-width: 170px;
+    height: 170px;
+    margin: 0px auto;
+    overflow: hidden;
+    position: relative;
+    border: 5px solid #ffffff;
+    box-shadow: 5px 8px 20px rgba(199, 199, 199, 0.19), 0 2px 5px rgba(107, 100, 100, 0.23);
+    -webkit-box-shadow: 5px 8px 20px rgba(199, 199, 199, 0.19), 0 2px 5px rgba(107, 100, 100, 0.23);
+    background-color: #ffffff;
+}
+.view_photo_containner img {
+    width: 100%;
+    height: 100%;
+}
+.set_profile {
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    background: rgba(0,0,0,0.4);
+    color: #ffffff;
+    padding: 10px 0px;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+}
+.upload_image_box {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    padding: 15px;
+    background: #f5f5f5;
+    border: solid thin #e1e1e1;
+    margin-top: 30px;
+    position: relative;
+    max-width: 100%;
+    min-height: 100px;
+}
+.upload_caption {
+    display: inline-block;
+    width: 100%;
+    margin: 10px 0px;
+    color: #848080;
+}
+.heading_inner_row
+{
+    width: 100%;
+    display: inline-block;
+    border-bottom: solid thin #ccc;
+    padding-bottom: 5px;
+    margin: 30px 0px;
+}
+.inner_heading_txt
+{
+    font-size: 16px;
+    padding-bottom: 10px;
+    line-height: 32px;
+    color: #86bc43;
+    border-bottom: solid 2px #86bc43;
+}
+.view_uploaded_photo {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+    border: 5px solid #ffffff;
+    box-shadow: 5px 8px 20px rgba(199, 199, 199, 0.19), 0 2px 5px rgba(107, 100, 100, 0.23);
+    -webkit-box-shadow: 5px 8px 20px rgb(158, 158, 158), 0 2px 5px rgba(107, 100, 100, 0.23);
+    background-color: #ffffff;
+}
+.img_width100 {
+    width: 100%;
+    height: 100%;
+}
+.delete_image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    background: #dd0000;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+}
+.set_default_img {
+    position: absolute;
+    top: 5px;
+    width: 25px;
+    height: 25px;
+    left: 5px;
+    background: #ffffff;
+    text-align: center;
+    font-size: 20px;
+    line-height: 25px;
+    cursor: pointer;
+    color: #666666;
+}
+.selected {
+    color: #00933c;
+}
+.notes_caption_main {
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+.notes_instruction {
+    font-size: 18px;
+    color: #00923b;
+    font-weight: bold;
+    margin-right: 5px;
+}
+.notes_image_box {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: 5px solid #ffffff;
+    box-shadow: 5px 8px 20px rgba(199, 199, 199, 0.19), 0 2px 5px rgba(107, 100, 100, 0.23);
+    -webkit-box-shadow: 5px 8px 20px rgb(158, 158, 158), 0 2px 5px rgba(107, 100, 100, 0.23);
+    background-color: #ffffff;
+}
+.notes_caption {
+    position: absolute;
+    width: 100%;
+    background: rgba(0,0,0,0.5);
+    color: #ffffff;
+    text-align: center;
+    bottom: 0px;
+    font-size: 12px;
+    padding: 2px 0px;
+}
+/*---------------------------------Profile Photo End--------------*/
+/*---------------------------------Membership Plans--------------*/
+.promise_member {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    max-height: calc(100vh - 180px);
+    overflow: auto;
+}
+
+.promise_member li {
+    position: relative;
+    width: 100%;
+    padding: 45px 10px 10px 10px;
+    text-align: center;
+    min-height: 30px;
+    transition: .5s all;
+    line-height: 50px;
+    border-bottom: solid thin #f3eded;
+}
+
+.promise_icon {
+    position: absolute;
+    font-size: 40px;
+    color: #a5a5a5;
+    left: 50%;
+    margin-left: -20px;
+    top: 0px;
+    height: 30px;
+}
+.promise_icon:before {
+    background: -webkit-linear-gradient(#00933d,#FFC107);
+    background-image: -moz-linear-gradient(0deg,#593cf5 0,#f24848 100%);
+    background-image: -webkit-linear-gradient(0deg,#57c384 ,#FFC107 100%);
+    background-image: -ms-linear-gradient(0deg,#593cf5 0,#f24848 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.margin_top0 {
+    margin-top: 0px;
+}
+
+.plans_mainblock {
+    display: inline-block;
+    width: 100%;
+    margin: 50px 0px;
+}
+
+.inner_plan_box {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    padding: 20px 10px 20px 120px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    text-transform: uppercase;
+    position: relative;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.inner_plan_box img {
+    position: absolute;
+    max-width: 90px;
+    left: 15px;
+    top: 36px;
+}
+
+.text_package_box {
+    display: inline-block;
+    width: 100%;
+    border-left: solid thin #e1e1e1;
+}
+
+.text_package_box h2 {
+    margin-top: 0px;
+    font-size: 24px;
+    color: #f0ad4e;
+}
+.free_txt {
+    margin-bottom: 10px;
+    display: inline-block;
+    width: 100%;
+    color: #999999;
+    text-transform: initial;
+    line-height: 18px;
+}
+
+/*---------------------------------Membership Plans End--------------*/
+.similiour_btn {
+    min-width: 75px;
+}
+/*---------------------------------Profile Photo and Cropbox-----------------*/
+.page {
+    max-width: 768px;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+.box {
+    width: 100%;
+    margin: 5px 5px 10px 5px;
+}
+.box-2 {
+    padding: 0.5em;
+    width: calc(100% / 2 - 0em);
+}
+.options label,
+.options input {
+    width: 4em;
+    padding: 0.5em 1em;
+}
+.note_forcrop
+{
+    width: 100%;
+    margin:10px 0px;
+    color: #666666;
+    font-size: 12px;
+}
+.hide {
+    display: none;
+}
+img {
+    max-width: 100%;
+}
+.center_btnmargin
+{
+    margin: 0px 10px;
+}

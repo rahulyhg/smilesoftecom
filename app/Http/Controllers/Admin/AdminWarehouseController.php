@@ -49,9 +49,11 @@ class AdminWareHouseController extends Controller
 
     public function deletewarehouse()
     {
-        DB::table('warehouse')->where('id', request('warehouse_id'))->first();
+//        DB::table('warehouse')->where('id', request('warehouse_id'))->first();
 
-//        $warehouse = WarehouseModel::find(request('warehouse_id'));
+        $warehouse = WarehouseModel::find(request('warehouse_id'));
+        $warehouse->is_del = 1;
+        $warehouse->save();
         return redirect()->back()->withErrors('Warehouse has been deleted successfully!');
     }
 

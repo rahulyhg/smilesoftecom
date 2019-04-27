@@ -62,18 +62,10 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/updatemanufacturer', 'AdminManufacturerController@updatemanufacturer');
             Route::post('/deletemanufacturer', 'AdminManufacturerController@deletemanufacturer');
 
-            ////////////////////////
+            //--------------------------- Warehouse -----------------------------//
             Route::get('/warehouse', 'AdminManufacturerController@warehouse');
             Route::post('/insert_warehouse', 'AdminManufacturerController@insert_warehouse');
             Route::get('/ViewStock/{id}', 'AdminManufacturerController@viewstock');
-
-            //main Warehouse
-            //            Route::get('/warehouse', 'AdminWarehouseController@warehouse');
-            //            Route::get('/addmanufacturer', 'AdminManufacturerController@addmanufacturer');
-            //            Route::post('/addnewmanufacturer', 'AdminManufacturerController@addnewmanufacturer');
-            //            Route::get('/editmanufacturer/{id}', 'AdminManufacturerController@editmanufacturer');
-            //            Route::post('/updatemanufacturer', 'AdminManufacturerController@updatemanufacturer');
-            //            Route::post('/deletemanufacturer', 'AdminManufacturerController@deletemanufacturer');
 
             ///////////////////supplier////////////////////////
             Route::get('/supplier', 'AdminSupplierController@supplier');
@@ -836,7 +828,8 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
 });
 
 //---------------------------  Ashish --------------------------------
-    Route::group(['middleware' => 'warehouse'], function () {
+Route::group(['middleware' => 'warehouse'], function ()
+{
     Route::get('/warehouse_dashboard', 'WareHouseController@warehouse_dashboard');
     Route::get('/warehouse_logout', 'WareHouseController@logout');
     Route::get('/warehouse_staff', 'WareHouseController@warehouse_staff');
@@ -845,6 +838,11 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     Route::get('/staff_edit/{id}', 'WareHouseController@staff_edit');
     Route::post('/staff_update', 'WareHouseController@staff_update');
     Route::post('/staff_del', 'WareHouseController@staff_del');
+
+
+    //purchase
+    Route::get('purchase', 'WarehouseProductController@purchase');
+    Route::get('addnewrow', 'WarehouseProductController@addnewrow');
 
     //products
     Route::get('/products', 'WarehouseProductController@products');
@@ -856,17 +854,18 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     //add attribute against newly added product
     Route::get('/addproductattribute/{id}/', 'WarehouseProductController@addproductattribute');
     Route::get('/addinventory/{id}/', 'WarehouseProductController@addinventory');
-    Route::post('/currentstock', 'WarehouseProductController@currentstock');
+    Route::post('/wcurrentstock', 'WarehouseProductController@currentstock');
     Route::post('/addnewstock', 'WarehouseProductController@addnewstock');
     Route::post('/addminmax', 'WarehouseProductController@addminmax');
     Route::get('/addproductimages/{id}/', 'WarehouseProductController@addproductimages');
-    Route::post('/addnewdefaultattribute', 'WarehouseProductController@addnewdefaultattribute');
+    Route::get('/addnewdefaultattribute', 'WarehouseProductController@addnewdefaultattribute');
     Route::post('/addnewproductattribute', 'WarehouseProductController@addnewproductattribute');
+    Route::get('/addnewproductattribute', 'WarehouseProductController@addnewproductattribute');
     Route::post('/updateproductattribute', 'WarehouseProductController@updateproductattribute');
     Route::post('/updatedefaultattribute', 'WarehouseProductController@updatedefaultattribute');
     Route::post('/deleteproduct', 'WarehouseProductController@deleteproduct');
     Route::post('/deleteproductattribute', 'WarehouseProductController@deleteproductattribute');
-    Route::post('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
+    Route::get('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
     Route::post('/deletedefaultattribute', 'WarehouseProductController@deletedefaultattribute');
     Route::post('editproductattribute', 'WarehouseProductController@editproductattribute');
     Route::post('editdefaultattribute', 'WarehouseProductController@editdefaultattribute');
@@ -875,7 +874,7 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     Route::post('deletedefaultattributemodal', 'WarehouseProductController@deletedefaultattributemodal');
 
     //product attribute
-//    Route::post('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
+    Route::post('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
     Route::post('editproductimage', 'WarehouseProductController@editproductimage');
     Route::post('/updateproductimage', 'WarehouseProductController@updateproductimage');
     Route::post('/deleteproductimagemodal', 'WarehouseProductController@deleteproductimagemodal');
@@ -884,6 +883,7 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     Route::post('/updateproduct', 'WarehouseProductController@updateproduct');
     Route::post('/getOptions', 'WarehouseProductController@getOptions');
     Route::post('/getOptionsValue', 'WarehouseProductController@getOptionsValue');
+    Route::get('/getOptionsValue', 'WarehouseProductController@getOptionsValue');
 
     //Attribute
     Route::get('/attributes', 'WarehouseProductController@attributes');
@@ -905,6 +905,91 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
     Route::post('/checkattributeassociate', 'WarehouseProductController@checkattributeassociate');
     Route::post('/checkvalueassociate', 'WarehouseProductController@checkvalueassociate');
     Route::post('/deletevalue', 'WarehouseProductController@deletevalue');
+
+
+    //alert setting
+    Route::get('/alertsetting', 'WarehouseSiteSettingController@alertSetting');
+    Route::post('/updateAlertSetting', 'WarehouseSiteSettingController@updateAlertSetting');
+
+    //generate application key
+    Route::get('/generateKey', 'WarehouseSiteSettingController@generateKey');
+
+    //orders
+    Route::get('/orderstatus', 'WarehouseSiteSettingController@orderstatus');
+    Route::get('/addorderstatus', 'WarehouseSiteSettingController@addorderstatus');
+    Route::post('/addNewOrderStatus', 'WarehouseSiteSettingController@addNewOrderStatus');
+    Route::get('/editorderstatus/{id}', 'WarehouseSiteSettingController@editorderstatus');
+    Route::post('/updateOrderStatus', 'WarehouseSiteSettingController@updateOrderStatus');
+    Route::post('/deleteOrderStatus', 'WarehouseSiteSettingController@deleteOrderStatus');
+
+    //units
+    Route::get('/units', 'WarehouseSiteSettingController@units');
+    Route::get('/addunit', 'WarehouseSiteSettingController@addunit');
+    Route::post('/addnewunit', 'WarehouseSiteSettingController@addnewunit');
+    Route::get('/editunit/{id}', 'WarehouseSiteSettingController@editunit');
+    Route::post('/updateunit', 'WarehouseSiteSettingController@updateunit');
+    Route::post('/deleteunit', 'WarehouseSiteSettingController@deleteunit');
+
+    //setting page
+    Route::get('/setting', 'WarehouseSiteSettingController@setting');
+    Route::post('/updateSetting', 'WarehouseSiteSettingController@updateSetting');
+
+    Route::get('/websettings', 'WarehouseSiteSettingController@webSettings');
+    Route::get('/themeSettings', 'WarehouseSiteSettingController@themeSettings');
+    Route::get('/appsettings', 'WarehouseSiteSettingController@appSettings');
+    Route::get('/admobSettings', 'WarehouseSiteSettingController@admobSettings');
+    Route::get('/facebooksettings', 'WarehouseSiteSettingController@facebookSettings');
+    Route::get('/googlesettings', 'WarehouseSiteSettingController@googleSettings');
+    Route::get('/applicationapi', 'WarehouseSiteSettingController@applicationApi');
+    Route::get('/webthemes', 'WarehouseSiteSettingController@webThemes');
+    Route::get('/seo', 'WarehouseSiteSettingController@seo');
+    Route::get('/customstyle', 'WarehouseSiteSettingController@customstyle');
+    Route::post('/updateWebTheme', 'WarehouseSiteSettingController@updateWebTheme');
+
+    //pushNotification
+    Route::get('/pushnotification', 'WarehouseSiteSettingController@pushNotification');
+
+    //language setting
+    Route::get('/getlanguages', 'WarehouseSiteSettingController@getlanguages');
+    Route::get('/languages', 'WarehouseSiteSettingController@languages');
+    Route::post('/defaultlanguage', 'WarehouseSiteSettingController@defaultlanguage');
+    Route::get('/addlanguages', 'WarehouseSiteSettingController@addlanguages');
+    Route::post('/addnewlanguages', 'WarehouseSiteSettingController@addnewlanguages');
+    Route::get('/editlanguages/{id}', 'WarehouseSiteSettingController@editlanguages');
+    Route::post('/updatelanguages', 'WarehouseSiteSettingController@updatelanguages');
+    Route::post('/deletelanguage', 'WarehouseSiteSettingController@deletelanguage');
+
+
+    //main categories
+    Route::get('/categories', 'WarehouseCategoriesController@categories');
+    Route::get('/addcategory', 'WarehouseCategoriesController@addcategory');
+    Route::post('/addnewcategory', 'WarehouseCategoriesController@addnewcategory');
+    Route::get('/editcategory/{id}', 'WarehouseCategoriesController@editcategory');
+    Route::post('/updatecategory', 'WarehouseCategoriesController@updatecategory');
+    Route::get('/deletecategory/{id}', 'WarehouseCategoriesController@deletecategory');
+
+    //sub categories
+    Route::get('/subcategories', 'WarehouseCategoriesController@subcategories');
+    Route::get('/addsubcategory', 'WarehouseCategoriesController@addsubcategory');
+    Route::post('/addnewsubcategory', 'WarehouseCategoriesController@addnewsubcategory');
+    Route::get('/editsubcategory/{id}', 'WarehouseCategoriesController@editsubcategory');
+    Route::post('/updatesubcategory', 'WarehouseCategoriesController@updatesubcategory');
+    Route::get('/deletesubcategory/{id}', 'WarehouseCategoriesController@deletesubcategory');
+
+    Route::post('/getajaxcategories', 'WarehouseCategoriesController@getajaxcategories');
+
+    //main listingManufacturer
+    Route::get('/manufacturers', 'WarehouseManufacturerController@manufacturers');
+    Route::get('/addmanufacturer', 'WarehouseManufacturerController@addmanufacturer');
+    Route::post('/addnewmanufacturer', 'WarehouseManufacturerController@addnewmanufacturer');
+    Route::get('/editmanufacturer/{id}', 'WarehouseManufacturerController@editmanufacturer');
+    Route::post('/updatemanufacturer', 'WarehouseManufacturerController@updatemanufacturer');
+    Route::post('/deletemanufacturer', 'WarehouseManufacturerController@deletemanufacturer');
+
+    //--------------------------- Warehouse -----------------------------//
+    Route::get('/warehouse', 'WarehouseManufacturerController@warehouse');
+    Route::post('/insert_warehouse', 'WarehouseManufacturerController@insert_warehouse');
+    Route::get('/ViewStock/{id}', 'AdminManufacturerController@viewstock');
 
 });
 
