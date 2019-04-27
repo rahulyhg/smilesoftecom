@@ -828,7 +828,8 @@ Route::group(['namespace' => 'App', 'prefix' => 'app'], function () {
 });
 
 //---------------------------  Ashish --------------------------------
-Route::group(['middleware' => 'warehouse'], function () {
+Route::group(['middleware' => 'warehouse'], function ()
+{
     Route::get('/warehouse_dashboard', 'WareHouseController@warehouse_dashboard');
     Route::get('/warehouse_logout', 'WareHouseController@logout');
     Route::get('/warehouse_staff', 'WareHouseController@warehouse_staff');
@@ -837,6 +838,11 @@ Route::group(['middleware' => 'warehouse'], function () {
     Route::get('/staff_edit/{id}', 'WareHouseController@staff_edit');
     Route::post('/staff_update', 'WareHouseController@staff_update');
     Route::post('/staff_del', 'WareHouseController@staff_del');
+
+
+    //purchase
+    Route::get('purchase', 'WarehouseProductController@purchase');
+    Route::get('addnewrow', 'WarehouseProductController@addnewrow');
 
     //products
     Route::get('/products', 'WarehouseProductController@products');
@@ -848,17 +854,18 @@ Route::group(['middleware' => 'warehouse'], function () {
     //add attribute against newly added product
     Route::get('/addproductattribute/{id}/', 'WarehouseProductController@addproductattribute');
     Route::get('/addinventory/{id}/', 'WarehouseProductController@addinventory');
-    Route::post('/currentstock', 'WarehouseProductController@currentstock');
+    Route::post('/wcurrentstock', 'WarehouseProductController@currentstock');
     Route::post('/addnewstock', 'WarehouseProductController@addnewstock');
     Route::post('/addminmax', 'WarehouseProductController@addminmax');
     Route::get('/addproductimages/{id}/', 'WarehouseProductController@addproductimages');
-    Route::post('/addnewdefaultattribute', 'WarehouseProductController@addnewdefaultattribute');
+    Route::get('/addnewdefaultattribute', 'WarehouseProductController@addnewdefaultattribute');
     Route::post('/addnewproductattribute', 'WarehouseProductController@addnewproductattribute');
+    Route::get('/addnewproductattribute', 'WarehouseProductController@addnewproductattribute');
     Route::post('/updateproductattribute', 'WarehouseProductController@updateproductattribute');
     Route::post('/updatedefaultattribute', 'WarehouseProductController@updatedefaultattribute');
     Route::post('/deleteproduct', 'WarehouseProductController@deleteproduct');
     Route::post('/deleteproductattribute', 'WarehouseProductController@deleteproductattribute');
-    Route::post('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
+    Route::get('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
     Route::post('/deletedefaultattribute', 'WarehouseProductController@deletedefaultattribute');
     Route::post('editproductattribute', 'WarehouseProductController@editproductattribute');
     Route::post('editdefaultattribute', 'WarehouseProductController@editdefaultattribute');
@@ -867,7 +874,7 @@ Route::group(['middleware' => 'warehouse'], function () {
     Route::post('deletedefaultattributemodal', 'WarehouseProductController@deletedefaultattributemodal');
 
     //product attribute
-//    Route::post('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
+    Route::post('/addnewproductimage', 'WarehouseProductController@addnewproductimage');
     Route::post('editproductimage', 'WarehouseProductController@editproductimage');
     Route::post('/updateproductimage', 'WarehouseProductController@updateproductimage');
     Route::post('/deleteproductimagemodal', 'WarehouseProductController@deleteproductimagemodal');
@@ -876,6 +883,7 @@ Route::group(['middleware' => 'warehouse'], function () {
     Route::post('/updateproduct', 'WarehouseProductController@updateproduct');
     Route::post('/getOptions', 'WarehouseProductController@getOptions');
     Route::post('/getOptionsValue', 'WarehouseProductController@getOptionsValue');
+    Route::get('/getOptionsValue', 'WarehouseProductController@getOptionsValue');
 
     //Attribute
     Route::get('/attributes', 'WarehouseProductController@attributes');

@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\BarcodeModel;
+use App\CategoryModel;
 use App\Http\Controllers\WarehouseAlertController;
 use App\Http\Controllers\WarehouseCategoriesController;
 use App\Http\Controllers\WarehouseManufacturerController;
 use App\Http\Controllers\WarehouseSiteSettingController;
+use App\ManufacturerModel;
 use App\TaxClassModel;
 use App\TaxRatesModel;
+use App\UnitsModel;
 use App\Warehouse_inventory_history_Model;
 use App\Warehouse_Inventory_Model;
 use App\WarehouseModel;
@@ -181,6 +184,11 @@ class WarehouseProductController extends Controller
 //addNewProduct
     public function addnewproduct(Request $request)
     {
+        if (session()->has('warehouse')) {
+            $warehouse_id = session('warehouse')->id;
+        } else {
+            $warehouse_id = 0;
+        }
         $title = array('pageTitle' => 'Add Attributes');
         $language_id = '1';
         $date_added = date('Y-m-d h:i:s');
@@ -215,6 +223,7 @@ class WarehouseProductController extends Controller
 
         $products_id = DB::table('products')->insertGetId([
             'products_image' => $uploadImage,
+            'warehouse_id' => $warehouse_id,
             'manufacturers_id' => $request->manufacturers_id,
             'products_quantity' => 0,
             'products_model' => $request->products_model,
@@ -322,7 +331,6 @@ class WarehouseProductController extends Controller
                     'products_slug' => $slug,
                 ]);
             }
-
             if ($request->hasFile($products_left_banner) and in_array($request->$products_left_banner->extension(), $extensions)) {
                 $image = $request->$products_left_banner;
                 $fileName = 'left_' . $languages_data->languages_id . time() . '.' . $image->getClientOriginalName();
@@ -425,20 +433,27 @@ class WarehouseProductController extends Controller
 
         $result['data'] = array('products_id' => $products_id, 'language_id' => $language_id);
 
+
         //notify users
         $myVar = new WarehouseAlertController();
         $alertSetting = $myVar->newProductNotification($products_id);
 
         if ($request->products_type == 1) {
-            return redirect('admin/addproductattribute/' . $products_id);
+            return redirect('addproductattribute/' . $products_id);
         } else {
-            return redirect('admin/addinventory/' . $products_id);
+            return redirect('addinventory/' . $products_id);
         }
+
     }
 
     public function addinventory(Request $request)
     {
-        $title = array('pageTitle' => Lang::get("labels.ProductInventory"));
+        if (session()->has('warehouse')) {
+            $warehouse_id = session('warehouse')->id;
+        } else {
+            $warehouse_id = 0;
+        }
+        $title = array('pageTitle' => 'Product Inventory');
         $language_id = '1';
         $products_id = $request->id;
 
@@ -460,11 +475,13 @@ class WarehouseProductController extends Controller
         $purchase_price = 0;
         if ($result['products'][0]->products_type != 1) {
 
-            $addedStock = DB::table('inventory')->where('products_id', $result['products'][0]->products_id)->where('stock_type', 'in')->sum('stock');
+            $addedStock = DB::table('inventory')
+                ->where('products_id', $result['products'][0]->products_id)
+                ->where('stock_type', 'in')->sum('stock');
             $purchasedStock = DB::table('inventory')->where('products_id', $result['products'][0]->products_id)->where('stock_type', 'out')->sum('stock');
 
             $purchase_price = DB::table('inventory')->where('products_id', $result['products'][0]->products_id)->sum('purchase_price');
-            $stocks = $addedStock - $purchasedStock;
+            $stocks = isset($addedStock) - isset($purchasedStock);
             $manageLevel = DB::table('manage_min_max')->where('products_id', $result['products'][0]->products_id)->get();
             if (count($manageLevel) > 0) {
                 $min_level = $manageLevel[0]->min_level;
@@ -654,9 +671,9 @@ class WarehouseProductController extends Controller
             'products_id' => $products_id,
             'reference_code' => $request->reference_code,
             'stock' => $request->stock,
-            'admin_id' => auth()->guard('admin')->user()->myid,
+//            'admin_id' => auth()->guard('admin')->user()->myid,
 //            'admin_id' => 1,    //To be changed (Ashish)
-//            'warehouse_id' => session('warehouse')->id,
+            'warehouse_id' => session('warehouse')->id,
             'added_date' => time(),
             'purchase_price' => $request->purchase_price,
             'stock_type' => 'in',
@@ -670,7 +687,7 @@ class WarehouseProductController extends Controller
 
             // $warehouse_inventory->w_id = $ware_ids[$i];
             // $warehouse_inventory->pid = $products_id;
-            $warehouse_inventory->stock = $warehouse_inventory->stock + $ware_stock[$i];
+            $warehouse_inventory->stock = (isset($warehouse_inventory->stock) ? $warehouse_inventory->stock : '0') + $ware_stock[$i];
             $warehouse_inventory->save();
 
             $Warehouse_inventory_history_Model = new Warehouse_inventory_history_Model();
@@ -798,7 +815,6 @@ class WarehouseProductController extends Controller
         //get function from other controller
 
         $myVar = new WarehouseSiteSettingController();
-
         $result['languages'] = $myVar->getLanguages();
 
         $options = DB::table('products_options')->join('products_options_descriptions', 'products_options_descriptions.products_options_id', '=', 'products_options.products_options_id')->where('products_options_descriptions.language_id', '=', $language_id)->get();
@@ -827,7 +843,8 @@ class WarehouseProductController extends Controller
 
         $result['products_attributes'] = $products_attributes;
         //dd($result['products_attributes']);
-        return view("admin.addproductattribute", $title)->with('result', $result);
+
+        return view("warehouse.warehouse_products.addproductattribute", $title)->with('result', $result);
     }
 
 //addproductImages
@@ -921,6 +938,7 @@ class WarehouseProductController extends Controller
 
         $products_attributes = '';
 
+//        dd($request);
         if (!empty($request->products_options_id) and !empty($request->products_id) and !empty($request->products_options_values_id)) {
 
             $checkRecord = DB::table('products_attributes')->where([
@@ -975,9 +993,7 @@ class WarehouseProductController extends Controller
             $products_attributes = 'empty';
 
         }
-
-        return ($products_attributes);
-
+        return $products_attributes;
     }
 
     public function updateproductattribute(Request $request)
@@ -1665,7 +1681,7 @@ class WarehouseProductController extends Controller
 
         $products_id = $request->products_id;
 
-        return view("admin/deleteproductattributemodal")->with('result', $result);
+        return view("deleteproductattributemodal")->with('result', $result);
 
     }
 
@@ -2567,4 +2583,32 @@ class WarehouseProductController extends Controller
 
         return redirect()->back()->withErrors('Option values has been deleted successfully!');
     }
+
+//---------------------------------------- Purchaser Start ----------------------------------------
+    public function purchase()
+    {
+        $brand = ManufacturerModel::where(['is_del'=>0])->get();
+        $unit = UnitsModel::where(['is_active'=>1])->get();
+        $catlist = CategoryModel::where(['is_active'=>1])->orderBy('categories_id', 'desc')->get();
+//        $vendor = Vendor::whereis_del(0)->get();
+//        $catlist = Category::whereis_del(0)->whereparent_id(0)->orderBy('id', 'desc')->get();
+//        return view('purchase.purchase')->with(['brand' => $brand, 'unit' => $unit, 'catlist' => $catlist, 'vendor' => $vendor]);
+        return view('warehouse.purchase.purchase')->with(['brand' => $brand, 'unit' => $unit, 'catlist' => $catlist]);
+//        return view('warehouse.purchase.purchase')->with(['manufactor'=>$manufactor]);
+    }
+
+    public function addnewrow()
+    {
+        $uid = request('uid');
+        $brand = ManufacturerModel::where(['is_del'=>0])->get();
+        $unit = UnitsModel::where(['is_active'=>1])->get();
+        $catlist = CategoryModel::where(['is_active'=>1])->orderBy('categories_id', 'desc')->get();
+//        $brand = Brand::whereis_del(0)->get();
+//        $unit = Unit::whereis_del(0)->get();
+//        $vendor = Vendor::whereis_del(0)->get();
+//        $catlist = Category::whereis_del(0)->whereparent_id(0)->orderBy('id', 'desc')->get();
+        return view('warehouse.purchase.addrow')->with(['brand' => $brand, 'unit' => $unit, 'catlist' => $catlist,'uid' => $uid]);
+//        return view('warehouse.purchase.addrow')->with(['uid'=>$uid]);
+    }
+//---------------------------------------- Purchaser End ----------------------------------------
 }

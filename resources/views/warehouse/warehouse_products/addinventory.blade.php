@@ -89,7 +89,8 @@
 
                                                                     @if(count($result['attributes'])==0 and $result['products'][0]->products_type==1)
                                                                         <div class="alert alert-danger" role="alert">
-                                                                            {{ trans('labels.You can not add stock without attribute for variable product') }}
+                                                                            You can not add stock without attribute for
+                                                                            variable product
                                                                         </div>
                                                                     @endif
 
@@ -105,7 +106,9 @@
                                                                                             <label style="width:100%">
                                                                                                 <input id="attribute"
                                                                                                        type="hidden"
-                                                                                                       class="attributeid_<?=$attribute['option']['id']?>" name="attributeid[]" value=""> {{ $attribute['option']['name']}}
+                                                                                                       class="attributeid_<?=$attribute['option']['id']?>"
+                                                                                                       name="attributeid[]"
+                                                                                                       value=""> {{ $attribute['option']['name']}}
                                                                                             </label></li>
                                                                                         <ul class="list-group">
                                                                                             <li class="list-group-item">
@@ -113,7 +116,7 @@
                                                                                                     <label><input
                                                                                                                 name="values_<?=$attribute['option']['id']?>"
                                                                                                                 type="radio"
-                                                                                                                class="currentstock required_one"
+                                                                                                                class="wcurrentstock required_one"
                                                                                                                 value="{{ $value['products_attributes_id'] }}"
                                                                                                                 attributeid="{{ $attribute['option']['id'] }}"> {{ $value['value'] }}
                                                                                                     </label> @endforeach
@@ -158,19 +161,26 @@
                                                                                 {{ trans('labels.Current Stock') }}
                                                                             </label>
                                                                             <div class="col-sm-10 col-md-8">
-                                                                                {{--<p id="current_stocks" style="width:100%">{{ $wstock->stock }}</p><br>--}}
-
+                                                                                <p id="current_stocks"
+                                                                                   style="width:100%">{{ isset($wstock->stock)?$wstock->stock:'0' }}</p>
+                                                                                <br>
                                                                             </div>
                                                                         </div>
 
                                                                         <div class="form-group">
-                                                                            {{-- <label for="name" class="col-sm-2 col-md-4 control-label">
-                                                                               {{ trans('labels.Total Purchase Price') }}
-                                                                            </label> --}}
-                                                                            {{-- <div class="col-sm-10 col-md-8">
-                                                                                <p class="purchase_price_content" style="width:100%">{{ $result['currency'][19]->value }}<span id="total_purchases">{{$result['purchase_price'] / $wstock->stock}}</span></p><br>
-
-                                                                            </div> --}}
+                                                                            <label for="name"
+                                                                                   class="col-sm-2 col-md-4 control-label">
+                                                                                {{ trans('labels.Total Purchase Price') }}
+                                                                            </label>
+                                                                            <div class="col-sm-10 col-md-8">
+                                                                                <p class="purchase_price_content"
+                                                                                   style="width:100%">
+                                                                                    {{ $result['currency'][19]->value }}
+                                                                                    <span id="total_purchases">
+                                                                                        {{$result['purchase_price'] * isset($wstock->stock)?$wstock->stock:'0'}}</span>
+                                                                                </p>
+                                                                                <br>
+                                                                            </div>
                                                                         </div>
                                                                         <input type="hidden" name="w_id[]"
                                                                                value="{{ $wobject->id }}">

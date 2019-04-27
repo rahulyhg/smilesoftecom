@@ -29,7 +29,7 @@
 <!-- ./wrapper -->
 
 <!-- all js scripts including custom js -->
-@include('admin.common.scripts')
+@include('warehouse.common.scripts')
 <!-- ./end of js scripts -->
 
 </body>

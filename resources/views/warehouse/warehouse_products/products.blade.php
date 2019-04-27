@@ -139,17 +139,16 @@
                                                                     {{ trans('labels.Action') }} <span class="caret"></span>
                                                                 </a>
                                                                 <ul class="dropdown-menu">
-                                                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="editproduct/{{ $product->products_id }}">{{ trans('labels.EditProduct') }}</a></li>
                                                                     @if($product->products_type==1 and session()->has('admin'))
+                                                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="editproduct/{{ $product->products_id }}">{{ trans('labels.EditProduct') }}</a></li>
                                                                         <li role="presentation" class="divider"></li>
                                                                         <li role="presentation"><a role="menuitem" tabindex="-1" href="addproductattribute/{{ $product->products_id }}">{{ trans('labels.ProductAttributes') }}</a></li>
                                                                     @endif
                                                                     <li role="presentation" class="divider"></li>
                                                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="addinventory/{{ $product->products_id }}">{{ trans('labels.addinventory') }}</a></li>
+                                                                    @if($product->products_type==1 and session()->has('admin'))
                                                                     <li role="presentation" class="divider"></li>
                                                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="addproductimages/{{ $product->products_id }}">{{ trans('labels.ProductImages') }}</a></li>
-
-                                                                    @if(session()->has('admin'))
                                                                         <li role="presentation" class="divider"></li>
                                                                         <li role="presentation"><a role="menuitem" tabindex="-1" id="deleteProductId" products_id="{{ $product->products_id }}">{{ trans('labels.DeleteProduct') }}</a></li>
                                                                         @endif

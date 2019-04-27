@@ -42,6 +42,11 @@
                     <i class="fa fa-home"></i> <span>Staff</span>
                 </a>
             </li>
+            <li class="treeview">
+                <a href="{{ url('purchase')}}">
+                    <i class="fa fa-plus-square"></i> <span>Purchase</span>
+                </a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

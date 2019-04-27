@@ -61,7 +61,7 @@ class WarehouseAlertController extends Controller
             );
 
             //status change push notifications
-            $myVar = new AdminSiteSettingController();
+            $myVar = new WarehouseSiteSettingController();
             $setting = $myVar->getSetting();
 
             if($setting[54]->value=='fcm'){
