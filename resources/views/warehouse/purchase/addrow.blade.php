@@ -24,8 +24,8 @@
                 <select class=" typeDD requireDD" name="catid[]" style="width: 100%;">
                     <option value="">Select Category / Sub-Category</option>
                     @foreach ($catlist as $item)
-                        <option value="{{ $item->categories_id }}">
-                            <b>{{ ucwords($item->categories_slug)}}</b>
+                        <option value="{{ $item->categories_description_id }}">
+                            <b>{{ ucwords($item->categories_name)}}</b>
                         </option>
                         {{--@php--}}
                             {{--$sublist = \App\Category::whereis_del(0)->whereparent_id($item->id)->orderBy('id', 'desc')->get();--}}
