@@ -4,11 +4,16 @@
     @php $products = \App\ProductsModel::whereis_del(0)->orderBy('products_id','desc')->get();
     @endphp
 
-    <link rel="stylesheet" href="{{ url('css/cropper.min.css') }}">
-    <link rel="stylesheet" href="{{ url('css/main.css') }}">
+    <link rel="stylesheet" href="{{ url('public/css/cropper.min.css') }}">
+    <link rel="stylesheet" href="{{ url('public/css/main.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="{{ url('js/cropper.min.js') }}"></script>
-    <script src="{{ url('js/Global.js') }}"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <script src="{{ url('public/js/cropper.min.js') }}"></script>
+    <script src="{{ url('public/js/Global.js') }}"></script>
 
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -82,10 +87,12 @@
                                                             <div class="col-sm-3">
                                                                 <label for="" class="pull-left">&nbsp;Invoice
                                                                     Date</label>
-                                                                <input type="text" class="form-control"
+                                                                <input type="text" class="form-control dateRange"
                                                                        name="invoice_date"
+                                                                       id="invoice_date"
                                                                        placeholder="Invoice Date">
                                                             </div>
+
                                                             <div class="col-sm-3">
                                                                 <label for="" class="pull-left">&nbsp;Vendor</label> {{-- <select class=" typeDD requireDD"
                                             name="vendor" style="width: 100%; height:150%"> --}}
@@ -395,6 +402,16 @@
 
             $('#cost_price' + id).val(cost_price);
         }
+    </script>
+    <script>
+        $(function () {
+            $('input[name="invoice_date"]').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 2019,
+                maxYear: parseInt(moment().format('YYYY'), 10)
+            });
+        });
     </script>
     {{--@endsection--}}
 @stop
