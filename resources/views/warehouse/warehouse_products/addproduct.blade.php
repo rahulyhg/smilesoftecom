@@ -112,7 +112,7 @@
                                             <div class="form-group">
                                                 <label for="name"
                                                        class="col-sm-2 col-md-3 control-label">{{ trans('labels.Category') }}</label>
-                                                <div class="col-sm-10 col-md-4">
+                                                <div class="col-sm-10 col-md-8">
                                                     @if(!empty(session('categories_id')))
                                                         @php
                                                             $cat_array = explode(',', session('categories_id'));
@@ -669,8 +669,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
 
 
                                             <!-- /.box-body -->
