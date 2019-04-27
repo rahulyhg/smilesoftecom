@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BarcodeModel;
+use App\CategoryDescriptionModel;
 use App\CategoryModel;
 use App\Http\Controllers\WarehouseAlertController;
 use App\Http\Controllers\WarehouseCategoriesController;
@@ -2589,7 +2590,7 @@ class WarehouseProductController extends Controller
     {
         $brand = ManufacturerModel::where(['is_del'=>0])->get();
         $unit = UnitsModel::where(['is_active'=>1])->get();
-        $catlist = CategoryModel::where(['is_active'=>1])->orderBy('categories_id', 'desc')->get();
+        $catlist = CategoryDescriptionModel::where(['is_active'=>1])->orderBy('categories_id', 'desc')->get();
 //        $vendor = Vendor::whereis_del(0)->get();
 //        $catlist = Category::whereis_del(0)->whereparent_id(0)->orderBy('id', 'desc')->get();
 //        return view('purchase.purchase')->with(['brand' => $brand, 'unit' => $unit, 'catlist' => $catlist, 'vendor' => $vendor]);
@@ -2602,13 +2603,25 @@ class WarehouseProductController extends Controller
         $uid = request('uid');
         $brand = ManufacturerModel::where(['is_del'=>0])->get();
         $unit = UnitsModel::where(['is_active'=>1])->get();
-        $catlist = CategoryModel::where(['is_active'=>1])->orderBy('categories_id', 'desc')->get();
+        $catlist = CategoryDescriptionModel::where(['is_active'=>1])->orderBy('categories_id', 'desc')->get();
 //        $brand = Brand::whereis_del(0)->get();
 //        $unit = Unit::whereis_del(0)->get();
 //        $vendor = Vendor::whereis_del(0)->get();
 //        $catlist = Category::whereis_del(0)->whereparent_id(0)->orderBy('id', 'desc')->get();
         return view('warehouse.purchase.addrow')->with(['brand' => $brand, 'unit' => $unit, 'catlist' => $catlist,'uid' => $uid]);
 //        return view('warehouse.purchase.addrow')->with(['uid'=>$uid]);
+    }
+    public function addpurchase()
+    {
+        return $_REQUEST;
+
+        $subcatlist = CategoryModel::where(['is_active'=>1])->orderBy('categories_id', 'desc')->get();
+    }
+    public function subCategorylist()
+    {
+        $categoryid = request('categoryid');
+        $subcatlist = CategoryModel::where(['is_active'=>1,'categoryid'=>$categoryid])->orderBy('categories_id', 'desc')->get();
+
     }
 //---------------------------------------- Purchaser End ----------------------------------------
 }

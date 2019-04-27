@@ -130,17 +130,16 @@
                                                                 <div class="form-group">
                                                                     <label for="name" class="pull-left"
                                                                            style="align: center">Select
-                                                                        Category / Sub-Category</label>
+                                                                        Category</label>
                                                                     <select class="form-control typeDD requireDD"
                                                                             name="catid[]"
-                                                                            style="width: 100%;">
-                                                                        <option value="">Select Category /
-                                                                            Sub-Category
-                                                                        </option>
+                                                                            id="catid_1"
+                                                                            style="width: 100%;" onchange="subCategorylist();">
+                                                                        <option value="">Select</option>
 
                                                                         @foreach ($catlist as $item)
-                                                                            <option value="{{ $item->categories_id }}">
-                                                                                <b>{{ ucwords($item->categories_slug)}}</b>
+                                                                            <option value="{{ $item->categories_description_id }}">
+                                                                                <b>{{ ucwords($item->categories_name)}}</b>
                                                                             </option>
                                                                             {{--@php--}}
                                                                             {{--$sublist = \App\Category::whereis_del(0)->whereparent_id($item->id)->orderBy('id', 'desc')->get();--}}
@@ -150,11 +149,48 @@
                                                                             {{--@endforeach--}}
                                                                         @endforeach
                                                                     </select>
-
                                                                 </div>
-
                                                             </div>
                                                             <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label for="name" class="pull-left"
+                                                                           style="align: center">Select
+                                                                        Sub Category</label>
+                                                                    <select class="form-control typeDD requireDD"
+                                                                            name="catid[]"
+                                                                            style="width: 100%;">
+                                                                        <option value="">Select</option>
+
+                                                                        @foreach ($catlist as $item)
+                                                                            <option value="{{ $item->categories_description_id }}">
+                                                                                <b>{{ ucwords($item->categories_name)}}</b>
+                                                                            </option>
+
+
+                                                                            {{--@php--}}
+                                                                            {{--$sublist = \App\Category::whereis_del(0)->whereparent_id($item->id)->orderBy('id', 'desc')->get();--}}
+                                                                            {{--@endphp--}}
+                                                                            {{--@foreach ($sublist as $item1)--}}
+                                                                            {{--<option value="{{ $item1->id }}">&nbsp;&nbsp;-{{ ucwords($item1->name)}}</option>--}}
+                                                                            {{--@endforeach--}}
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <div class="form-group">
+                                                                    <label for="name" class="pull-left"
+                                                                           style="align: center">Unit</label>
+                                                                    <select name="unit[]" id="unit"
+                                                                            class="form-control typeDD requireDD">
+                                                                        <option value="">Select unit</option>
+                                                                        @foreach($unit as $unit)
+                                                                            <option value="{{$unit->unit_id }}">{{$unit->unit_name}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-2">
                                                                 <div class="form-group">
                                                                     <label for="name" class="pull-left"
                                                                            style="align: center">Loose /
@@ -164,9 +200,7 @@
                                                                         <option value="0">Loose</option>
                                                                         <option value="1">Pack</option>
                                                                     </select>
-
                                                                 </div>
-
                                                             </div>
                                                             <div class="col-sm-3">
                                                                 <div class="form-group">
@@ -178,10 +212,7 @@
                                                                            onkeyup="totamt(1)"
                                                                            name="unit_price[]" id="unit_price1"
                                                                            placeholder="Enter Price">
-
-
                                                                 </div>
-
                                                             </div>
 
                                                             <div class="col-sm-2">
@@ -192,10 +223,7 @@
                                                                            class="form-control numberOnly"
                                                                            name="qty[]" id="qty1"
                                                                            placeholder="Enter Qty">
-
-
                                                                 </div>
-
                                                             </div>
                                                             <div class="col-sm-2">
                                                                 <div class="form-group">
@@ -206,27 +234,9 @@
                                                                            class="form-control numberOnly"
                                                                            name="f_qty[]"
                                                                            id="f_qty" placeholder="Enter Free Qty">
-
-
                                                                 </div>
-
                                                             </div>
-                                                            <div class="col-sm-2">
-                                                                <div class="form-group">
-                                                                    <label for="name" class="pull-left"
-                                                                           style="align: center">Unit</label>
-                                                                    <select name="unit[]" id="unit"
-                                                                            class="form-control">
-                                                                        <option value="">Select unit</option>
-                                                                        @foreach($unit as $unit)
-                                                                            <option value="{{$unit->unit_id }}">{{$unit->unit_name}}</option>
-                                                                        @endforeach
 
-                                                                    </select>
-
-                                                                </div>
-
-                                                            </div>
                                                             <div class="col-sm-3">
                                                                 <div class="form-group">
                                                                     <label for="name" class="pull-left"
@@ -364,6 +374,7 @@
         </section>
     </div>
 
+
     <script>
         var uid = 2;
         function addprorow() {
@@ -405,6 +416,10 @@
     </script>
     <script>
         $(function () {
+            $(".typeDD").select2({
+                placeholder: "Select"
+            });
+
             $('input[name="invoice_date"]').daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
@@ -412,6 +427,18 @@
                 maxYear: parseInt(moment().format('YYYY'), 10)
             });
         });
+        function subCategorylist() {
+            var categoryid = $('#catid_1').val();
+//            alert(categoryid);
+            $.get('{{ url('subCategorylist') }}', {
+                categoryid: categoryid
+            }, function (data) {
+                alert(data);
+                console.log(data);
+//                $('#catid_1').html(data);
+            });
+
+        }
     </script>
     {{--@endsection--}}
 @stop

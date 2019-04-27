@@ -843,6 +843,8 @@ Route::group(['middleware' => 'warehouse'], function ()
     //purchase
     Route::get('purchase', 'WarehouseProductController@purchase');
     Route::get('addnewrow', 'WarehouseProductController@addnewrow');
+    Route::post('addpurchase', 'WarehouseProductController@addpurchase');
+    Route::get('subCategorylist', 'WarehouseProductController@subCategorylist');
 
     //products
     Route::get('/products', 'WarehouseProductController@products');

@@ -200,11 +200,11 @@ return [
 	'PageSlug' => 'Page Slug',
 	
 	
-	'Manufacturers' => 'Manufacturers',
+	'Manufacturers' => 'Brand Name',
 	'EditManufacturers' => 'Edit Manufacturers',
 	'manuFacturerAddeddMessage' => 'Manufacturer has been added successfully!',
 	'AddManufacturer' => 'Add Manufacturer',
-	'ChooseManufacturers' => 'Choose Manufacturers',
+	'ChooseManufacturers' => 'Choose Brand',
 	'Image' => 'Image',
 	'OtherInfo' => 'Other Info',
 	'AddNewManufacturer' => 'AddNewManufacturer',
@@ -281,7 +281,7 @@ return [
 	'DeleteThisProductDiloge' => 'Are you sure you want to delete this product',
 	'ChooseCatgoryText' => 'Choose category at least one category',
 	'ChooseSubCatgoryText' => 'Choose sub category to associate with product',
-	'ChooseManufacturerText' => 'Choose product manufacturer/vender. You can add manufacturers from Manufacturers link Or leave blank if don\'t have any manufacturers',
+	'ChooseManufacturerText' => 'Choose product manufacturer/brand. You can add brands from Manufacturers link Or leave blank if don\'t have any manufacturers',
 	'Special' => 'Special',
 	'Yes' => 'Yes',
 	'No' => 'No',
