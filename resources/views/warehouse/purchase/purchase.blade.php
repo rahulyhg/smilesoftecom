@@ -111,97 +111,102 @@
                                                             <div class="col-sm-3">
                                                                 <label for="" class="pull-left">&nbsp;Product
                                                                     Name</label>
-                                                                <input type="text" class="form-control"
-                                                                       name="p_name[]"
-                                                                       placeholder="Product Name">
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <label for="" class="pull-left">&nbsp;Brand</label>
                                                                 <select class="form-control typeDD requireDD"
-                                                                        name="brand[]"
-                                                                        style="width: 100%;">
-                                                                    <option value="">Select Brand</option>
-                                                                    @foreach ($brand as $item)
-                                                                        <option value="{{ $item->manufacturers_id }}">{{ ucwords($item->manufacturers_name)}}</option>
+                                                                        name="p_name[]"
+                                                                        id="p_name_1" onchange="productChange();">
+                                                                    <option value="0">Select</option>
+                                                                    @foreach($productDesc as $item)
+                                                                        <option value="{{$item->products_id}}">{{$item->products_name}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-group">
-                                                                    <label for="name" class="pull-left"
-                                                                           style="align: center">Select
-                                                                        Category</label>
-                                                                    <select class="form-control typeDD requireDD"
-                                                                            name="catid[]"
-                                                                            id="catid_1"
-                                                                            style="width: 100%;" onchange="subCategorylist();">
-                                                                        <option value="">Select</option>
+                                                            {{--<div class="col-sm-3">--}}
+                                                            {{--<label for="" class="pull-left">&nbsp;Brand</label>--}}
+                                                            {{--<select class="form-control typeDD requireDD"--}}
+                                                            {{--name="brand[]"--}}
+                                                            {{--style="width: 100%;">--}}
+                                                            {{--<option value="">Select Brand</option>--}}
+                                                            {{--@foreach ($brand as $item)--}}
+                                                            {{--<option value="{{ $item->manufacturers_id }}">{{ ucwords($item->manufacturers_name)}}</option>--}}
+                                                            {{--@endforeach--}}
+                                                            {{--</select>--}}
+                                                            {{--</div>--}}
+                                                            {{--<div class="col-sm-3">--}}
+                                                            {{--<div class="form-group">--}}
+                                                            {{--<label for="name" class="pull-left"--}}
+                                                            {{--style="align: center">Select--}}
+                                                            {{--Category</label>--}}
+                                                            {{--<select class="form-control typeDD requireDD"--}}
+                                                            {{--name="catid[]"--}}
+                                                            {{--id="catid_1"--}}
+                                                            {{--style="width: 100%;" onchange="subCategorylist();">--}}
+                                                            {{--<option value="">Select</option>--}}
 
-                                                                        @foreach ($catlist as $item)
-                                                                            <option value="{{ $item->categories_description_id }}">
-                                                                                <b>{{ ucwords($item->categories_name)}}</b>
-                                                                            </option>
-                                                                            {{--@php--}}
-                                                                            {{--$sublist = \App\Category::whereis_del(0)->whereparent_id($item->id)->orderBy('id', 'desc')->get();--}}
-                                                                            {{--@endphp--}}
-                                                                            {{--@foreach ($sublist as $item1)--}}
-                                                                            {{--<option value="{{ $item1->id }}">&nbsp;&nbsp;-{{ ucwords($item1->name)}}</option>--}}
-                                                                            {{--@endforeach--}}
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-group">
-                                                                    <label for="name" class="pull-left"
-                                                                           style="align: center">Select
-                                                                        Sub Category</label>
-                                                                    <select class="form-control typeDD requireDD"
-                                                                            name="catid[]"
-                                                                            style="width: 100%;">
-                                                                        <option value="">Select</option>
+                                                            {{--@foreach ($catlist as $item)--}}
+                                                            {{--<option value="{{ $item->categories_description_id }}">--}}
+                                                            {{--<b>{{ ucwords($item->categories_name)}}</b>--}}
+                                                            {{--</option>--}}
+                                                            {{--@php--}}
+                                                            {{--$sublist = \App\Category::whereis_del(0)->whereparent_id($item->id)->orderBy('id', 'desc')->get();--}}
+                                                            {{--@endphp--}}
+                                                            {{--@foreach ($sublist as $item1)--}}
+                                                            {{--<option value="{{ $item1->id }}">&nbsp;&nbsp;-{{ ucwords($item1->name)}}</option>--}}
+                                                            {{--@endforeach--}}
+                                                            {{--@endforeach--}}
+                                                            {{--</select>--}}
+                                                            {{--</div>--}}
+                                                            {{--</div>--}}
+                                                            {{--<div class="col-sm-3">--}}
+                                                            {{--<div class="form-group">--}}
+                                                            {{--<label for="name" class="pull-left"--}}
+                                                            {{--style="align: center">Select--}}
+                                                            {{--Sub Category</label>--}}
+                                                            {{--<select class="form-control typeDD requireDD"--}}
+                                                            {{--name="catid[]"--}}
+                                                            {{--style="width: 100%;">--}}
+                                                            {{--<option value="">Select</option>--}}
 
-                                                                        @foreach ($catlist as $item)
-                                                                            <option value="{{ $item->categories_description_id }}">
-                                                                                <b>{{ ucwords($item->categories_name)}}</b>
-                                                                            </option>
+                                                            {{--@foreach ($catlist as $item)--}}
+                                                            {{--<option value="{{ $item->categories_description_id }}">--}}
+                                                            {{--<b>{{ ucwords($item->categories_name)}}</b>--}}
+                                                            {{--</option>--}}
 
 
-                                                                            {{--@php--}}
-                                                                            {{--$sublist = \App\Category::whereis_del(0)->whereparent_id($item->id)->orderBy('id', 'desc')->get();--}}
-                                                                            {{--@endphp--}}
-                                                                            {{--@foreach ($sublist as $item1)--}}
-                                                                            {{--<option value="{{ $item1->id }}">&nbsp;&nbsp;-{{ ucwords($item1->name)}}</option>--}}
-                                                                            {{--@endforeach--}}
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                <div class="form-group">
-                                                                    <label for="name" class="pull-left"
-                                                                           style="align: center">Unit</label>
-                                                                    <select name="unit[]" id="unit"
-                                                                            class="form-control typeDD requireDD">
-                                                                        <option value="">Select unit</option>
-                                                                        @foreach($unit as $unit)
-                                                                            <option value="{{$unit->unit_id }}">{{$unit->unit_name}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                <div class="form-group">
-                                                                    <label for="name" class="pull-left"
-                                                                           style="align: center">Loose /
-                                                                        Pack</label>
-                                                                    <select name="loose_pack[]" id="loose_pack"
-                                                                            class="form-control">
-                                                                        <option value="0">Loose</option>
-                                                                        <option value="1">Pack</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
+                                                            {{--@php--}}
+                                                            {{--$sublist = \App\Category::whereis_del(0)->whereparent_id($item->id)->orderBy('id', 'desc')->get();--}}
+                                                            {{--@endphp--}}
+                                                            {{--@foreach ($sublist as $item1)--}}
+                                                            {{--<option value="{{ $item1->id }}">&nbsp;&nbsp;-{{ ucwords($item1->name)}}</option>--}}
+                                                            {{--@endforeach--}}
+                                                            {{--@endforeach--}}
+                                                            {{--</select>--}}
+                                                            {{--</div>--}}
+                                                            {{--</div>--}}
+                                                            {{--<div class="col-sm-2">--}}
+                                                            {{--<div class="form-group">--}}
+                                                            {{--<label for="name" class="pull-left"--}}
+                                                            {{--style="align: center">Unit</label>--}}
+                                                            {{--<select name="unit[]" id="unit"--}}
+                                                            {{--class="form-control typeDD requireDD">--}}
+                                                            {{--<option value="">Select unit</option>--}}
+                                                            {{--@foreach($unit as $unit)--}}
+                                                            {{--<option value="{{$unit->unit_id }}">{{$unit->unit_name}}</option>--}}
+                                                            {{--@endforeach--}}
+                                                            {{--</select>--}}
+                                                            {{--</div>--}}
+                                                            {{--</div>--}}
+                                                            {{--<div class="col-sm-2">--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<label for="name" class="pull-left"--}}
+                                                                           {{--style="align: center">Loose /--}}
+                                                                        {{--Pack</label>--}}
+                                                                    {{--<select name="loose_pack[]" id="loose_pack"--}}
+                                                                            {{--class="form-control">--}}
+                                                                        {{--<option value="0">Loose</option>--}}
+                                                                        {{--<option value="1">Pack</option>--}}
+                                                                    {{--</select>--}}
+                                                                {{--</div>--}}
+                                                            {{--</div>--}}
                                                             <div class="col-sm-3">
                                                                 <div class="form-group">
                                                                     <label for="name" class="pull-left"
@@ -218,7 +223,7 @@
                                                             <div class="col-sm-2">
                                                                 <div class="form-group">
                                                                     <label for="name" class="pull-left"
-                                                                           style="align: center">QTY</label>
+                                                                           style="align: center">Quantity</label>
                                                                     <input type="text" onkeyup="totamt(1)"
                                                                            class="form-control numberOnly"
                                                                            name="qty[]" id="qty1"
@@ -229,7 +234,7 @@
                                                                 <div class="form-group">
                                                                     <label for="name" class="pull-left"
                                                                            style="align: center">Free
-                                                                        QTY</label>
+                                                                        Quantity</label>
                                                                     <input type="text"
                                                                            class="form-control numberOnly"
                                                                            name="f_qty[]"
@@ -266,41 +271,34 @@
                                                                 </div>
 
                                                             </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-group">
-                                                                    <label for="name" class="pull-left"
-                                                                           style="align: center">GST</label>
-                                                                    <input type="text" class="form-control"
-                                                                           onkeyup="totamt(1);"
-                                                                           name="gst[]" id="gst1"
-                                                                           placeholder="Enter GST">
+                                                            {{--<div class="col-sm-3">--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<label for="name" class="pull-left"--}}
+                                                                           {{--style="align: center">GST</label>--}}
+                                                                    {{--<input type="text" class="form-control"--}}
+                                                                           {{--onkeyup="totamt(1);"--}}
+                                                                           {{--name="gst[]" id="gst1"--}}
+                                                                           {{--placeholder="Enter GST">--}}
+                                                                {{--</div>--}}
+                                                            {{--</div>--}}
+                                                            {{--<div class="col-sm-3">--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<label for="name" class="pull-left"--}}
+                                                                           {{--style="align: center">CGST</label>--}}
+                                                                    {{--<input type="text" class="form-control"--}}
+                                                                           {{--name="cgst[]" id="cgst1"--}}
+                                                                           {{--placeholder="Enter CGST">--}}
+                                                                {{--</div>--}}
 
-
-                                                                </div>
-
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-group">
-                                                                    <label for="name" class="pull-left"
-                                                                           style="align: center">CGST</label>
-                                                                    <input type="text" class="form-control"
-                                                                           name="cgst[]" id="cgst1"
-                                                                           placeholder="Enter CGST">
-
-
-                                                                </div>
-
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-group">
-                                                                    <label for="name" class="pull-left"
-                                                                           style="align: center">SGST</label>
-                                                                    <input type="text" class="form-control"
-                                                                           name="sgst[]" id="sgst1"
-                                                                           placeholder="Enter SGST">
-
-
-                                                                </div>
+                                                            {{--</div>--}}
+                                                            {{--<div class="col-sm-3">--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<label for="name" class="pull-left"--}}
+                                                                           {{--style="align: center">SGST</label>--}}
+                                                                    {{--<input type="text" class="form-control"--}}
+                                                                           {{--name="sgst[]" id="sgst1"--}}
+                                                                           {{--placeholder="Enter SGST">--}}
+                                                                {{--</div>--}}
 
                                                             </div>
                                                             <div class="col-sm-4">
@@ -436,6 +434,21 @@
                 alert(data);
                 console.log(data);
 //                $('#catid_1').html(data);
+            });
+
+        }
+        function productChange()
+        {
+            var productid = $('#p_name_1').val();
+//            alert(productid);
+            $.get('{{ url('productChange') }}', {
+                productid: productid
+            }, function (data)
+            {
+//                debugger;
+                console.log(data);
+                var products_quantity = data['productData'].products_quantity;
+                $('#qty1').val(products_quantity);
             });
 
         }

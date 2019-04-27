@@ -10,6 +10,8 @@ use App\Http\Controllers\WarehouseCategoriesController;
 use App\Http\Controllers\WarehouseManufacturerController;
 use App\Http\Controllers\WarehouseSiteSettingController;
 use App\ManufacturerModel;
+use App\Products_Description;
+use App\ProductsModel;
 use App\TaxClassModel;
 use App\TaxRatesModel;
 use App\UnitsModel;
@@ -2588,14 +2590,15 @@ class WarehouseProductController extends Controller
 //---------------------------------------- Purchaser Start ----------------------------------------
     public function purchase()
     {
-        $brand = ManufacturerModel::where(['is_del'=>0])->get();
-        $unit = UnitsModel::where(['is_active'=>1])->get();
-        $catlist = CategoryDescriptionModel::where(['is_active'=>1])->orderBy('categories_id', 'desc')->get();
+        $productDesc = Products_Description::all();
+//        $brand = ManufacturerModel::where(['is_del'=>0])->get();
+//        $unit = UnitsModel::where(['is_active'=>1])->get();
+//        $catlist = CategoryDescriptionModel::where(['is_active'=>1])->orderBy('categories_id', 'desc')->get();
 //        $vendor = Vendor::whereis_del(0)->get();
 //        $catlist = Category::whereis_del(0)->whereparent_id(0)->orderBy('id', 'desc')->get();
 //        return view('purchase.purchase')->with(['brand' => $brand, 'unit' => $unit, 'catlist' => $catlist, 'vendor' => $vendor]);
-        return view('warehouse.purchase.purchase')->with(['brand' => $brand, 'unit' => $unit, 'catlist' => $catlist]);
-//        return view('warehouse.purchase.purchase')->with(['manufactor'=>$manufactor]);
+//        return view('warehouse.purchase.purchase')->with(['brand' => $brand, 'unit' => $unit, 'catlist' => $catlist]);
+        return view('warehouse.purchase.purchase')->with(['productDesc'=>$productDesc]);
     }
 
     public function addnewrow()
@@ -2621,7 +2624,13 @@ class WarehouseProductController extends Controller
     {
         $categoryid = request('categoryid');
         $subcatlist = CategoryModel::where(['is_active'=>1,'categoryid'=>$categoryid])->orderBy('categories_id', 'desc')->get();
-
+    }
+    public function productChange()
+    {
+        $productid = request('productid');
+        $productData = ProductsModel::where(['products_id'=>$productid])->first();
+        $productDescData = Products_Description::where(['products_id'=>$productid])->first();
+        return ['productData'=>$productData, 'productDescData'=>$productDescData];
     }
 //---------------------------------------- Purchaser End ----------------------------------------
 }
