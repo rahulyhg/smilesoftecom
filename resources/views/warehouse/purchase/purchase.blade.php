@@ -15,6 +15,63 @@
     <script src="{{ url('public/js/cropper.min.js') }}"></script>
     <script src="{{ url('public/js/Global.js') }}"></script>
 
+    <style>
+
+        [type="radio"]:checked,
+        [type="radio"]:not(:checked) {
+            position: absolute;
+            left: -9999px;
+        }
+
+        [type="radio"]:checked + label,
+        [type="radio"]:not(:checked) + label {
+            position: relative;
+            padding-left: 28px;
+            cursor: pointer;
+            line-height: 20px;
+            display: inline-block;
+            color: #666;
+        }
+
+        [type="radio"]:checked + label:before,
+        [type="radio"]:not(:checked) + label:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 18px;
+            height: 18px;
+            border: 1px solid #ddd;
+            border-radius: 100%;
+            background: slategray;
+        }
+
+        [type="radio"]:checked + label:after,
+        [type="radio"]:not(:checked) + label:after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: orangered;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            border-radius: 100%;
+            -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+        }
+
+        [type="radio"]:not(:checked) + label:after {
+            opacity: 0;
+            -webkit-transform: scale(0);
+            transform: scale(0);
+        }
+
+        [type="radio"]:checked + label:after {
+            opacity: 1;
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+    </style>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -71,7 +128,7 @@
                                                             </div>
                                                             <div class="col-sm-2">
                                                                 <label for="" class="pull-left">&nbsp;Purchase
-                                                                    Date.</label>
+                                                                    Date</label>
                                                                 <input type="text" class="form-control"
                                                                        name="p_date"
                                                                        value="{{ date('d-M-Y') }}"
@@ -86,7 +143,7 @@
                                                             </div>
                                                             <div class="col-sm-3">
                                                                 <label for="" class="pull-left">&nbsp;Invoice
-                                                                    Date</label>
+                                                                    Date *</label>
                                                                 <input type="text" class="form-control dateRange"
                                                                        name="invoice_date"
                                                                        id="invoice_date"
@@ -96,7 +153,7 @@
                                                             <div class="col-sm-3">
                                                                 <label for="" class="pull-left">&nbsp;Vendor</label> {{-- <select class=" typeDD requireDD"
                                             name="vendor" style="width: 100%; height:150%"> --}}
-                                                                <select class="form-control" name="vendor"
+                                                                <select class="form-control typeDD requireDD" name="vendor"
                                                                         style="width: 100%; height:150%">
                                                                     <option value="">Select Vendor</option>
                                                                     {{--@foreach ($vendor as $item)--}}
@@ -108,7 +165,7 @@
                                                         </div>
                                                         <hr>
                                                         <div class="row">
-                                                            <div class="col-sm-3">
+                                                            <div class="col-sm-5">
                                                                 <label for="" class="pull-left">&nbsp;Product
                                                                     Name</label>
                                                                 <select class="form-control typeDD requireDD"
@@ -196,45 +253,66 @@
                                                             {{--</div>--}}
                                                             {{--</div>--}}
                                                             {{--<div class="col-sm-2">--}}
-                                                                {{--<div class="form-group">--}}
-                                                                    {{--<label for="name" class="pull-left"--}}
-                                                                           {{--style="align: center">Loose /--}}
-                                                                        {{--Pack</label>--}}
-                                                                    {{--<select name="loose_pack[]" id="loose_pack"--}}
-                                                                            {{--class="form-control">--}}
-                                                                        {{--<option value="0">Loose</option>--}}
-                                                                        {{--<option value="1">Pack</option>--}}
-                                                                    {{--</select>--}}
-                                                                {{--</div>--}}
+                                                            {{--<div class="form-group">--}}
+                                                            {{--<label for="name" class="pull-left"--}}
+                                                            {{--style="align: center">Loose /--}}
+                                                            {{--Pack</label>--}}
+                                                            {{--<select name="loose_pack[]" id="loose_pack"--}}
+                                                            {{--class="form-control">--}}
+                                                            {{--<option value="0">Loose</option>--}}
+                                                            {{--<option value="1">Pack</option>--}}
+                                                            {{--</select>--}}
+                                                            {{--</div>--}}
                                                             {{--</div>--}}
                                                             <div class="col-sm-3">
-                                                                <div class="form-group">
-                                                                    <label for="name" class="pull-left"
-                                                                           style="align: center">CP Excl
-                                                                        Tax(₹)</label>
-                                                                    <input type="text"
-                                                                           class="form-control numberOnly"
-                                                                           onkeyup="totamt(1)"
-                                                                           name="unit_price[]" id="unit_price1"
-                                                                           placeholder="Enter Price">
+                                                                <label for="name" class="pull-left col-sm-12"
+                                                                       style="align: center;margin-left: 35px;">Cost
+                                                                    Price Tax(₹)</label>
+                                                                <div class="col-sm-12" style="margin-top: 5px;">
+                                                                    <input type="radio"
+                                                                           id="inclusive"
+                                                                           name="radio-group"
+                                                                           checked onchange="taxInclusion(this.value);"
+                                                                           value="inclusive">
+                                                                    <label for="inclusive">Included</label>
+                                                                    &nbsp&nbsp&nbsp&nbsp
+                                                                    <input type="radio"
+                                                                           id="exclusive"
+                                                                           name="radio-group"
+                                                                           value="exclusive"
+                                                                           onchange="taxInclusion(this.value);">
+                                                                    <label for="exclusive">Excluded</label>
                                                                 </div>
                                                             </div>
+
+                                                            {{--<div class="col-sm-4">--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<label for="name" class="pull-left"--}}
+                                                                           {{--style="align: center">CP Excl--}}
+                                                                        {{--Tax(₹)</label>--}}
+                                                                    {{--<input type="text"--}}
+                                                                           {{--class="form-control numberOnly"--}}
+                                                                           {{--onkeyup="totamt(1)"--}}
+                                                                           {{--name="unit_price[]" id="unit_price1"--}}
+                                                                           {{--placeholder="Enter Price">--}}
+                                                                {{--</div>--}}
+                                                            {{--</div>--}}
 
                                                             <div class="col-sm-2">
                                                                 <div class="form-group">
                                                                     <label for="name" class="pull-left"
-                                                                           style="align: center">Quantity</label>
+                                                                           style="align: center">Enter Stock</label>
                                                                     <input type="text" onkeyup="totamt(1)"
                                                                            class="form-control numberOnly"
                                                                            name="qty[]" id="qty1"
                                                                            placeholder="Enter Qty">
                                                                 </div>
                                                             </div>
+
                                                             <div class="col-sm-2">
                                                                 <div class="form-group">
                                                                     <label for="name" class="pull-left"
-                                                                           style="align: center">Free
-                                                                        Quantity</label>
+                                                                           style="align: center">Free Stocks</label>
                                                                     <input type="text"
                                                                            class="form-control numberOnly"
                                                                            name="f_qty[]"
@@ -242,7 +320,7 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-sm-3">
+                                                            <div class="col-sm-2">
                                                                 <div class="form-group">
                                                                     <label for="name" class="pull-left"
                                                                            style="align: center">Total
@@ -272,96 +350,95 @@
 
                                                             </div>
                                                             {{--<div class="col-sm-3">--}}
-                                                                {{--<div class="form-group">--}}
-                                                                    {{--<label for="name" class="pull-left"--}}
-                                                                           {{--style="align: center">GST</label>--}}
-                                                                    {{--<input type="text" class="form-control"--}}
-                                                                           {{--onkeyup="totamt(1);"--}}
-                                                                           {{--name="gst[]" id="gst1"--}}
-                                                                           {{--placeholder="Enter GST">--}}
-                                                                {{--</div>--}}
+                                                            {{--<div class="form-group">--}}
+                                                            {{--<label for="name" class="pull-left"--}}
+                                                            {{--style="align: center">GST</label>--}}
+                                                            {{--<input type="text" class="form-control"--}}
+                                                            {{--onkeyup="totamt(1);"--}}
+                                                            {{--name="gst[]" id="gst1"--}}
+                                                            {{--placeholder="Enter GST">--}}
+                                                            {{--</div>--}}
                                                             {{--</div>--}}
                                                             {{--<div class="col-sm-3">--}}
-                                                                {{--<div class="form-group">--}}
-                                                                    {{--<label for="name" class="pull-left"--}}
-                                                                           {{--style="align: center">CGST</label>--}}
-                                                                    {{--<input type="text" class="form-control"--}}
-                                                                           {{--name="cgst[]" id="cgst1"--}}
-                                                                           {{--placeholder="Enter CGST">--}}
-                                                                {{--</div>--}}
+                                                            {{--<div class="form-group">--}}
+                                                            {{--<label for="name" class="pull-left"--}}
+                                                            {{--style="align: center">CGST</label>--}}
+                                                            {{--<input type="text" class="form-control"--}}
+                                                            {{--name="cgst[]" id="cgst1"--}}
+                                                            {{--placeholder="Enter CGST">--}}
+                                                            {{--</div>--}}
 
                                                             {{--</div>--}}
                                                             {{--<div class="col-sm-3">--}}
-                                                                {{--<div class="form-group">--}}
-                                                                    {{--<label for="name" class="pull-left"--}}
-                                                                           {{--style="align: center">SGST</label>--}}
-                                                                    {{--<input type="text" class="form-control"--}}
-                                                                           {{--name="sgst[]" id="sgst1"--}}
-                                                                           {{--placeholder="Enter SGST">--}}
-                                                                {{--</div>--}}
-
-                                                            </div>
-                                                            <div class="col-sm-4">
-                                                                <div class="form-group">
-                                                                    <label for="name" class="pull-left"
-                                                                           style="align: center">Total Cost
-                                                                        Price (All Qty)</label>
-                                                                    <input type="text" class="form-control"
-                                                                           name="total_cost_price[]"
-                                                                           id="total_cost_price1"
-                                                                           placeholder="Enter Cost Price">
-
-
-                                                                </div>
-
-                                                            </div>
-                                                            <div class="col-sm-4">
-                                                                <div class="form-group">
-                                                                    <label for="name" class="pull-left"
-                                                                           style="align: center">Cost Price
-                                                                        (Per Unit)</label>
-                                                                    <input type="text" class="form-control"
-                                                                           name="cost_price[]"
-                                                                           id="cost_price1"
-                                                                           placeholder="Enter Cost Price">
-
-
-                                                                </div>
-
-                                                            </div>
-                                                            <div class="col-sm-4">
-                                                                <div class="form-group">
-                                                                    <label for="name" class="pull-left"
-                                                                           style="align: center">Selling Price
-                                                                        (Per Unit)</label>
-                                                                    <input type="text" class="form-control"
-                                                                           name="selling_price[]"
-                                                                           id="selling_price1"
-                                                                           placeholder="Enter Selling Price">
-
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                        <hr>
-                                                        <div id="addhere">
-
+                                                            {{--<div class="form-group">--}}
+                                                            {{--<label for="name" class="pull-left"--}}
+                                                            {{--style="align: center">SGST</label>--}}
+                                                            {{--<input type="text" class="form-control"--}}
+                                                            {{--name="sgst[]" id="sgst1"--}}
+                                                            {{--placeholder="Enter SGST">--}}
+                                                            {{--</div>--}}
 
                                                         </div>
-                                                        <button type="button" onclick="addprorow();"
-                                                                class="btn btn-primary btn-sm">+
-                                                        </button>
-                                                        <hr>
-                                                        <button type="submit" class="btn btn-success btn-block">Done
-                                                            & Save
-                                                        </button>
-                                                    </form>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label for="name" class="pull-left"
+                                                                       style="align: center">Total Cost
+                                                                    Price (All Qty)</label>
+                                                                <input type="text" class="form-control"
+                                                                       name="total_cost_price[]"
+                                                                       id="total_cost_price1"
+                                                                       placeholder="Enter Cost Price">
+
+
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label for="name" class="pull-left"
+                                                                       style="align: center">Cost Price
+                                                                    (Per Unit)</label>
+                                                                <input type="text" class="form-control"
+                                                                       name="cost_price[]"
+                                                                       id="cost_price1"
+                                                                       placeholder="Enter Cost Price">
+
+
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label for="name" class="pull-left"
+                                                                       style="align: center">Selling Price
+                                                                    (Per Unit)</label>
+                                                                <input type="text" class="form-control"
+                                                                       name="selling_price[]"
+                                                                       id="selling_price1"
+                                                                       placeholder="Enter Selling Price">
+
+                                                            </div>
+
+                                                        </div>
+                                                </div>
+                                                <hr>
+                                                <div id="addhere">
+
 
                                                 </div>
+                                                <button type="button" onclick="addprorow();"
+                                                        class="btn btn-primary btn-sm">+
+                                                </button>
+                                                <hr>
+                                                <button type="submit" class="btn btn-success btn-block">Done
+                                                    & Save
+                                                </button>
+                                                </form>
 
                                             </div>
 
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -369,7 +446,8 @@
                     </div>
                 </div>
             </div>
-        </section>
+    </div>
+    </section>
     </div>
 
 
@@ -413,6 +491,7 @@
         }
     </script>
     <script>
+
         $(function () {
             $(".typeDD").select2({
                 placeholder: "Select"
@@ -437,20 +516,27 @@
             });
 
         }
-        function productChange()
-        {
+        function productChange() {
             var productid = $('#p_name_1').val();
 //            alert(productid);
             $.get('{{ url('productChange') }}', {
                 productid: productid
-            }, function (data)
-            {
+            }, function (data) {
 //                debugger;
                 console.log(data);
                 var products_quantity = data['productData'].products_quantity;
                 $('#qty1').val(products_quantity);
             });
 
+        }
+    </script>
+
+    <script>
+        $(function () {
+            console.log("inclusive");
+        });
+        function taxInclusion(tt) {
+            console.log(tt);
         }
     </script>
     {{--@endsection--}}

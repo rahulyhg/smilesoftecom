@@ -8,6 +8,7 @@ class TaxClassModel extends Model
 {
     protected $table = 'tax_class';
     public $timestamps = false;
+    public $primaryKey = 'tax_class_id';
 
     public function taxRate()
     {

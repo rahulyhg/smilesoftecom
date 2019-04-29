@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\WarehouseModel;
 use App\WarehouseStaffModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,8 @@ class WareHouseController extends Controller
                 'username' => $request->username,
                 'password' => $request->password,
             ),
-            array(
+            array
+            (
                 'username' => 'required | email',
                 'password' => 'required',
             )
@@ -31,6 +33,17 @@ class WareHouseController extends Controller
             return redirect('warehouse_login')->withErrors($validator)->withInput();
         } else {
             //check authentication of email and password
+//            $credentials = ['email' => request('username'), 'psasword' => request('password')];
+////            Hash::check($credentials['password'], $user->password;
+//            $user = WarehouseModel::whereRaw('lower(username) = ? ', [$credentials['email']])->firstorFail();
+//
+//            $validPassword = Hash::check($credentials['password'], $request->password);
+//
+//            if ($user  && $validPassword)
+//            {
+//                return $user.$validPassword;
+//            }
+
             $username = request('username');
             $password = request('password');
             $warehouse = WarehouseModel::where(['username' => $username, 'password' => $password, 'is_del' => 0])->first();

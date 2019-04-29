@@ -119,7 +119,8 @@
                                                                                                                 class="wcurrentstock required_one"
                                                                                                                 value="{{ $value['products_attributes_id'] }}"
                                                                                                                 attributeid="{{ $attribute['option']['id'] }}"> {{ $value['value'] }}
-                                                                                                    </label> @endforeach
+                                                                                                    </label>
+                                                                                                @endforeach
                                                                                             </li>
                                                                                         </ul>
                                                                                     @endforeach
@@ -134,19 +135,38 @@
                                                                     <div class="form-group">
                                                                         <label for="name"
                                                                                class="col-sm-2 col-md-4 control-label">
-                                                                            All Over Stock
+                                                                            All Over Stocks
                                                                         </label>
-                                                                        <div class="col-sm-10 col-md-8">
-                                                                            <p id="current_stocks"
-                                                                               style="width:100%">{{$result['stocks']}}</p>
-                                                                            <br>
+                                                                        @php
+                                                                            $warehouse_id = session('warehouse')->id;
+                                                                            $warehouseModel = \App\WarehouseModel::
+                                                                            where(['is_del'=>0, 'id'=>$warehouse_id])->get();
+                                                                        @endphp
+                                                                        @foreach ($warehouseModel as $wobject)
+                                                                            @php
+                                                                                $wstock = \App\Warehouse_Inventory_Model::where(['pid' => $result['products'][0]->products_id ,'w_id' =>$wobject->id])->first();
+                                                                            @endphp
+                                                                            <div class="col-sm-10 col-md-8">
+                                                                                <p id="current_stocks"
+                                                                                   style="width:100%">{{ isset($wstock->stock)?$wstock->stock:'0' }}</p>
+                                                                                <br>
+                                                                            </div>
+                                                                            <input type="hidden" name="stock" id="stock"
+                                                                                   value="{{ isset($wstock->stock)?$wstock->stock:'0' }}">
 
-                                                                        </div>
-                                                                        <input type="hidden" name="stock" id="stock"
-                                                                               value="{{$result['stocks']}}">
+                                                                            {{--<div class="col-sm-10 col-md-8">--}}
+                                                                            {{--<p id="current_stocks"--}}
+                                                                            {{--style="width:100%">{{$result['stocks']}}</p>--}}
+                                                                            {{--<br>--}}
+                                                                            {{--</div>--}}
+                                                                            {{--<input type="hidden" name="stock" id="stock"--}}
+                                                                            {{--value="{{$result['stocks']}}">--}}
+                                                                        @endforeach
                                                                     </div>
                                                                     @php
-                                                                        $warehouseModel = \App\WarehouseModel::whereis_del(0)->get();
+                                                                        $warehouse_id = session('warehouse')->id;
+                                                                        $warehouseModel = \App\WarehouseModel::
+                                                                        where(['is_del'=>0, 'id'=>$warehouse_id])->get();
                                                                     @endphp
 
                                                                     @foreach ($warehouseModel as $wobject)
@@ -155,17 +175,17 @@
                                                                             $wstock = \App\Warehouse_Inventory_Model::where(['pid' => $result['products'][0]->products_id ,'w_id' =>$wobject->id])->first();
                                                                         @endphp
                                                                         <h4>{{  $wobject->name }}</h4>
-                                                                        <div class="form-group">
-                                                                            <label for="name"
-                                                                                   class="col-sm-2 col-md-4 control-label">
-                                                                                {{ trans('labels.Current Stock') }}
-                                                                            </label>
-                                                                            <div class="col-sm-10 col-md-8">
-                                                                                <p id="current_stocks"
-                                                                                   style="width:100%">{{ isset($wstock->stock)?$wstock->stock:'0' }}</p>
-                                                                                <br>
-                                                                            </div>
-                                                                        </div>
+                                                                        {{--<div class="form-group">--}}
+                                                                            {{--<label for="name"--}}
+                                                                                   {{--class="col-sm-2 col-md-4 control-label">--}}
+                                                                                {{--{{ trans('labels.Current Stock') }}--}}
+                                                                            {{--</label>--}}
+                                                                            {{--<div class="col-sm-10 col-md-8">--}}
+                                                                                {{--<p id="current_stocks"--}}
+                                                                                   {{--style="width:100%">{{ isset($wstock->stock)?$wstock->stock:'0' }}</p>--}}
+                                                                                {{--<br>--}}
+                                                                            {{--</div>--}}
+                                                                        {{--</div>--}}
 
                                                                         <div class="form-group">
                                                                             <label for="name"
@@ -174,7 +194,7 @@
                                                                             </label>
                                                                             <div class="col-sm-10 col-md-8">
                                                                                 <p class="purchase_price_content"
-                                                                                   style="width:100%">
+                                                                                   style="width:100%;margin-top: 7px;">
                                                                                     {{ $result['currency'][19]->value }}
                                                                                     <span id="total_purchases">
                                                                                         {{$result['purchase_price'] * isset($wstock->stock)?$wstock->stock:'0'}}</span>
