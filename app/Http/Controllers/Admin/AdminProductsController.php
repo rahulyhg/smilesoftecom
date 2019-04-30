@@ -477,7 +477,7 @@ class AdminProductsController extends Controller
             $min_level = 0;
             $max_level = 0;
             $purchase_price = 0;
-            if ($result['products'][0]->products_type != 1) {
+            if ($result['products'][0]->products_type != 0) {
 
                 $addedStock = DB::table('inventory')->where('products_id', $result['products'][0]->products_id)->where('stock_type', 'in')->sum('stock');
                 $purchasedStock = DB::table('inventory')->where('products_id', $result['products'][0]->products_id)->where('stock_type', 'out')->sum('stock');
@@ -489,10 +489,12 @@ class AdminProductsController extends Controller
                     $min_level = $manageLevel[0]->min_level;
                     $max_level = $manageLevel[0]->max_level;
                 }
+                
             }
 
             $result['purchase_price'] = $purchase_price;
             $result['stocks'] = $stocks;
+            
             $result['min_level'] = $min_level;
             $result['max_level'] = $max_level;
             $result['attributes'] = array();
@@ -678,7 +680,7 @@ class AdminProductsController extends Controller
             $inventory_ref_id = DB::table('inventory')->insertGetId([
                 'products_id' => $products_id,
                 'reference_code' => $request->reference_code,
-                'stock' => $request->stock,
+                'stock' => request('stockone'),
                 'admin_id' => auth()->guard('admin')->user()->myid,
                 'added_date' => time(),
                 'purchase_price' => $request->purchase_price,
