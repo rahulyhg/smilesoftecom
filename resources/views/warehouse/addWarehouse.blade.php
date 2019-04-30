@@ -1,5 +1,7 @@
 @extends('admin.layout')
 @section('content')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -49,7 +51,7 @@
                                         <div class="box-body">
                                             <form action="{{ url('admin/insert_warehouse') }}" method="post"
                                                   class="form-horizontal form-validate"
-                                                  id="insert_store">
+                                                  id="insert_store" name="insert_store">
 
                                                 <div class="form-group">
                                                     <label for="name"
@@ -118,7 +120,8 @@
                                                         <input type="email" name="username" id="username"
                                                                autocomplete="off"
                                                                class="form-control field-validate"
-                                                               placeholder="Enter Username">
+                                                               placeholder="Enter Username"
+                                                               required>
                                                         <span class="help-block"
                                                               style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                                         Username such as ashu@smileshop.com etc.</span>
@@ -173,4 +176,18 @@
         </section>
         <!-- /.content -->
     </div>
+    <script>
+        $("#username").focusout(function () {
+            var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+            var email = $('#username').val();
+            if (reg.test(email) == false)
+            {
+                alert('Invalid Email Address');
+                $('#username').val('');
+                return false;
+            }
+            return true;
+            }
+        );
+    </script>
 @endsection 

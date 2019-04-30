@@ -9,6 +9,7 @@ use App\Http\Controllers\WarehouseAlertController;
 use App\Http\Controllers\WarehouseCategoriesController;
 use App\Http\Controllers\WarehouseManufacturerController;
 use App\Http\Controllers\WarehouseSiteSettingController;
+use App\InventoryModel;
 use App\ManufacturerModel;
 use App\Products_Description;
 use App\ProductsModel;
@@ -478,12 +479,24 @@ class WarehouseProductController extends Controller
         $purchase_price = 0;
         if ($result['products'][0]->products_type != 1) {
 
-            $addedStock = DB::table('inventory')
-                ->where('products_id', $result['products'][0]->products_id)
-                ->where('stock_type', 'in')->sum('stock');
-            $purchasedStock = DB::table('inventory')->where('products_id', $result['products'][0]->products_id)->where('stock_type', 'out')->sum('stock');
+            $addedStock = InventoryModel::where(['products_id'=>$result['products'][0]->products_id, 'warehouse_id'=>$warehouse_id, 'stock_type'=>'in'])->sum();
 
-            $purchase_price = DB::table('inventory')->where('products_id', $result['products'][0]->products_id)->sum('purchase_price');
+//            $addedStock = DB::table('inventory')
+//                ->where('products_id', $result['products'][0]->products_id)
+//                ->where('warehouse_id',$warehouse_id)
+//                ->where('stock_type', 'in')->sum('stock');
+
+            $purchasedStock = DB::table('inventory')
+                ->where('products_id', $result['products'][0]->products_id)
+                ->where('stock_type', 'out')
+                ->where('warehouse_id',$warehouse_id)
+                ->sum('stock');
+
+            $purchase_price = DB::table('inventory')
+                ->where('products_id', $result['products'][0]->products_id)
+                ->where('warehouse_id',$warehouse_id)
+                ->sum('purchase_price');
+
             $stocks = isset($addedStock) - isset($purchasedStock);
             $manageLevel = DB::table('manage_min_max')->where('products_id', $result['products'][0]->products_id)->get();
             if (count($manageLevel) > 0) {
@@ -564,12 +577,13 @@ class WarehouseProductController extends Controller
     public function currentstock(Request $request)
     {
         $inventory_ref_id = '';
+        $warehouse_id = session('warehouse')->id;
         $products_id = $request->products_id;
         $attributes = array_filter($request->attributeid);
         $attributeid = implode(',', $attributes);
         $postAttributes = count($attributes);
 
-        $inventories = DB::table('inventory')->where('products_id', $products_id)->get();
+        $inventories = DB::table('inventory')->where('products_id', $products_id)->where('warehouse_id',$warehouse_id)->get();
         $reference_ids = array();
         $stockIn = 0;
         $stockOut = 0;
@@ -941,7 +955,7 @@ class WarehouseProductController extends Controller
 
         $products_attributes = '';
 
-//        dd($request);
+        dd($request);
         if (!empty($request->products_options_id) and !empty($request->products_id) and !empty($request->products_options_values_id)) {
 
             $checkRecord = DB::table('products_attributes')->where([
@@ -992,9 +1006,7 @@ class WarehouseProductController extends Controller
             }
 
         } else {
-
             $products_attributes = 'empty';
-
         }
         return $products_attributes;
     }

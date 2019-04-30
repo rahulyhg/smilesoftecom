@@ -32,57 +32,76 @@ class AdminWareHouseController extends Controller
         if (session('manufacturer_create') == 0) {
             print Lang::get("labels.You do not have to access this route");
         } else {
-            $warehouse = new WarehouseModel();
+
+//            $validator = Validator::make(
+//                array(
+//                    'username' => $request->username,
+//                    'password' => $request->password,
+//                ),
+//                array
+//                (
+//                    'username' => 'required | email',
+//                    'password' => 'required',
+//                )
+//            );
+//            if ($validator->fails()) {
+//                return redirect('admin/addWarehouse')->withErrors($validator)->withInput();
+//            } else {
+                $warehouse = new WarehouseModel();
+                $warehouse->name = request('name');
+                $warehouse->location = request('location');
+                $warehouse->latitude = request('latitude');
+                $warehouse->longitude = request('longitude');
+                $warehouse->username = request('username');
+                $warehouse->password = request('password');
+                $warehouse->save();
+                $title = array('pageTitle' => 'Add Warehouse');
+
+//                return back()->with(['title' => $title], 'message', 'New Warehouse Has Been Added');
+                return redirect()->back()->withErrors('Warehouse has been added successfully!');
+            }
+//        }
+    }
+
+        public
+        function deletewarehouse()
+        {
+//        DB::table('warehouse')->where('id', request('warehouse_id'))->first();
+
+            $warehouse = WarehouseModel::find(request('warehouse_id'));
+            $warehouse->is_del = 1;
+            $warehouse->save();
+            return redirect()->back()->withErrors('Warehouse has been deleted successfully!');
+        }
+
+        public
+        function editWarehouse(Request $request)
+        {
+            $title = array('pageTitle' => 'Edit Warehouse Details');
+
+            $warehouse_id = $request->id;
+
+            $warehouse = WarehouseModel::find($warehouse_id);
+
+            return view("warehouse.editWarehouse", $title)->with('warehouse', $warehouse);
+        }
+
+        public
+        function updatewarehouse(Request $request)
+        {
+            $warehouse_id = request('wid');
+            $warehouse = WarehouseModel::find($warehouse_id);
+
             $warehouse->name = request('name');
             $warehouse->location = request('location');
             $warehouse->latitude = request('latitude');
             $warehouse->longitude = request('longitude');
             $warehouse->username = request('username');
             $warehouse->password = request('password');
+            $warehouse->updated_at = Carbon::now();
             $warehouse->save();
-            $title = array('pageTitle' => 'Add Warehouse');
 
-//                return back()->with(['title' => $title], 'message', 'New Warehouse Has Been Added');
-            return redirect()->back()->withErrors('Warehouse has been added successfully!');
+            return redirect()->back()->withErrors('Manufacturer has been updated successfully!');
+
         }
     }
-
-    public function deletewarehouse()
-    {
-//        DB::table('warehouse')->where('id', request('warehouse_id'))->first();
-
-        $warehouse = WarehouseModel::find(request('warehouse_id'));
-        $warehouse->is_del = 1;
-        $warehouse->save();
-        return redirect()->back()->withErrors('Warehouse has been deleted successfully!');
-    }
-
-    public function editWarehouse(Request $request)
-    {
-        $title = array('pageTitle' => 'Edit Warehouse Details');
-
-        $warehouse_id = $request->id;
-
-        $warehouse = WarehouseModel::find($warehouse_id);
-
-        return view("warehouse.editWarehouse", $title)->with('warehouse', $warehouse);
-    }
-
-    public function updatewarehouse(Request $request)
-    {
-        $warehouse_id = request('wid');
-        $warehouse = WarehouseModel::find($warehouse_id);
-
-        $warehouse->name = request('name');
-        $warehouse->location = request('location');
-        $warehouse->latitude = request('latitude');
-        $warehouse->longitude = request('longitude');
-        $warehouse->username = request('username');
-        $warehouse->password = request('password');
-        $warehouse->updated_at = Carbon::now();
-        $warehouse->save();
-
-        return redirect()->back()->withErrors('Manufacturer has been updated successfully!');
-
-    }
-}
