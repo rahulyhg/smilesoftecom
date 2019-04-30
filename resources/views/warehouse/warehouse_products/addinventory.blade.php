@@ -147,7 +147,8 @@
                                                                                 $wstock = \App\Warehouse_Inventory_Model::where(['pid' => $result['products'][0]->products_id ,'w_id' =>$wobject->id])->first();
                                                                             @endphp
                                                                             <div class="col-sm-10 col-md-8">
-                                                                                <p id="current_stocks"
+                                                                                {{--<p id="current_stocks"--}}
+                                                                                <p id="currentstocks"
                                                                                    style="width:100%">{{ isset($wstock->stock)?$wstock->stock:'0' }}</p>
                                                                                 <br>
                                                                             </div>
@@ -175,17 +176,17 @@
                                                                             $wstock = \App\Warehouse_Inventory_Model::where(['pid' => $result['products'][0]->products_id ,'w_id' =>$wobject->id])->first();
                                                                         @endphp
                                                                         <h4>{{  $wobject->name }}</h4>
-                                                                        {{--<div class="form-group">--}}
-                                                                            {{--<label for="name"--}}
-                                                                                   {{--class="col-sm-2 col-md-4 control-label">--}}
-                                                                                {{--{{ trans('labels.Current Stock') }}--}}
-                                                                            {{--</label>--}}
-                                                                            {{--<div class="col-sm-10 col-md-8">--}}
-                                                                                {{--<p id="current_stocks"--}}
-                                                                                   {{--style="width:100%">{{ isset($wstock->stock)?$wstock->stock:'0' }}</p>--}}
-                                                                                {{--<br>--}}
-                                                                            {{--</div>--}}
-                                                                        {{--</div>--}}
+                                                                        <div class="form-group">
+                                                                            <label for="name"
+                                                                                   class="col-sm-2 col-md-4 control-label">
+                                                                                {{ trans('labels.Current Stock') }}
+                                                                            </label>
+                                                                            <div class="col-sm-10 col-md-8">
+                                                                                <p id="current_stocks"
+                                                                                   style="width:100%">{{ isset($wstock->stock)?$wstock->stock:'0' }}</p>
+                                                                                <br>
+                                                                            </div>
+                                                                        </div>
 
                                                                         <div class="form-group">
                                                                             <label for="name"
