@@ -100,7 +100,7 @@
                                                                 <div class="box-body">
                                                                     {!! Form::open(array('url' =>'admin/addnewstock', 'name'=>'inventoryfrom', 'id'=>'addewinventoryfrom', 'method'=>'post', 'class' => 'form-horizontal form-validate', 'enctype'=>'multipart/form-data')) !!}
                                                                     {!! Form::hidden('products_id',  $result['products'][0]->products_id, array('class'=>'form-control', 'id'=>'products_id')) !!}
-
+<input type="hidden" id="stockone" name="stockone">
                                                                     @if(count($result['attributes'])==0 and $result['products'][0]->products_type==1)
                                                                         <div class="alert alert-danger" role="alert">
                                                                             {{ trans('labels.You can not add stock without attribute for variable product') }}
@@ -430,7 +430,7 @@
                 }
             });
             // alert(grandTotal);
-            $('#stock').val(grandTotal);
+            $('#stockone').val(grandTotal);
 
         }
         $(function ()

@@ -188,6 +188,7 @@ class WarehouseProductController extends Controller
 //addNewProduct
     public function addnewproduct(Request $request)
     {
+        
         if (session()->has('warehouse')) {
             $warehouse_id = session('warehouse')->id;
         } else {
@@ -681,13 +682,14 @@ class WarehouseProductController extends Controller
 //addnewstock
     public function addnewstock(Request $request)
     {
+        // return $_REQUEST;
         $products_id = $request->products_id;
         $products = $this->getProducts($products_id);
 
         $inventory_ref_id = DB::table('inventory')->insertGetId([
             'products_id' => $products_id,
             'reference_code' => $request->reference_code,
-            'stock' => $request->stock,
+            'stock' => $request->stockone,
 //            'admin_id' => auth()->guard('admin')->user()->myid,
 //            'admin_id' => 1,    //To be changed (Ashish)
             'warehouse_id' => session('warehouse')->id,
