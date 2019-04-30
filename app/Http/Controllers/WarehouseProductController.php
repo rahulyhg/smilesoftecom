@@ -949,9 +949,10 @@ class WarehouseProductController extends Controller
 
 //addNewDefaultAttribute
 
-    public function addnewdefaultattribute(Request $request)
+    public function
+    addnewdefaultattribute(Request $request)
     {
-        dd($_REQUEST);
+//        dd($_REQUEST);
         $language_id = 1;
 
         $products_attributes = '';
