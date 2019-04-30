@@ -1,12 +1,26 @@
 @extends('admin.layout')
 @section('content')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <style>
         .myrow {
             border-bottom: 1px solid #00000021;
             margin-top: 15px;
             margin-bottom: 15px;
         }
-    </style>
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }    </style>
+
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -111,14 +125,22 @@
                                                                                             </label></li>
                                                                                         <ul class="list-group">
                                                                                             <li class="list-group-item">
-                                                                                                @foreach ($attribute['values'] as $value)
-                                                                                                    <label><input
+                                                                                                @foreach ($attribute['values'] as $temp => $value)
+                                                                                                    <label>
+                                                                                                        <input
                                                                                                                 name="values_<?=$attribute['option']['id']?>"
                                                                                                                 type="radio"
+                                                                                                                id="att_id_{{$temp}}"
+
                                                                                                                 class="currentstock required_one"
                                                                                                                 value="{{ $value['products_attributes_id'] }}"
                                                                                                                 attributeid="{{ $attribute['option']['id'] }}"> {{ $value['value'] }}
-                                                                                                    </label> @endforeach
+                                                                                                    </label>
+                                                                                                    <input type="hidden"
+                                                                                                           name="attval"
+                                                                                                           id="attval"
+                                                                                                    value="{{ $attribute['option']['id']}}">
+                                                                                                @endforeach
                                                                                             </li>
                                                                                         </ul>
                                                                                     @endforeach
@@ -144,17 +166,38 @@
                                                                         <input type="hidden" name="stock" id="stock"
                                                                                value="{{$result['stocks']}}">
                                                                     </div>
+                                                                    <div class="form-group">
+                                                                        <label for="name"
+                                                                               class="col-sm-2 col-md-4 control-label">
+                                                                            {{ trans('labels.Total Purchase Price') }}
+                                                                        </label>
+                                                                        {{--@php--}}
+                                                                        {{--$inventory = \App\InventoryModel::where([])->first();--}}
+                                                                        {{--@endphp--}}
+                                                                        <div class="col-sm-10 col-md-8">
+
+                                                                            <p id="stck"
+                                                                               style="width:100%">{{ $result['currency'][19]->value }}
+                                                                                {{$result['purchase_price']}}</p>
+                                                                            <br>
+
+                                                                        </div>
+                                                                        <input type="hidden" name="stock" id="stock"
+                                                                               value="{{$result['stocks']}}">
+                                                                    </div>
                                                                     @php
                                                                         $warehouseModel = \App\WarehouseModel::whereis_del(0)->get();
                                                                     @endphp
-
                                                                     @foreach ($warehouseModel as $wobject)
-                                                                        <div class="myrow"></div>
                                                                         @php
                                                                             $wstock = \App\Warehouse_Inventory_Model::where(['pid' => $result['products'][0]->products_id ,'w_id' =>$wobject->id])->first();
                                                                         @endphp
+                                                                        <div class="myrow"></div>
+
                                                                         <h4>{{  $wobject->name }}</h4>
+
                                                                         <div class="form-group">
+
                                                                             <label for="name"
                                                                                    class="col-sm-2 col-md-4 control-label">
                                                                                 {{ trans('labels.Current Stock') }}
@@ -167,23 +210,23 @@
                                                                             </div>
                                                                         </div>
 
-                                                                        <div class="form-group">
-                                                                            <label for="name"
-                                                                                   class="col-sm-2 col-md-4 control-label">
-                                                                                {{ trans('labels.Total Purchase Price') }}
-                                                                            </label>
-                                                                            <div class="col-sm-10 col-md-8">
-                                                                                <p class="purchase_price_content"
-                                                                                   style="width:100%">
-                                                                                    {{ $result['currency'][19]->value }}
-                                                                                    <span id="total_purchases">
-                                                                                        {{$result['purchase_price'] * $wstock->stock}}
-                                                                                        {{--{{$result['purchase_price']}}/{{$wstock->stock}}--}}
-                                                                                    </span>
-                                                                                </p>
-                                                                                <br>
-                                                                            </div>
-                                                                        </div>
+                                                                        {{--<div class="form-group">--}}
+                                                                        {{--<label for="name"--}}
+                                                                        {{--class="col-sm-2 col-md-4 control-label">--}}
+                                                                        {{--{{ trans('labels.Total Purchase Price') }}--}}
+                                                                        {{--</label>--}}
+                                                                        {{--<div class="col-sm-10 col-md-8">--}}
+                                                                        {{--<p class="purchase_price_content"--}}
+                                                                        {{--style="width:100%">--}}
+                                                                        {{--{{ $result['currency'][19]->value }}--}}
+                                                                        {{--<span id="total_purchases">--}}
+                                                                        {{--{{$result['purchase_price'] * $wstock->stock}}--}}
+                                                                        {{--                                                                                        {{$result['purchase_price']}}/{{$wstock->stock}}--}}
+                                                                        {{--</span>--}}
+                                                                        {{--</p>--}}
+                                                                        {{--<br>--}}
+                                                                        {{--</div>--}}
+                                                                        {{--</div>--}}
                                                                         <input type="hidden" name="w_id[]"
                                                                                value="{{ $wobject->id }}">
                                                                         <div class="form-group">
@@ -192,16 +235,20 @@
                                                                             <div class="col-sm-10 col-md-8">
                                                                                 <input type="text"
                                                                                        onkeyup="totalstock();"
-                                                                                       name="w_stock[]" value="0"
+                                                                                       name="w_stock[]"
+                                                                                       value="0"
                                                                                        class="form-control number-validate w_stock">
                                                                                 <span class="help-block"
                                                                                       style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
-                                          {{ trans('labels.Enter Stock Text') }}</span>
+                                                                                {{ trans('labels.Enter Stock Text') }}</span>
                                                                             </div>
                                                                         </div>
+                                                                        {{--</tr>--}}
 
 
                                                                     @endforeach
+
+                                                                    {{--</table>--}}
 
 
                                                                     <div class="myrow"></div>
@@ -386,5 +433,12 @@
             $('#stock').val(grandTotal);
 
         }
+        $(function ()
+        {
+            var options_id = $('#att_id_0').val();
+            $('#att_id_0').attr('checked', true);
+            $('#att_id_0').click();
+        })
     </script>
+
 @endsection 

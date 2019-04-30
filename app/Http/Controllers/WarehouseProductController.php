@@ -494,7 +494,7 @@ class WarehouseProductController extends Controller
 
             $purchase_price = DB::table('inventory')
                 ->where('products_id', $result['products'][0]->products_id)
-                ->where('warehouse_id',$warehouse_id)
+//                ->where('warehouse_id',$warehouse_id)
                 ->sum('purchase_price');
 
             $stocks = isset($addedStock) - isset($purchasedStock);
@@ -951,11 +951,12 @@ class WarehouseProductController extends Controller
 
     public function addnewdefaultattribute(Request $request)
     {
+        dd($_REQUEST);
         $language_id = 1;
 
         $products_attributes = '';
 
-        dd($request);
+
         if (!empty($request->products_options_id) and !empty($request->products_id) and !empty($request->products_options_values_id)) {
 
             $checkRecord = DB::table('products_attributes')->where([

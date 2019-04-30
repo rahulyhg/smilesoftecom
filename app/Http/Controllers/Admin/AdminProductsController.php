@@ -457,7 +457,6 @@ class AdminProductsController extends Controller
         if (session('products_create') == 0 or session('products_update') == 0) {
             print Lang::get("labels.You do not have to access this route");
         } else {
-
             $title = array('pageTitle' => Lang::get("labels.ProductInventory"));
             $language_id = '1';
             $products_id = $request->id;
@@ -557,9 +556,7 @@ class AdminProductsController extends Controller
             } else {
                 $result['attributes'] = array();
             }
-
             return view("admin.addinventory", $title)->with('result', $result);
-
         }
     }
 

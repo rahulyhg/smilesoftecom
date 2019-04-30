@@ -63,7 +63,7 @@
                                             @foreach ($Warehouse_history  as $key=>$Warehouse_history_list)
                                                 <tr>
                                                     <td>{{ ++$key }}</td>
-                                                    <td>{{ isset($Warehouse_history_list->pname->products_name) ? $Warehouse_history_list->pname->products_name : '-'  }}</td>
+                                                    <td>{{ isset($Warehouse_history_list->product->products_name) ? $Warehouse_history_list->product->products_name : '-'  }}</td>
                                                     <td>{{ $Warehouse_history_list->stock }}</td>
                                                   
                                                 </tr>

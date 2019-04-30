@@ -95,7 +95,7 @@
                                             <th>BarCode</th>
                                             <th>{{ trans('labels.ProductDescription') }}</th>
                                             <th>{{ trans('labels.AddedLastModifiedDate') }}</th>
-                                            <th></th>
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>

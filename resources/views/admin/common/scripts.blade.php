@@ -297,33 +297,8 @@ $(document).ready(function(e) {
 
 //ajax call for add option value
 $(document).on('click', '.currentstock', function(e){
-	$("#loader").show();
-	var options_id = $(this).attr('attributeid');
-	var attributeid = $(this).val();
-	$('.attributeid_'+options_id).val(attributeid);
-	//alert('.attributeid_'+options_id);
-	var formData = $('#addewinventoryfrom').serialize();
-	$.ajax({
-		url: '{{ URL::to("admin/currentstock")}}',
-		type: "POST",
-		data: formData,
-		dataType: "json",
-		success: function (res) {
-			$('#current_stocks').html(res.remainingStock);
-			$('#total_purchases').html(res.purchasePrice);
-			var min_level = 0;
-			var max_level = 0;
-			var inventory_ref_id = res.inventory_ref_id;
-			if(res.minMax != ''){
-				min_level = res.minMax[0].min_level;
-				max_level = res.minMax[0].max_level;
-			}
-			$('#min_level').val(min_level);
-			$('#max_level').val(max_level);
-			$('#inventory_ref_id').val(inventory_ref_id);
 
-		},
-	});
+	products_options_values_id
 });
 
 //ajax call for add option value

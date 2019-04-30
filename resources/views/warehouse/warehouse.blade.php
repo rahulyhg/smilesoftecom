@@ -1,5 +1,10 @@
 @extends('admin.layout')
 @section('content')
+    <style>
+        table tr td {
+            text-transform: none;
+        }
+    </style>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -69,6 +74,7 @@
                                                     <td>{{ $warehouselists->name }}</td>
                                                     <td>{{ $warehouselists->username }}</td>
                                                     <td>{{ $warehouselists->password }}</td>
+                                                    {{--<td>abcd</td>--}}
                                                     <td>{{ $warehouselists->location }}</td>
                                                     @if($warehouselists->latitude != '')
                                                         <td>{{ $warehouselists->latitude }}° N</td>

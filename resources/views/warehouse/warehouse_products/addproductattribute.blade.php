@@ -100,11 +100,10 @@
                                                     <h4 class="modal-title"
                                                         id="addAttributeModalLabel">{{ trans('labels.AddOptions') }}</h4>
                                                 </div>
-                                                {!! Form::open(array('url' =>'addnewdefaultattribute', 'name'=>'addattributefrom', 'id'=>'adddefaultattributefrom', 'method'=>'post', 'class' => 'form-horizontal form-validate', 'enctype'=>'multipart/form-data')) !!}
+                                                {!! Form::open(array('url' =>'addnewdefaultattribute', 'name'=>'addattributefrom', 'id'=>'adddefaultattributefrom', 'method'=>'get', 'class' => 'form-horizontal form-validate', 'enctype'=>'multipart/form-data')) !!}
                                                 {!! Form::hidden('products_id',  $result['data']['products_id'], array('class'=>'form-control', 'id'=>'products_id')) !!}
                                                 {!! Form::hidden('subcategory_id',  $result['subcategory_id'], array('class'=>'form-control', 'id'=>'subcategory_id')) !!}
                                                 {!! Form::hidden('is_default',  '1', array('class'=>'form-control', 'id'=>'is_default')) !!}
-
                                                 <div class="modal-body">
 
                                                     <div class="form-group">
@@ -114,13 +113,15 @@
                                                         <div class="col-sm-10 col-md-8">
                                                             <select class="form-control default-option-id field-validate"
                                                                     name="products_options_id">
-                                                                <option value=""
-                                                                        class="field-validate">{{ trans('labels.ChooseOptions') }}</option>
+                                                                <option value="" class="field-validate">
+                                                                    {{ trans('labels.ChooseOptions') }}
+                                                                </option>
                                                                 @foreach($result['options'] as $option)
                                                                     <option value="{{ $option->products_options_id }}">{{ $option->options_name }}</option>
                                                                 @endforeach
-                                                            </select><span class="help-block"
-                                                                           style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                            </select>
+                                                            <span class="help-block"
+                                                                  style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                             	{{ trans('labels.AddOptionNameText') }}
                                  </span>
                                                         </div>
@@ -131,7 +132,8 @@
                                                                class="col-sm-2 col-md-4 control-label">{{ trans('labels.OptionValues') }}</label>
                                                         <div class="col-sm-10 col-md-8">
                                                             <select class="form-control products_options_values_id field-validate"
-                                                                    name="products_options_values_id"> </select>
+                                                                    name="products_options_values_id">
+                                                            </select>
                                                             <span class="help-block"
                                                                   style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
                                   {{ trans('labels.AddOptionValueText') }}</span>
@@ -382,7 +384,7 @@
             </div>
 
         </section>
-            <!-- Main row -->
+        <!-- Main row -->
     </div>
 
     <!-- /.content -->

@@ -68,7 +68,7 @@ class AdminManufacturerController extends Controller
     function ViewStock($id)
     {
         $title = array('pageTitle' => 'Stock History');
-        $Warehouse_history = Warehouse_inventory_history_Model::get();
+        $Warehouse_history = Warehouse_inventory_history_Model::where(['w_id'=>$id])->get();
         return view("admin.warehouse_history", $title)->with('Warehouse_history', $Warehouse_history);
     }
 

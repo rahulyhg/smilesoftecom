@@ -1,5 +1,6 @@
 @extends('warehouse.warehouse_master')
 @section('content')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style>
         .myrow {
             border-bottom: 1px solid #00000021;
@@ -112,10 +113,11 @@
                                                                                             </label></li>
                                                                                         <ul class="list-group">
                                                                                             <li class="list-group-item">
-                                                                                                @foreach ($attribute['values'] as $value)
+                                                                                                @foreach ($attribute['values'] as $temp=>$value)
                                                                                                     <label><input
                                                                                                                 name="values_<?=$attribute['option']['id']?>"
                                                                                                                 type="radio"
+                                                                                                                id="att_id_{{$temp}}"
                                                                                                                 class="wcurrentstock required_one"
                                                                                                                 value="{{ $value['products_attributes_id'] }}"
                                                                                                                 attributeid="{{ $attribute['option']['id'] }}"> {{ $value['value'] }}
@@ -405,5 +407,12 @@
             $('#stock').val(grandTotal);
 
         }
+        $(function ()
+        {
+//            debugger;
+            var options_id = $('#att_id_0').val();
+            $('#att_id_0').attr('checked', true);
+            $('#att_id_0').click();
+        })
     </script>
 @endsection 
