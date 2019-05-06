@@ -437,14 +437,14 @@ Route::group(['prefix' => 'admin'], function () {
             /******************POS  Bijendra**********************/
             Route::get('pos', 'POSController@create_pos');
             Route::get('getproducts', 'POSController@getproducts');
-            Route::get('product_list_body', 'POSController@product_list_body');
+//            Route::get('product_list_body', 'POSController@product_list_body');
             Route::get('recent_invoice', 'POSController@recent_invoice');
             Route::get('getProductRow', 'POSController@getProductRow');
             Route::get('getProductRowScan', 'POSController@getProductRowScan');
             Route::post('store_pos', 'POSController@store_pos');
-            Route::get('pos', 'AdminPosController@create_pos');
+//            Route::get('pos', 'AdminPosController@create_pos');
             Route::get('getproducts', 'AdminPosController@getproducts');
-            Route::get('product_list_body', 'AdminPosController@product_list_body');
+//            Route::get('product_list_body', 'AdminPosController@product_list_body');
             Route::get('recent_invoice', 'AdminPosController@recent_invoice');
             Route::get('getProductRow', 'AdminPosController@getProductRow');
             Route::get('getProductRowScan', 'AdminPosController@getProductRowScan');

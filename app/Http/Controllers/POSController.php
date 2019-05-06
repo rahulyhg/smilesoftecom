@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\AdminManufacturerController;
 use App\POSInfoModel;
 use App\POSModel;
 use App\Products_Description;
+use App\Warehouse_inventory_history_Model;
+use App\Warehouse_Inventory_Model;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,25 +40,21 @@ class POSController extends Controller
 
     public function product_list_body(Request $request)
     {
-        if($request->session()->has('warehouse'))
-        {
-            $products = Products_Description::where(['language_id'=>1])->get();
-        }
-        elseif ($request->session()->has('staff'))
-        {
-            $products = DB::table('Products_Description')
+        if ($request->session()->has('warehouse')) {
+            $products = Products_Description::where(['language_id' => 1])->get();
+        } elseif ($request->session()->has('staff')) {
+//            return json_encode(session('staff'));
+
+            $products = DB::table('products_description')
                 ->join('warehouse_inventory', function ($join) {
-                    $join->on('Products_Description.products_id', '=', 'warehouse_inventory.pid')
+                    $join->on('products_description.products_id', '=', 'warehouse_inventory.pid')
                         ->where('warehouse_inventory.w_id', '=', session('staff')->warehouse_id)
 //                        ->where('warehouse_inventory.stock' != 0)
-                        ->where(['language_id'=>1]);
+                        ->where(['language_id' => 1]);
                 })
                 ->get();
-
 //            $products = Products_Description::where(['language_id'=>1, 'w_id'=>session('staff')->warehouse_id])->get();
-        }
-        else
-        {
+        } else {
             $products = Products_Description::where(['language_id' => 1])->get();
         }
 //        $products = DB::select("select * from products_description");
@@ -113,8 +111,8 @@ class POSController extends Controller
                     $stock->invoice_date = Carbon::now('Asia/Kolkata');
                     $stock->customer_id = request('customer_id');
                     $stock->grand_total = request('final_total');
-                    $stock->wid = 1;
-                    $stock->sid = 1;
+                    $stock->wid = session('staff')->warehouse_id;
+                    $stock->sid = session('staff')->id;
                     $stock->created_time = Carbon::now('Asia/Kolkata');
                     $stock->save();
                     $this->addNewRows($stock->id, $count);
@@ -143,6 +141,18 @@ class POSController extends Controller
                     $stock_info->price = $_POST["price"][$i];
                     $stock_info->total = $_POST["totalAmt"][$i];
                     $stock_info->save();
+                    $win = Warehouse_Inventory_Model::where(['w_id' => session('staff')->warehouse_id, 'pid' => $_POST["products_id"][$i]])->first();
+                    if (isset($win)) {
+                        $win->stock -= $stock_info->qty;
+                        $win->save();
+
+                        $winhi = new Warehouse_inventory_history_Model();
+                        $winhi->w_id = session('staff')->warehouse_id;
+                        $winhi->pid = $_POST["products_id"][$i];
+                        $winhi->stock -= $stock_info->qty;
+                        $winhi->save();
+
+                    }
                 } else {
                     $vouchers->pos_id = $id;
                     $vouchers->product_id = $_POST["products_id"][$i];
@@ -150,6 +160,17 @@ class POSController extends Controller
                     $vouchers->price = $_POST["price"][$i];
                     $vouchers->total = $_POST["totalAmt"][$i];
                     $vouchers->save();
+
+                    $win = Warehouse_Inventory_Model::where(['w_id' => session('staff')->warehouse_id, 'pid' => $_POST["products_id"][$i]])->first();
+                    if (isset($win)) {
+                        $win->stock -= $vouchers->qty;
+                        $win->save();
+                        $winhi = new Warehouse_inventory_history_Model();
+                        $winhi->w_id = session('staff')->warehouse_id;
+                        $winhi->pid = $_POST["products_id"][$i];
+                        $winhi->stock -= $vouchers->qty;
+                        $winhi->save();
+                    }
                 }
             }
         }
