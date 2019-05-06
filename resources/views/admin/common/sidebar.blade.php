@@ -63,8 +63,17 @@
                             <a href="{{ URL::to('admin/categories')}}"><i
                                         class="fa fa-circle-o"></i> {{ trans('labels.link_main_categories') }}</a></li>
                         <li class="{{ Request::is('admin/subcategories') ? 'active' : '' }}  {{ Request::is('admin/addsubcategory') ? 'active' : '' }}  {{ Request::is('admin/editsubcategory/*') ? 'active' : '' }}">
-                            <a href="{{ URL::to('admin/subcategories')}}"><i
-                                        class="fa fa-circle-o"></i>{{ trans('labels.link_sub_categories') }}</a></li>
+                            <a href="{{ URL::to('admin/subcategories')}}">
+                                <i class="fa fa-circle-o"></i>
+                                {{ trans('labels.link_sub_categories') }}
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('admin/subcategoriesproduct') ? 'active' : '' }}  {{ Request::is('admin/addsubcategoryproduct') ? 'active' : '' }}  {{ Request::is('admin/editsubcategoriesproduct/*') ? 'active' : '' }}">
+                            <a href="{{ URL::to('admin/subcategoriesproduct')}}">
+                                <i class="fa fa-circle-o"></i>
+                                Sub Category Product
+                            </a>
+                        </li>
                     </ul>
                 </li>
             @endif
@@ -253,7 +262,7 @@
                         </ul>
 
                     </li>
-                    <li class="treeview {{ Request::is('admin/banners') ? 'active' : '' }} {{ Request::is('admin/addbanner') ? 'active' : '' }} {{ Request::is('admin/editbanner/*') ? 'active' : '' }} {{ Request::is('admin/pages') ? 'active' : '' }}  {{ Request::is('admin/addpage') ? 'active' : '' }}  {{ Request::is('admin/editpage/*') ? 'active' : '' }}  {{ Request::is('admin/appSettings') ? 'active' : '' }} {{ Request::is('admin/admobSettings') ? 'active' : '' }} {{ Request::is('admin/applabel') ? 'active' : '' }} {{ Request::is('admin/addappkey') ? 'active' : '' }} {{ Request::is('admin/applicationapi') ? 'active' : '' }}" >
+                    <li class="treeview {{ Request::is('admin/banners') ? 'active' : '' }} {{ Request::is('admin/addbanner') ? 'active' : '' }} {{ Request::is('admin/editbanner/*') ? 'active' : '' }} {{ Request::is('admin/pages') ? 'active' : '' }}  {{ Request::is('admin/addpage') ? 'active' : '' }}  {{ Request::is('admin/editpage/*') ? 'active' : '' }}  {{ Request::is('admin/appSettings') ? 'active' : '' }} {{ Request::is('admin/admobSettings') ? 'active' : '' }} {{ Request::is('admin/applabel') ? 'active' : '' }} {{ Request::is('admin/addappkey') ? 'active' : '' }} {{ Request::is('admin/applicationapi') ? 'active' : '' }}">
                         <a href="#">
                             <i class="fa fa-gears" aria-hidden="true"></i>
                             <span> {{ trans('labels.link_app_settings') }}</span> <i

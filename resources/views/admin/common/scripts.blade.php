@@ -1219,7 +1219,18 @@ $(document).on('click', '#updateAddress', function(e){
 		$('#manufacturers_id').val(manufacturers_id);
 		$("#manufacturerModal").modal('show');
 	});
+	$(function () {
+		$(".typeDD").select2({
+			placeholder: "Select"
+		});
 
+		$('input[name="manufacturers_id"]').daterangepicker({
+			singleDatePicker: true,
+			showDropdowns: true,
+			minYear: 2019,
+			maxYear: parseInt(moment().format('YYYY'), 10)
+		});
+	});
 	//deleteCountrytModal
 	$(document).on('click', '#deleteCountryId', function(){
 		var countries_id = $(this).attr('countries_id');

@@ -96,7 +96,9 @@
                                                 <label for="name"
                                                        class="col-sm-2 col-md-3 control-label">{{ trans('labels.Manufacturers') }} </label>
                                                 <div class="col-sm-10 col-md-4">
-                                                    <select class="form-control" name="manufacturers_id">
+                                                    <select class="form-control typeDD requireDD"
+                                                            name="manufacturers_id"
+                                                            id="manufacturers_id">
                                                         <option value="">{{ trans('labels.ChooseManufacturers') }}</option>
                                                         @foreach ($result['manufacturer'] as $manufacturer)
                                                             <option value="{{ $manufacturer->id }}">{{ $manufacturer->name }}</option>
@@ -120,26 +122,33 @@
                                                         <ul class="list-group list-group-root well">
                                                             @foreach ($result['categories'] as $categories)
                                                                 @if(in_array($categories->id,$cat_array))
-                                                                    <li href="#" class="list-group-item"><label
+                                                                    <li href="#" class="list-group-item">
+                                                                        <label
                                                                                 style="width:100%"><input
                                                                                     id="categories_<?=$categories->id?>"
                                                                                     type="checkbox"
                                                                                     class=" required_one categories"
                                                                                     name="categories[]"
                                                                                     value="{{ $categories->id }}"> {{ $categories->name }}
-                                                                        </label></li>
+                                                                        </label>
+                                                                    </li>
                                                                 @endif
                                                                 @if(!empty($categories->sub_categories))
                                                                     <ul class="list-group">
                                                                         <li class="list-group-item">
                                                                             @foreach ($categories->sub_categories as $sub_category)
                                                                                 @if(in_array($sub_category->sub_id,$cat_array))
-                                                                                    <label><input type="checkbox"
-                                                                                                  name="categories[]"
-                                                                                                  class="required_one sub_categories sub_categories_<?=$categories->id?>"
-                                                                                                  parents_id='<?=$categories->id?>'
-                                                                                                  value="{{ $sub_category->sub_id }}"> {{ $sub_category->sub_name }}
-                                                                                    </label> @endif @endforeach</li>
+                                                                                    <label>
+                                                                                        <input type="checkbox"
+                                                                                               name="categories[]"
+                                                                                               class="required_one sub_categories sub_categories_<?=$categories->id?>"
+                                                                                               parents_id='<?=$categories->id?>'
+                                                                                               value="{{ $sub_category->sub_id }}">
+                                                                                        {{ $sub_category->sub_name }}
+                                                                                    </label>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        </li>
 
                                                                     </ul>
                                                                 @endif
@@ -723,5 +732,7 @@
             $(".textarea").wysihtml5();
 
         });
+
+
     </script>
 @endsection 

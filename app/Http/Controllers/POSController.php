@@ -48,6 +48,7 @@ class POSController extends Controller
                 ->join('warehouse_inventory', function ($join) {
                     $join->on('Products_Description.products_id', '=', 'warehouse_inventory.pid')
                         ->where('warehouse_inventory.w_id', '=', session('staff')->warehouse_id)
+//                        ->where('warehouse_inventory.stock' != 0)
                         ->where(['language_id'=>1]);
                 })
                 ->get();

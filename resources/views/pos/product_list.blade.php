@@ -1,4 +1,5 @@
 @foreach($products as $product)
+
     @php
         $prod = \App\ProductsModel::find($product->products_id);
     @endphp
@@ -10,7 +11,8 @@
                 <img src="{{url('').'/'.$prod->products_image}}" alt="">
             </div>
             <div class="text text-muted text-uppercase">
-                <small>{{$product->products_name}}
+                <small>
+                    {{$product->products_name}}
                 </small>
             </div>
             <small class="text-muted">

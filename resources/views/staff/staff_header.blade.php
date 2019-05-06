@@ -28,8 +28,8 @@
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <li class="dropdown messages-menu">
-                    <a href="{{url('pos')}}" target="_blank" class="dropdown-toggle">
-                        <img src="http://chittagongit.com/images/pos-icon/pos-icon-17.jpg" height="20px" width="30px"
+                    <a href="{{url('pos')}}" target="_blank" class="dropdown-toggle" style="margin-top: -3px;margin-right: -9px;">
+                        <img src="{{url('public/pos/pos.png')}}" height="20px" width="30px"
                              alt="Point of Sale (POS)" id="cpimg">
                     </a>
                 </li>

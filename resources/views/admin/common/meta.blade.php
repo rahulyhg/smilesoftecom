@@ -10,6 +10,8 @@
   @if(!empty($web_setting[86]->value))
   	<link rel="icon" href="{{asset('').$web_setting[86]->value}}" type="image/gif">
   @endif
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
   <!-- Bootstrap 3.3.6 -->
   <link href="{!! asset('resources/views/admin/bootstrap/css/bootstrap.min.css') !!}" media="all" rel="stylesheet" type="text/css" />
   <link href="{!! asset('resources/views/admin/bootstrap/css/styles.css') !!}" media="all" rel="stylesheet" type="text/css" />

@@ -71,7 +71,8 @@ class WareHouseController extends Controller
     }
     function warehouse_staff()
     {
-        $staff = WarehouseStaffModel::where(['is_del'=>0])->paginate(10);
+        $warehouse_id = session('warehouse')->id;
+        $staff = WarehouseStaffModel::where(['is_del'=>0,'warehouse_id'=>$warehouse_id])->paginate(10);
         return view('warehouse.staff_warehouse')->with(['staff'=>$staff]);
     }
     function add_staff()

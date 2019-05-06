@@ -6,17 +6,18 @@
     "type": "project",
     "require": {
         "php": ">=7.1.3",
+        "barryvdh/laravel-dompdf": "^0.8.4",
         "karlomikus/theme": "^1.0",
         "laravel/framework": "5.5.*",
         "laravel/socialite": "^3.0",
-        "barryvdh/laravel-dompdf": "^0.8.4",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4.0",
+        "maatwebsite/excel": "^3.1",
         "milon/barcode": "^5.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
-        "mockery/=": "0.9.*",
+        "mockery/mockery": "^1.2",
         "phpunit/phpunit": "~5.7"
     },
     "autoload": {

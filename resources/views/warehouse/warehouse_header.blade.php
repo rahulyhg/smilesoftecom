@@ -3,7 +3,7 @@
     <!-- Logo -->
     <a href="{{ url('warehouse_dashboard')}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini" style="font-size:12px"><b>WH</b></span>
+        <span class="logo-mini" style="font-size:12px"><b>WHA</b></span>
         <!-- logo for regular state and mobile devices -->
         <span class="logo-lg"><b>Warehouse Admin</b></span>
     </a>
@@ -28,7 +28,7 @@
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <li class="dropdown messages-menu">
-                    <a href="{{url('admin/pos')}}" target="_blank" class="dropdown-toggle">
+                    <a href="{{url('pos')}}" target="_blank" class="dropdown-toggle" style="margin-top: -3px;margin-right: -9px;">
                         <img src="{{url('public/pos/pos.png')}}" height="20px" width="30px"
                              alt="Point of Sale (POS)" id="cpimg">
                     </a>

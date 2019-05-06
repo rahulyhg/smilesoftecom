@@ -478,9 +478,9 @@ class WarehouseProductController extends Controller
         $min_level = 0;
         $max_level = 0;
         $purchase_price = 0;
-        if ($result['products'][0]->products_type != 1) {
+        if ($result['products'][0]->products_type != 0) {
 
-            $addedStock = InventoryModel::where(['products_id'=>$result['products'][0]->products_id, 'warehouse_id'=>$warehouse_id, 'stock_type'=>'in'])->sum();
+            $addedStock = InventoryModel::where(['products_id'=>$result['products'][0]->products_id, 'stock_type'=>'in'])->sum('stock');
 
 //            $addedStock = DB::table('inventory')
 //                ->where('products_id', $result['products'][0]->products_id)
@@ -490,7 +490,7 @@ class WarehouseProductController extends Controller
             $purchasedStock = DB::table('inventory')
                 ->where('products_id', $result['products'][0]->products_id)
                 ->where('stock_type', 'out')
-                ->where('warehouse_id',$warehouse_id)
+//                ->where('warehouse_id',$warehouse_id)
                 ->sum('stock');
 
             $purchase_price = DB::table('inventory')

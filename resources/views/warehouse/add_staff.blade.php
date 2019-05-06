@@ -1,5 +1,7 @@
 @extends('warehouse.warehouse_master')
 @section('content')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -137,4 +139,18 @@
         </section>
         <!-- /.content -->
     </div>
+    <script>
+        $("#username").focusout(function () {
+                    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+                    var email = $('#username').val();
+                    if (reg.test(email) == false)
+                    {
+                        alert('Staff member has invalid username');
+                        $('#username').val('');
+                        return false;
+                    }
+                    return true;
+                }
+        );
+    </script>
 @endsection 

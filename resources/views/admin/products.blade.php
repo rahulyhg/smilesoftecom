@@ -190,10 +190,13 @@
                                                                                                href="addproductimages/{{ $product->products_id }}">{{ trans('labels.ProductImages') }}</a>
                                                                     </li>
                                                                     <li role="presentation" class="divider"></li>
-                                                                    <li role="presentation"><a role="menuitem"
-                                                                                               tabindex="-1"
-                                                                                               id="deleteProductId"
-                                                                                               products_id="{{ $product->products_id }}">{{ trans('labels.DeleteProduct') }}</a>
+                                                                    <li role="presentation">
+                                                                        <a role="menuitem"
+                                                                           tabindex="-1"
+                                                                           id="deleteProductId"
+                                                                           products_id="{{ $product->products_id }}">
+                                                                            {{ trans('labels.DeleteProduct') }}
+                                                                        </a>
                                                                     </li>
                                                                 </ul>
                                                             </li>

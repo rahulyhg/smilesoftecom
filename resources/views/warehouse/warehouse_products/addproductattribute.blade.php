@@ -101,9 +101,26 @@
                                                         id="addAttributeModalLabel">{{ trans('labels.AddOptions') }}</h4>
                                                 </div>
                                                 {!! Form::open(array('url' =>'addnewdefaultattribute', 'name'=>'addattributefrom', 'id'=>'adddefaultattributefrom', 'method'=>'get', 'class' => 'form-horizontal form-validate', 'enctype'=>'multipart/form-data')) !!}
-                                                {!! Form::hidden('products_id',  $result['data']['products_id'], array('class'=>'form-control', 'id'=>'products_id')) !!}
-                                                {!! Form::hidden('subcategory_id',  $result['subcategory_id'], array('class'=>'form-control', 'id'=>'subcategory_id')) !!}
-                                                {!! Form::hidden('is_default',  '1', array('class'=>'form-control', 'id'=>'is_default')) !!}
+                                                <input type="hidden"
+                                                       name="products_id"
+                                                       id="products_id"
+                                                       value="{{$result['data']['products_id']}}"
+                                                       class="form-control">
+
+                                                <input type="hidden"
+                                                       name="subcategory_id"
+                                                       id="subcategory_id"
+                                                       value="{{$result['subcategory_id']}}"
+                                                       class="form-control">
+
+                                                <input type="hidden"
+                                                       name="is_default"
+                                                       id="is_default"
+                                                       value="1"
+                                                       class="form-control">
+                                                {{--{!! Form::hidden('products_id',  $result['data']['products_id'], array('class'=>'form-control', 'id'=>'products_id')) !!}--}}
+                                                {{--{!! Form::hidden('subcategory_id',  $result['subcategory_id'], array('class'=>'form-control', 'id'=>'subcategory_id')) !!}--}}
+                                                {{--{!! Form::hidden('is_default',  '1', array('class'=>'form-control', 'id'=>'is_default')) !!}--}}
                                                 <div class="modal-body">
 
                                                     <div class="form-group">
@@ -273,11 +290,30 @@
                                                         id="addAttributeModalLabel">{{ trans('labels.AddOptions') }}</h4>
                                                 </div>
                                                 {!! Form::open(array('url' =>'addnewproductattribute', 'name'=>'addattributefrom', 'id'=>'addattributefrom', 'method'=>'post', 'class' => 'form-horizontal', 'enctype'=>'multipart/form-data')) !!}
-                                                {!! Form::hidden('products_id',  $result['data']['products_id'], array('class'=>'form-control', 'id'=>'products_id')) !!}
 
-                                                {!! Form::hidden('subcategory_id',  $result['subcategory_id'], array('class'=>'form-control', 'id'=>'subcategory_id')) !!}
-                                                {!! Form::hidden('is_default',  '0', array('class'=>'form-control', 'id'=>'is_default')) !!}
+                                                <input type="hidden"
+                                                       name="products_id"
+                                                       id="products_id"
+                                                       value="{{$result['data']['products_id']}}"
+                                                       class="form-control">
+
+                                                <input type="hidden"
+                                                       name="subcategory_id"
+                                                       id="subcategory_id"
+                                                       value="{{$result['subcategory_id']}}"
+                                                       class="form-control">
+
+                                                <input type="hidden"
+                                                       name="is_default"
+                                                       id="is_default"
+                                                       value="0"
+                                                       class="form-control">
+                                                {{--{!! Form::hidden('products_id',  $result['data']['products_id'], array('class'=>'form-control', 'id'=>'products_id')) !!}--}}
+
+                                                {{--{!! Form::hidden('subcategory_id',  $result['subcategory_id'], array('class'=>'form-control', 'id'=>'subcategory_id')) !!}--}}
+                                                {{--{!! Form::hidden('is_default',  '0', array('class'=>'form-control', 'id'=>'is_default')) !!}--}}
                                                 <div class="modal-body">
+
                                                     <div class="form-group">
                                                         <label for="name"
                                                                class="col-sm-2 col-md-4 control-label">{{ trans('labels.OptionName') }}  </label>

@@ -49,6 +49,10 @@ class AdminProductsController extends Controller
             $categories = DB::table('flash_sale')->where('products_id', $products_id)->delete();
             $categories = DB::table('products_images')->where('products_id', $products_id)->delete();
 
+            $categories = DB::table('warehouse_inventory')->where('pid', $products_id)->delete();
+            $categories = DB::table('warehouse_inventory_history')->where('pid', $products_id)->delete();
+            $categories = DB::table('warehouse_inventory_history')->where('pid', $products_id)->delete();
+
             return redirect()->back()->withErrors([Lang::get("labels.ProducthasbeendeletedMessage")]);
         }
     }

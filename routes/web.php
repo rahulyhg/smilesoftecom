@@ -104,6 +104,19 @@ Route::group(['prefix' => 'admin'], function () {
 
             Route::post('/getajaxcategories', 'AdminCategoriesController@getajaxcategories');
 
+            //Sub Category Products
+            Route::get('/subcategoriesproduct', 'AdminCategoriesController@subcategoriesproduct');
+            Route::get('/addsubcategoryproduct', 'AdminCategoriesController@addsubcategoryproduct');
+            Route::post('/addnewsubcategoryproduct', 'AdminCategoriesController@addnewsubcategoryproduct');
+            Route::any('/category_change', 'AdminCategoriesController@category_change');
+//            Route::get('/editsubcategory/{id}', 'AdminCategoriesController@editsubcategory');
+//            Route::post('/updatesubcatego
+//
+//ry', 'AdminCategoriesController@updatesubcategory');
+//            Route::get('/deletesubcategory/{id}', 'AdminCategoriesController@deletesubcategory');
+//
+//            Route::post('/getajaxcategories', 'AdminCategoriesController@getajaxcategories');
+
             //products
             Route::get('/products', 'AdminProductsController@products');
             Route::get('/barcode-generate', 'AdminProductsController@barcode_generate');
@@ -857,11 +870,11 @@ Route::group(['middleware' => 'warehouse'], function ()
     //add attribute against newly added product
     Route::get('/addproductattribute/{id}/', 'WarehouseProductController@addproductattribute');
     Route::get('/addinventory/{id}/', 'WarehouseProductController@addinventory');
-    Route::post('/wcurrentstock', 'WarehouseProductController@currentstock');
+    Route::any('/currentstock', 'WarehouseProductController@currentstock');
     Route::post('/addnewstock', 'WarehouseProductController@addnewstock');
     Route::post('/addminmax', 'WarehouseProductController@addminmax');
     Route::get('/addproductimages/{id}/', 'WarehouseProductController@addproductimages');
-    Route::get('/addnewdefaultattribute', 'WarehouseProductController@addnewdefaultattribute');
+    Route::any('/addnewdefaultattribute', 'WarehouseProductController@addnewdefaultattribute');
     Route::post('/addnewproductattribute', 'WarehouseProductController@addnewproductattribute');
     Route::get('/addnewproductattribute', 'WarehouseProductController@addnewproductattribute');
     Route::post('/updateproductattribute', 'WarehouseProductController@updateproductattribute');
