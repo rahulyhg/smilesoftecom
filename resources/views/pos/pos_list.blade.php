@@ -1,4 +1,3 @@
-
 <div>
     <table id="scc" class="table table-bordered table-condensed" style="text-align: center">
         <thead>
@@ -22,10 +21,11 @@
                 <td>{{ $inv->invoice_no }}</td>
                 <td>{{ date('d-M-Y', strtotime($inv->invoice_date)) }}</td>
                 {{--<td>{{ $inv->customer->name }}</td>--}}
-                <td>{{ $customer->name}}</td>
+                <td>{{ isset($customer->name)?$customer->name:'-'}}</td>
                 <td>{{ $inv->grand_total }}</td>
                 <td>
-                    <a class="btn btn-primary hidden-print" href="{{url('admin/print_pos').'/'.$inv->id}}"><span class="fa fa-print" aria-hidden="true"></span> </a>
+                    <a target="_blank" class="btn btn-primary hidden-print" href="{{url('print_pos').'/'.$inv->id}}"><span
+                                class="fa fa-print" aria-hidden="true"></span> </a>
                 </td>
             </tr>
         @endforeach

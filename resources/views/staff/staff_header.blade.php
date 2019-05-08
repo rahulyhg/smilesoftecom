@@ -28,9 +28,11 @@
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <li class="dropdown messages-menu">
-                    <a href="{{url('pos')}}" target="_blank" class="dropdown-toggle" style="margin-top: -3px;margin-right: -9px;">
+                    <a href="{{url('pos')}}" target="_blank" class="dropdown-toggle"
+                       style="margin-top: -3px;margin-right: -9px;">
                         <img src="{{url('public/pos/pos.png')}}" height="20px" width="30px"
-                             alt="Point of Sale (POS)" id="cpimg">
+                             alt="Point of Sale (POS)" id="cpimg" data-toggle="tooltip" data-placement="bottom"
+                             data-variation_id="57" title="" data-original-title="POS">
                     </a>
                 </li>
                 <!-- Messages: style can be found in dropdown.less-->

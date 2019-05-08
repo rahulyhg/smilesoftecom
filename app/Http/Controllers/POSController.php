@@ -3,18 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\BarcodeModel;
+use App\CategoryModel;
 use App\CustomerModel;
 use App\Http\Controllers\Admin\AdminCategoriesController;
 use App\Http\Controllers\Admin\AdminManufacturerController;
 use App\POSInfoModel;
 use App\POSModel;
 use App\Products_Description;
+use App\products_to_categories;
 use App\Warehouse_inventory_history_Model;
 use App\Warehouse_Inventory_Model;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Session;
 
 class POSController extends Controller
 {
@@ -52,11 +55,10 @@ class POSController extends Controller
                         ->where('warehouse_inventory.w_id', '=', session('staff')->warehouse_id)
 //                        ->where('warehouse_inventory.stock' != 0)
                         ->where(['language_id' => 1]);
-                })
-                ->paginate(12);
+                })->orderBy('products_description.products_name', 'asc')->paginate(request('page'));
 //            $products = Products_Description::where(['language_id'=>1, 'w_id'=>session('staff')->warehouse_id])->get();
         } else {
-            $products = Products_Description::where(['language_id' => 1])->paginate(12);
+            $products = Products_Description::where(['language_id' => 1])->get();
         }
 //        $products = DB::select("select * from products_description");
         //DB::table('products_description')->where('products_description.products_name', 'LIKE', "%$pro_name%")->get('products_name');
@@ -68,7 +70,7 @@ class POSController extends Controller
     {
 //        $warehouse_id = session('warehouse')->id;
 //        $staff_id = session('staff')->id;
-        $invoice = POSModel::all();
+        $invoice = POSModel::orderBy('id', 'desc')->take(10)->get();
 //        $invoice = DB::select("select * from pos");
         return view('pos.pos_list')->with(['invoice' => $invoice]);
     }
@@ -159,10 +161,10 @@ class POSController extends Controller
                     }
                 } else {
                     $vouchers->pos_id = $id;
-                    $vouchers->product_id = $_POST["products_id"][$i];
+//                    $vouchers->product_id = $_POST["products_id"][$i];
                     $vouchers->qty += $_POST["quantity"][$i];
-                    $vouchers->price = $_POST["price"][$i];
-                    $vouchers->total = $_POST["totalAmt"][$i];
+//                    $vouchers->price = $_POST["price"][$i];
+//                    $vouchers->total = $_POST["totalAmt"][$i];
                     $vouchers->save();
 
                     $win = Warehouse_Inventory_Model::where(['w_id' => session('staff')->warehouse_id, 'pid' => $_POST["products_id"][$i]])->first();
@@ -192,9 +194,9 @@ class POSController extends Controller
             $customer->contact = $contact;
             $customer->address = $address;
             $customer->save();
-            return Redirect('pos')->with('message', 'Customer Added Successfully:)');
+            return redirect('pos')->with('message', 'Customer Added Successfully:)');
         } else {
-            return Redirect('pos')->with('errmessage', 'Customer Registration Failed:(');
+            return redirect('pos')->with('errmessage', 'Customer Registration Failed:(');
         }
 
     }
@@ -214,5 +216,65 @@ class POSController extends Controller
     public function inv()
     {
         return view('pos.print_invoice');
+    }
+    public function print_pos($id)
+    {
+        $pos_main = POSModel::find($id);
+        $pos_info = POSInfoModel::where(['pos_id' => $id])->get();
+        return view('pos.invoice')->with(['pos_main' => $pos_main, 'pos_info' => $pos_info]);
+    }
+
+//    public function autoComplete(Request $request)
+//    {
+//        $data = Products_Description::select("products_name")
+//            ->where("products_name","LIKE","%{$request->input('query')}%")
+//            ->get();
+//
+//        return response()->json($data);
+//    }
+
+    public function autoComplete(Request $request)
+    {
+        $query = $request->get('term', '');
+
+        $products = Products_Description::where('products_name', 'LIKE', '%' . $query . '%')->take(10)->get();
+
+        $data = array();
+        foreach ($products as $product) {
+            $data[] = array('value' => $product->products_name, 'id' => $product->products_id);
+        }
+        if (count($data))
+            return $data;
+        else
+            return ['value' => 'No Result Found', 'id' => ''];
+    }
+
+    public function getCategoryid()
+    {
+//        $category_added = products_to_categories::distinct();
+        $category_added = DB::table('products_to_categories')->get();
+
+//        dd(($category_added));
+        foreach ($category_added as $cate) {
+            $categortrr = CategoryModel::find($cate->categories_id);
+            if (isset($categortrr)) {
+                $check = products_to_categories::where(['products_id' => $cate->products_id, 'categories_id' => $categortrr->sabcategory_id])->first();
+                if (!isset($check)) {
+                    if (isset($categortrr->sabcategory_id)) {
+                        $customer = new products_to_categories();
+                        $customer->products_id = $cate->products_id;
+                        $customer->categories_id = $categortrr->sabcategory_id;
+                        $customer->save();
+                    }
+                }
+            }
+
+//            $customer = new products_to_categories();
+//            $customer->products_id = 0;
+//            $customer->categories_id = 0;
+//            $customer->save();
+        }
+        echo "Done";
+//        return view('pos.print_invoice');
     }
 }

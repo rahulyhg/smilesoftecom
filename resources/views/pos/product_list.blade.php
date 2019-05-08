@@ -7,8 +7,16 @@
         <div class="product_box bg-gray" data-toggle="tooltip" data-placement="bottom" data-variation_id="57" title=""
              data-original-title="{{$product->products_name}}">
             <div class="image-container">
+                @php
+                    $dir= "$prod->products_image";
+                @endphp
                 {{--<img src="https://pos.ultimatefosters.com/uploads/img/1528727793_acerE15.jpg" alt="">--}}
-                <img src="{{url('').'/'.$prod->products_image}}" alt="">
+
+                @if(file_exists($dir))
+                    <img src="{{url('').'/'.$prod->products_image}}" alt="">
+                @else
+                    <img src="{{url('resources/assets/images/no_product3.png')}}" alt="">
+                @endif
             </div>
             <div class="text text-muted text-uppercase">
                 <small>

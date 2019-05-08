@@ -21,12 +21,12 @@ class WareHouseController extends Controller
         $validator = Validator::make(
             array(
                 'username' => $request->username,
-                'password' => $request->password,
+                'password' => $request->password
             ),
             array
             (
                 'username' => 'required | email',
-                'password' => 'required',
+                'password' => 'required'
             )
         );
         if ($validator->fails()) {
@@ -52,7 +52,7 @@ class WareHouseController extends Controller
                     $request->session()->put('warehouse', $warehouse);
                     return redirect('warehouse_dashboard');
                 } else {
-                    return redirect('warehouse_login')->with('message', 'Username / Password Invalid');
+                    return redirect()->back()->withErrors(['Username / Password Invalid']);
                 }
             }
         }
