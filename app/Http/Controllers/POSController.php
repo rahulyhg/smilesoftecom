@@ -14,6 +14,7 @@ use App\Warehouse_Inventory_Model;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class POSController extends Controller
 {
@@ -191,7 +192,7 @@ class POSController extends Controller
             return Redirect('admin/pos')->with('message', 'Customer Added Successfully:)');
         } else {
             return Redirect('admin/pos')->with('errmessage', 'Customer Registration Failed:(');
-        }
+        } 
 
     }
 
