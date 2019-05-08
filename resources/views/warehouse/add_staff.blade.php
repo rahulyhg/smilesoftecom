@@ -85,7 +85,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="username"
-                                                           class="col-sm-2 col-md-3 control-label">Create Username</label>
+                                                           class="col-sm-2 col-md-3 control-label">Create Username (Email-ID)</label>
                                                     <div class="col-sm-10 col-md-4">
                                                         <input type="email"
                                                                class='form-control  field-validate'

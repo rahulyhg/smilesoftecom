@@ -103,8 +103,13 @@
                                             @foreach ($results['products'] as  $key=>$product)
                                                 <tr>
                                                     <td>{{ $product->products_id }}</td>
-                                                    <td><img src="{{asset('').'/'.$product->products_image}}" alt=""
-                                                             width=" 100px" height="100px"></td>
+                                                    <td>
+                                                        {{--@php--}}
+                                                            {{--$extention =  $product->products_image->getClientOriginalName();--}}
+                                                        {{--@endphp--}}
+                                                        <img src="{{asset('').'/'.$product->products_image}}" alt=""
+                                                             width=" 100px" height="100px">
+                                                    </td>
                                                     <td>
                                                         <Button onclick="getbarcode({{ $product->products_id }});"
                                                                 class="btn btn-primary btn-sm">Download Barcode

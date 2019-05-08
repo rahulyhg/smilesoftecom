@@ -53,10 +53,10 @@ class POSController extends Controller
 //                        ->where('warehouse_inventory.stock' != 0)
                         ->where(['language_id' => 1]);
                 })
-                ->get();
+                ->paginate(12);
 //            $products = Products_Description::where(['language_id'=>1, 'w_id'=>session('staff')->warehouse_id])->get();
         } else {
-            $products = Products_Description::where(['language_id' => 1])->get();
+            $products = Products_Description::where(['language_id' => 1])->paginate(12);
         }
 //        $products = DB::select("select * from products_description");
         //DB::table('products_description')->where('products_description.products_name', 'LIKE', "%$pro_name%")->get('products_name');
@@ -108,6 +108,7 @@ class POSController extends Controller
             if ($count > 0) {
                 try {
                     $stock = new POSModel();
+
                     $stock->invoice_no = "SP" . rand(1000, 9999);
                     $stock->invoice_date = Carbon::now('Asia/Kolkata');
                     $stock->customer_id = request('customer_id');
@@ -117,7 +118,9 @@ class POSController extends Controller
                     $stock->created_time = Carbon::now('Asia/Kolkata');
                     $stock->save();
                     $this->addNewRows($stock->id, $count);
-                    return redirect('admin/pos')->with('message', 'POS has been added...!');
+                    $pos = $stock->id;
+//                    return redirect('invoice')->with('message', 'POS has been added...!');
+                    return view('pos.invoice')->with(['pos' => $pos]);
                 } catch (\Exception $e) {
                     echo $e;
                 }
@@ -157,7 +160,7 @@ class POSController extends Controller
                 } else {
                     $vouchers->pos_id = $id;
                     $vouchers->product_id = $_POST["products_id"][$i];
-                    $vouchers->qty = $_POST["quantity"][$i];
+                    $vouchers->qty += $_POST["quantity"][$i];
                     $vouchers->price = $_POST["price"][$i];
                     $vouchers->total = $_POST["totalAmt"][$i];
                     $vouchers->save();
@@ -189,10 +192,10 @@ class POSController extends Controller
             $customer->contact = $contact;
             $customer->address = $address;
             $customer->save();
-            return Redirect('admin/pos')->with('message', 'Customer Added Successfully:)');
+            return Redirect('pos')->with('message', 'Customer Added Successfully:)');
         } else {
-            return Redirect('admin/pos')->with('errmessage', 'Customer Registration Failed:(');
-        } 
+            return Redirect('pos')->with('errmessage', 'Customer Registration Failed:(');
+        }
 
     }
 
@@ -208,4 +211,8 @@ class POSController extends Controller
         return $customer;
     }
 
+    public function inv()
+    {
+        return view('pos.print_invoice');
+    }
 }

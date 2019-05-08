@@ -88,14 +88,18 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2">Bill No : {{$pos->invoice_no}}</td>
-            <td class="right_txt" colspan="2">Store Code # {{$pos->table_no}}</td>
+            {{--<td colspan="2">Bill No : {{$pos->invoice_no}}</td>--}}
+            <td colspan="2">Bill No : 123</td>
+            {{--<td class="right_txt" colspan="2">Store Code # {{$pos->table_no}}</td>--}}
+            <td class="right_txt" colspan="2">Store Code # 13</td>
         </tr>
         <tr>
-            <td colspan="4">Date : {{ date_format(date_create($pos->invoice_date), "d-M-Y h:i A")}}</td>
+            {{--<td colspan="4">Date : {{ date_format(date_create($pos->invoice_date), "d-M-Y h:i A")}}</td>--}}
+            <td colspan="4">Date : {{ Carbon\Carbon::now()}}</td>
         </tr>
         <tr>
-            <td colspan="2">Counter Person : {{$pos->stevard}}</td>
+            {{--<td colspan="2">Counter Person : {{$pos->stevard}}</td>--}}
+            <td colspan="2">Counter Person : Ashish Patel</td>
             {{--<td class="right_txt" colspan="2">Covers:{{$pos->covers}}</td>--}}
         </tr>
         <tr>
@@ -117,22 +121,27 @@
                 <hr>
             </td>
         </tr>
-        @php $counter = 1; $gst = 0; $vat = 0; $net_amount = 0; @endphp
-        @foreach($pos_info as $item)
-            @php
-             $pro = \App\Products_Description::find($item->product_id);
-            @endphp
+        {{--@php $counter = 1; $gst = 0; $vat = 0; $net_amount = 0; @endphp--}}
+        {{--@foreach($pos_info as $item)--}}
+            {{--@php--}}
+             {{--$pro = \App\Products_Description::find($item->product_id);--}}
+            {{--@endphp--}}
             <tr>
-                <td class="letter_txt">{!!"KJGKJG"!!}</td>
-                <td class="letter_txt">{!!$pro->products_name!!}</td>
-                <td class=" letter_txt">{{ $item->qty }}</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                {{--<td class="letter_txt">{!!"KJGKJG"!!}</td>--}}
+                {{--<td class="letter_txt">{!!$pro->products_name!!}</td>--}}
+                {{--<td class=" letter_txt">{{ $item->qty }}</td>--}}
 {{--                <td class=" letter_txt">{{ $item->gst }}</td>--}}
                 {{--<td class="right_txt letter_txt">{{ $item->price }}</td>--}}
-                <td class=" letter_txt">{{ $item->price }}</td>
-                <td class=" letter_txt">{{ $item->total }}</td>
+                {{--<td class=" letter_txt">{{ $item->price }}</td>--}}
+                {{--<td class=" letter_txt">{{ $item->total }}</td>--}}
             </tr>
-            @php $net_amount += $item->total; @endphp
-        @endforeach
+            {{--@php $net_amount += $item->total; @endphp--}}
+        {{--@endforeach--}}
         {{--@foreach($pos_info as $item)--}}
             {{--@php $menu = \App\MenuItemModel::find($item->MID); @endphp--}}
             {{--@php $net_amount += $item->total;--}}
@@ -151,7 +160,8 @@
 
         <tr>
             <td colspan="2" class="letter_txt">BILL AMOUNT</td>
-            <td colspan="2" class="right_txt letter_txt">{{$net_amount}}</td>
+            {{--<td colspan="2" class="right_txt letter_txt">{{$net_amount}}</td>--}}
+            <td colspan="2" class="right_txt letter_txt">500</td>
         </tr>
 
         {{--<tr>--}}
@@ -179,7 +189,8 @@
         </tr>
         <tr>
             <td colspan="2" class="letter_txt">NET AMOUNT</td>
-            <td colspan="2" class="right_txt letter_txt">{{round($net_amount)}}</td>
+{{--            <td colspan="2" class="right_txt letter_txt">{{round($net_amount)}}</td>--}}
+            <td colspan="2" class="right_txt letter_txt">5001</td>
         </tr>
         <tr>
             <td colspan="4">

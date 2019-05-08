@@ -55,8 +55,8 @@
 
 <!-- app css -->
     <link rel="stylesheet" href="{{url('public/pos/css/app.css?v=35')}}">
-
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -66,24 +66,21 @@
         }
     </style>
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-        $(function () {
-            var availableTags = [];
 
-            $.get('{{ url('getCustomer') }}', function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    availableTags[i] = data[i].name;
-//                    custids[i] = data[i].id;
-                }
-            });
-            $("#tags").autocomplete({
-                source: availableTags,
-            });
-        });
+    <script>
+        {{--$(function () {--}}
+        {{--var availableTags = [];--}}
+
+        {{--$.get('{{ url('getCustomer') }}', function (data) {--}}
+        {{--for (var i = 0; i < data.length; i++) {--}}
+        {{--availableTags[i] = data[i].name;--}}
+        {{--//                    custids[i] = data[i].id;--}}
+        {{--}--}}
+        {{--});--}}
+        {{--$("#tags").autocomplete({--}}
+        {{--source: availableTags,--}}
+        {{--});--}}
+        {{--});--}}
 
         {{--function cust_id() {--}}
         {{--$.get('{{ url('getCustID') }}', function (data) {--}}
@@ -174,83 +171,9 @@
                                 <h3 class="box-title">POS Terminal <i class="fa fa-keyboard-o hover-q text-muted"
                                                                       aria-hidden="true" data-container="body"
                                                                       data-toggle="popover" data-placement="bottom"
-                                                                      data-content="<table class='table table-condensed table-striped'>
-	<tr>
-	    <th>Operations</th>
-	    <th>Keyboard Shortcut</th>
-	</tr>
-
-			<tr>
-		    <td>Express <br/>Checkout:</td>
-		    <td>
-			    			    	shift+e
-			    		    </td>
-		</tr>
-	
-			<tr>
-		    <td>Pay & Checkout:</td>
-		    <td>
-		    				    	shift+p
-			    		    </td>
-		</tr>
-	
-			<tr>
-		    <td>Draft:</td>
-		    <td>
-		    				    	shift+d
-			    		    </td>
-		</tr>
-	
-	<tr>
-	    <td>Cancel:</td>
-	    <td>
-	    			    	shift+c
-		    	    </td>
-	</tr>
-
-			<tr>
-		    <td>Edit Discount:</td>
-		    <td>
-		    				    	shift+i
-			    		    </td>
-		</tr>
-	
-			<tr>
-		    <td>Edit Order Tax:</td>
-		    <td>
-		    				    	shift+t
-			    		    </td>
-		</tr>
-	
-			<tr>
-		    <td>Add Payment Row:</td>
-		    <td>
-		    				    	shift+r
-			    		    </td>
-		</tr>
-	
-			<tr>
-		    <td>Finalize Payment:</td>
-		    <td>
-		    				    	shift+f
-			    		    </td>
-		</tr>
-		
-	<tr>
-	    <td>Go to product quantity:</td>
-	    <td>
-	    			    	f2
-		    	    </td>
-	</tr>
-
-	<tr>
-	    <td>Add new product:</td>
-	    <td>
-	    			    	f4
-		    	    </td>
-	</tr>
-	
-</table>" data-html="true" data-trigger="hover" data-original-title="" title=""></i></h3>
+                                                                      data-content="<table class='table table-condensed table-striped'><tr><th>Operations</th><th>Keyboard Shortcut</th></tr><tr><td>Express <br/>Checkout:</td><td> shift+e</td></tr><tr><td>Pay & Checkout:</td><td> shift+p</td></tr><tr><td>Draft:</td><td> shift+d</td></tr><tr><td>Cancel:</td><td> shift+c</td></tr><tr><td>Edit Discount:</td><td> shift+i</td></tr><tr><td>Edit Order Tax:</td><td> shift+t</td></tr><tr><td>Add Payment Row:</td><td> shift+r</td></tr><tr><td>Finalize Payment:</td><td> shift+f</td></tr><tr><td>Go to product quantity:</td><td> f2</td></tr><tr><td>Add new product:</td><td> f4</td></tr></table>"
+                                                                      data-html="true" data-trigger="hover"
+                                                                      data-original-title="" title=""></i></h3>
                             </div>
                             <input type="hidden" id="item_addition_method" value="1">
                         </div>
@@ -289,11 +212,15 @@
                                                         $customer = \App\CustomerModel::where(['is_del'=>0])->get();
                                                     @endphp
 
-                                                    <select class="form-control" id="" required
-                                                            style="width: 100%;" name="customer_id">
+                                                    <select class="form-control"
+                                                            name="customer_id"
+                                                            style="width: 100%;"
+                                                    required>
+                                                        <option value="0">Select Customer</option>
                                                         @foreach($customer as $cust)
                                                             <option value="{{$cust->id}}">{{$cust->name}}
-                                                                -{{$cust->contact}}</option>
+                                                                ({{$cust->contact}})
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                     <span class="input-group-btn">
@@ -585,8 +512,10 @@
                                                                     <br/>
                                                                     <input type="hidden" name="final_total"
                                                                            id="final_total_input" value=0>
+
                                                                     <span id="total_payable"
                                                                           class="text-success lead text-bold">0</span>
+
                                                                     <button type="button"
                                                                             class="btn btn-danger btn-flat btn-xs pull-right"
                                                                             onclick="reset_pos_form()"
@@ -639,6 +568,7 @@
                                                                 <div class="col-sm-3 col-xs-12 col-2px-padding">
                                                                     <button type="submit" id="btnStorePOS"
                                                                             class="btn btn-success btn-block btn-flat btn-lg no-print  pos-express-btn pos-express-finalize"
+                                                                            {{--onclick="checkoutfun($('#final_total_input').val());"--}}
                                                                             data-pay_method="cash"
                                                                             title="Mark complete paid &amp; checkout">
                                                                         <div class="text-center">
@@ -1812,16 +1742,16 @@
 
 {{--<script src="https://pos.ultimatefosters.com/plugins/moment-timezone-with-data.min.js?v=35"></script>--}}
 <script>
-//    moment.tz.setDefault('America/Phoenix');
-//    $(document).ready(function () {
-//        $.ajaxSetup({
-//            headers: {
-//                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//            }
-//        });
-//
-//        $.fn.dataTable.ext.errMode = 'throw';
-//    });
+    //    moment.tz.setDefault('America/Phoenix');
+    //    $(document).ready(function () {
+    //        $.ajaxSetup({
+    //            headers: {
+    //                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //            }
+    //        });
+    //
+    //        $.fn.dataTable.ext.errMode = 'throw';
+    //    });
 
     var financial_year = {
         start: moment('2019-01-01'),
@@ -1863,22 +1793,8 @@
 <script src="https://pos.ultimatefosters.com/plugins/mousetrap/mousetrap.min.js?v=35"></script>
 
 <script type="text/javascript">
-
-    $(function () {
-        var availableTags = [];
-
-        $.get('{{ url('getproducts') }}', function (data) {
-            for (var i = 0; i < data.length; i++) {
-                availableTags[i] = data[i].products_name;
-            }
-        });
-        $("#search_product").autocomplete({
-            source: availableTags
-        });
-    });
-
     var append_norecord_e = '<div class="col-sm-12 no_block" id="no_record_found_block_e"><div class="adver_list_row"><span class="list_no_record">' +
-            '< No Record Available ></span></div></div>';
+        '< No Record Available ></span></div></div>';
     function getBuyEItem() {
         var check_rowcount = $('.target').length;
         if (check_rowcount > 0) {
@@ -1942,7 +1858,7 @@
         Mousetrap.bind('f9', function (e, combo) {
 //        Mousetrap.bind('shift+e', function (e) {
             e.preventDefault();
-//            $('button.pos-express-finalize[data-pay_method="cash"]').trigger('click');
+            $('button.pos-express-finalize[data-pay_method="cash"]').trigger('click');
 //            btnStorePOS
             $('form#store_pos').submit();
         });
@@ -2067,5 +1983,32 @@
 <div class="modal fade view_modal" tabindex="-1" role="dialog"
      aria-labelledby="gridSystemModalLabel"></div>
 </body>
+<script>
+    //    $(function () {
+    //        $(".typeDD").select2({
+    //            placeholder: "Select"
+    //        });
+    //
+    //        $('input[id="customer_id"]').daterangepicker({
+    //            singleDatePicker: true,
+    //            showDropdowns: true,
+    //            minYear: 2019,
+    //            maxYear: parseInt(moment().format('YYYY'), 10)
+    //        });
+    //    });
+</script>
+<script>
+    function checkoutfun(totalBillAmount) {
+        if (totalBillAmount == 0) {
+            alert("Please add atleast 1 product to get checked out!");
+            location.reload();
+        }
+        else {
+            alert(totalBillAmount);
+            $.get('{{ url('getProductRowScan') }}', {barcode: $(dis).val()}, function (data) {
 
+            });
+        }
+    }
+</script>
 </html>
