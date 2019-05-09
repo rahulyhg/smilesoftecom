@@ -47,6 +47,11 @@
                     <i class="fa fa-plus-square"></i> <span>Purchase</span>
                 </a>
             </li>
+            <li class="treeview">
+                <a href="{{ url('warehouse_stock')}}">
+                    <i class="fa fa-industry"></i> <span>Stocks</span>
+                </a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

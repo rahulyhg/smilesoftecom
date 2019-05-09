@@ -181,7 +181,6 @@ class POSController extends Controller
             }
         }
     }
-
     public function customer_add()
     {
         $customer_name = request('cname');
