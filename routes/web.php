@@ -860,6 +860,8 @@ Route::group(['middleware' => 'warehouse'], function ()
     Route::post('addpurchase', 'WarehouseProductController@addpurchase');
     Route::get('subCategorylist', 'WarehouseProductController@subCategorylist');
 
+    Route::get('/warehouse_stock', 'WarehouseStockController@products');
+
     //products
     Route::get('/products', 'WarehouseProductController@products');
     Route::post('/barcode-generate', 'WarehouseProductController@barcode_generate');
