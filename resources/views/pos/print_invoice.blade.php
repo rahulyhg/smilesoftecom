@@ -142,18 +142,18 @@
             </tr>
             @php $net_amount += $item->total; @endphp
         @endforeach
-        @foreach($pos_info as $item)
-            @php
-                $menu = \App\MenuItemModel::find($item->MID); @endphp
-            @php
-                $net_amount += $item->total;
-        if ($menu->tax->type == 'VAT') {
-        $vat += $item->price * $item->qty * $menu->tax->percent / 100;
-        } else {
-        $gst += $item->price * $item->qty * $menu->tax->percent / 100;
-        }
-            @endphp
-        @endforeach
+        {{--@foreach($pos_info as $item)--}}
+            {{--@php--}}
+                {{--$menu = \App\MenuItemModel::find($item->MID); @endphp--}}
+            {{--@php--}}
+                {{--$net_amount += $item->total;--}}
+        {{--if ($menu->tax->type == 'VAT') {--}}
+        {{--$vat += $item->price * $item->qty * $menu->tax->percent / 100;--}}
+        {{--} else {--}}
+        {{--$gst += $item->price * $item->qty * $menu->tax->percent / 100;--}}
+        {{--}--}}
+            {{--@endphp--}}
+        {{--@endforeach--}}
         <tr>
             <td colspan="4">
                 <hr>
