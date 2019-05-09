@@ -95,11 +95,11 @@
         </tr>
         <tr>
             {{--<td colspan="4">Date : {{ date_format(date_create($pos->invoice_date), "d-M-Y h:i A")}}</td>--}}
-            <td colspan="4">Date : {{ Carbon\Carbon::now()}}</td>
+            <td colspan="4">Date : {{ Carbon\Carbon::now()->format('d-M-Y h:i A')}}</td>
         </tr>
         <tr>
             {{--<td colspan="2">Counter Person : {{$pos->stevard}}</td>--}}
-            <td colspan="2">Counter Person : Ashish Patel</td>
+            <td colspan="2">Counter Person : {{$pos_main->staff->name}}</td>
             {{--<td class="right_txt" colspan="2">Covers:{{$pos->covers}}</td>--}}
         </tr>
         <tr>
@@ -108,10 +108,10 @@
             </td>
         </tr>
         <tr>
-            <td>HSN</td>
+            {{--<td>HSN</td>--}}
             <td>Particular</td>
+            <td class="">GST</td>
             <td class="">Qty</td>
-            {{--<td class="">GST</td>--}}
             {{--<td class="right_txt">MRP</td>--}}
             <td class="">Rate</td>
             <td class="">Total</td>
@@ -121,37 +121,39 @@
                 <hr>
             </td>
         </tr>
-        {{--@php $counter = 1; $gst = 0; $vat = 0; $net_amount = 0; @endphp--}}
-        {{--@foreach($pos_info as $item)--}}
-            {{--@php--}}
-             {{--$pro = \App\Products_Description::find($item->product_id);--}}
-            {{--@endphp--}}
+        @php $counter = 1; $gst = 0; $vat = 0; $net_amount = 0; @endphp
+        @foreach($pos_info as $item)
+            @php
+                $pro = \App\Products_Description::find($item->product_id);
+            @endphp
             <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                {{--<td class="letter_txt">{!!"KJGKJG"!!}</td>--}}
-                {{--<td class="letter_txt">{!!$pro->products_name!!}</td>--}}
-                {{--<td class=" letter_txt">{{ $item->qty }}</td>--}}
-{{--                <td class=" letter_txt">{{ $item->gst }}</td>--}}
-                {{--<td class="right_txt letter_txt">{{ $item->price }}</td>--}}
-                {{--<td class=" letter_txt">{{ $item->price }}</td>--}}
-                {{--<td class=" letter_txt">{{ $item->total }}</td>--}}
+                {{--<td>1</td>--}}
+                {{--<td>2</td>--}}
+                {{--<td>3</td>--}}
+                {{--<td>4</td>--}}
+                {{--<td>5</td>--}}
+                {{--                <td class="letter_txt">{!!"KJGKJG"!!}</td>--}}
+                <td class="letter_txt">{!!$pro->products_name!!}</td>
+                <td class=" letter_txt">{{ $item->gst }}</td>
+                <td class=" letter_txt">{{ $item->qty }}</td>
+                {{--                <td class="right_txt letter_txt">{{ $item->price }}</td>--}}
+                <td class=" letter_txt">{{ $item->price }}</td>
+                <td class=" letter_txt">{{ $item->total }}</td>
             </tr>
-            {{--@php $net_amount += $item->total; @endphp--}}
-        {{--@endforeach--}}
-        {{--@foreach($pos_info as $item)--}}
-            {{--@php $menu = \App\MenuItemModel::find($item->MID); @endphp--}}
-            {{--@php $net_amount += $item->total;--}}
-        {{--if ($menu->tax->type == 'VAT') {--}}
-        {{--$vat += $item->price * $item->qty * $menu->tax->percent / 100;--}}
-        {{--} else {--}}
-        {{--$gst += $item->price * $item->qty * $menu->tax->percent / 100;--}}
-        {{--}--}}
-            {{--@endphp--}}
-        {{--@endforeach--}}
+            @php $net_amount += $item->total; @endphp
+        @endforeach
+        @foreach($pos_info as $item)
+            @php
+                $menu = \App\MenuItemModel::find($item->MID); @endphp
+            @php
+                $net_amount += $item->total;
+        if ($menu->tax->type == 'VAT') {
+        $vat += $item->price * $item->qty * $menu->tax->percent / 100;
+        } else {
+        $gst += $item->price * $item->qty * $menu->tax->percent / 100;
+        }
+            @endphp
+        @endforeach
         <tr>
             <td colspan="4">
                 <hr>
@@ -161,7 +163,7 @@
         <tr>
             <td colspan="2" class="letter_txt">BILL AMOUNT</td>
             {{--<td colspan="2" class="right_txt letter_txt">{{$net_amount}}</td>--}}
-            <td colspan="2" class="right_txt letter_txt">500</td>
+            <td colspan="2" class="right_txt letter_txt">{{$net_amount}}</td>
         </tr>
 
         {{--<tr>--}}
@@ -189,8 +191,8 @@
         </tr>
         <tr>
             <td colspan="2" class="letter_txt">NET AMOUNT</td>
-{{--            <td colspan="2" class="right_txt letter_txt">{{round($net_amount)}}</td>--}}
-            <td colspan="2" class="right_txt letter_txt">5001</td>
+            {{--            <td colspan="2" class="right_txt letter_txt">{{round($net_amount)}}</td>--}}
+            <td colspan="2" class="right_txt letter_txt">500</td>
         </tr>
         <tr>
             <td colspan="4">
@@ -206,7 +208,7 @@
             <td colspan="3" class="right_txt letter_txt">GUEST SIGNATURE</td>
         </tr>
         <tr>
-{{--            <td colspan="4"> {{$pos->user->name}}</td>--}}
+            {{--            <td colspan="4"> {{$pos->user->name}}</td>--}}
         </tr>
         <tr>
             <td colspan="4"><br><br></td>

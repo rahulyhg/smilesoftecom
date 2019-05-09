@@ -32,8 +32,8 @@
             <input type="text" data-min="1" id="qty{{$products->products_id}}" class="form-control pos_quantity input_number mousetrap input_quantity"
                    value="1.00" name="quantity[]" data-allow-overselling="false" data-decimal="0"
                    data-rule-abs_digit="true" data-msg-abs_digit="Decimal value not allowed" data-rule-required="true"
-                   data-msg-required="This field is required" data-rule-max-value="30.0000" data-qty_available="30.0000"
-                   data-msg-max-value="Only 30.00 Pc(s) available" data-msg_max_default="Only 30.00 Pc(s) available">
+                   data-msg-required="This field is required" data-rule-max-value="1.0000" data-qty_available="1.0000"
+                   data-msg-max-value="Only 1.00 Pc(s) available" data-msg_max_default="Only 0.00 Pc(s) available">
             <span class="input-group-btn"><button type="button" class="btn btn-default btn-flat quantity-up"><i
                             class="fa fa-plus text-success"></i></button></span>
         </div>

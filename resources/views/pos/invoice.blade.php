@@ -7,10 +7,10 @@
 
     <title>Editable Invoice</title>
 
-    <link rel='stylesheet' type='text/css' href='public/css/style.css'/>
-    <link rel='stylesheet' type='text/css' href='public/css/print.css' media="print"/>
-    <script type='text/javascript' src='public/js/jquery-1.3.2.min.js'></script>
-    <script type='text/javascript' src='public/js/example.js'></script>
+    <link rel='stylesheet' type='text/css' href='{{url('public/css/style.css')}}'/>
+    <link rel='stylesheet' type='text/css' href='{{url('public/css/print.css')}}' media="print"/>
+    <script type='text/javascript' src='{{url('public/js/jquery-1.3.2.min.js')}}'></script>
+    <script type='text/javascript' src='{{url('public/js/example.js')}}'></script>
 
     <script>
         $(function () {
@@ -81,7 +81,7 @@
             $pos_description = \App\POSInfoModel::where(['pos_id'=>$pos_main->id])->get();
             $total = 0;
         @endphp
-        @foreach($pos_info as $items => $pd)
+        @foreach($pos_description as $items => $pd)
             @php
                 $total += ($pd->price)*($pd->qty)
             @endphp
