@@ -1887,19 +1887,24 @@
 
     function getProductRow(pid) {
         $.get('{{ url('getProductRow') }}', {pid: pid}, function (data) {
-            var ext_pro_qty = parseInt($('#qty' + pid).val());
+            if(data != 'Stock Not Available') {
+
+                var ext_pro_qty = parseInt($('#qty' + pid).val());
 //            alert(ext_pro_qty);
-            if (isNaN(ext_pro_qty)) {
+                if (isNaN(ext_pro_qty)) {
 //                alert("if");
 //                alert(data);
-                $('table#pos_table tbody').append(data).find('input.pos_quantity');
+                    $('table#pos_table tbody').append(data).find('input.pos_quantity');
 //                pos_total_row();
-            } else {
-                qtt = parseFloat($('#qty' + pid).val()) + 1.00;
+                } else {
+                    qtt = parseFloat($('#qty' + pid).val()) + 1.00;
 //                alert(qtt);
-                $('#qty' + pid).val(qtt+'.00');
+                    $('#qty' + pid).val(qtt + '.00');
+                }
+                pos_total_row();
+            }else{
+                toastr.error('Stock Not Available');
             }
-            pos_total_row();
 
 //            $('#product_list_body').html(data);
 //            $('table#pos_table tbody').append(data).find('input.pos_quantity');
@@ -1911,12 +1916,15 @@
         $.get('{{ url('getProductRowScan') }}', {barcode: $(this).val().trim()}, function (data) {
 //            $('#product_list_body').html(data);
 //            console.log(data);
-            if (data != 'Not Available') {
+            if (data == 'Not Available') {
+                toastr.error('Product Not Available');
+            } else if (data == 'Stock Not Available') {
+                toastr.error('Stock Not Available');
+                pos_total_row();
+            } else {
                 $('#search_product').val('');
                 $('table#pos_table tbody').append(data).find('input.pos_quantity');
                 pos_total_row();
-            } else {
-                toastr.error('Product Not Available');
             }
         });
 

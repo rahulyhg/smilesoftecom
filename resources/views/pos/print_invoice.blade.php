@@ -72,6 +72,8 @@
         <tbody>
         <tr>
             <td colspan="4" style="text-align: center;">
+                {{--<img style="width: 50%; height: 60%;" src="{{url('public/sitelogo.png')}}" alt="Logo">--}}
+                {{--<br>--}}
                 <span class="center_headtxt">  SMILE SHOP ONLINE STORES PVT LTD </span>
                 <span class="small_head">CIN No. : 23729162058</span>
                 <span class="small_head">PH NO. : 0788 - 4911210</span>
@@ -89,7 +91,7 @@
         </tr>
         <tr>
             {{--<td colspan="2">Bill No : {{$pos->invoice_no}}</td>--}}
-            <td colspan="2">Bill No : 123</td>
+            <td colspan="2">Bill No : {{$pos_main->invoice_no}}</td>
             {{--<td class="right_txt" colspan="2">Store Code # {{$pos->table_no}}</td>--}}
             <td class="right_txt" colspan="2">Store Code # 13</td>
         </tr>
@@ -125,6 +127,8 @@
         @foreach($pos_info as $item)
             @php
                 $pro = \App\Products_Description::find($item->product_id);
+                $product = \App\ProductsModel::find($item->product_id);
+            $tax_rate = \App\TaxRatesModel::where(['tax_class_id'=>$product->products_tax_class_id])->first();
             @endphp
             <tr>
                 {{--<td>1</td>--}}
@@ -134,26 +138,21 @@
                 {{--<td>5</td>--}}
                 {{--                <td class="letter_txt">{!!"KJGKJG"!!}</td>--}}
                 <td class="letter_txt">{!!$pro->products_name!!}</td>
-                <td class=" letter_txt">{{ $item->gst }}</td>
+                <td class=" letter_txt">{{ round(isset($tax_rate)?$tax_rate->tax_rate:'0') }}</td>
                 <td class=" letter_txt">{{ $item->qty }}</td>
                 {{--                <td class="right_txt letter_txt">{{ $item->price }}</td>--}}
                 <td class=" letter_txt">{{ $item->price }}</td>
                 <td class=" letter_txt">{{ $item->total }}</td>
             </tr>
-            @php $net_amount += $item->total; @endphp
+
+            @php
+                $net_amount += $item->total;
+
+        $gst += $item->total * (isset($tax_rate)?$tax_rate->tax_rate:'0') / 100;
+
+            @endphp
         @endforeach
-        {{--@foreach($pos_info as $item)--}}
-            {{--@php--}}
-                {{--$menu = \App\MenuItemModel::find($item->MID); @endphp--}}
-            {{--@php--}}
-                {{--$net_amount += $item->total;--}}
-        {{--if ($menu->tax->type == 'VAT') {--}}
-        {{--$vat += $item->price * $item->qty * $menu->tax->percent / 100;--}}
-        {{--} else {--}}
-        {{--$gst += $item->price * $item->qty * $menu->tax->percent / 100;--}}
-        {{--}--}}
-            {{--@endphp--}}
-        {{--@endforeach--}}
+
         <tr>
             <td colspan="4">
                 <hr>
@@ -166,15 +165,15 @@
             <td colspan="2" class="right_txt letter_txt">{{$net_amount}}</td>
         </tr>
 
-        {{--<tr>--}}
-        {{--<td colspan="2" class="letter_txt">SGST (2.5%)</td>--}}
-        {{--<td colspan="2" class="right_txt letter_txt">{{$gst/2}}</td>--}}
-        {{--</tr>--}}
+        <tr>
+            <td colspan="2" class="letter_txt">SGST ({{isset($tax_rate)?$tax_rate->tax_rate/2:'0'}}%)</td>
+            <td colspan="2" class="right_txt letter_txt">{{round(($gst/2),2)}}</td>
+        </tr>
 
-        {{--<tr>--}}
-        {{--<td colspan="2" class="letter_txt">CGST (2.5%)</td>--}}
-        {{--<td colspan="2" class="right_txt letter_txt">{{$gst/2}}</td>--}}
-        {{--</tr>--}}
+        <tr>
+            <td colspan="2" class="letter_txt">CGST ({{isset($tax_rate)?$tax_rate->tax_rate/2:'0'}}%)</td>
+            <td colspan="2" class="right_txt letter_txt">{{round(($gst/2),2)}}</td>
+        </tr>
 
         {{--<tr>--}}
         {{--<td colspan="2" class="letter_txt">VAT (5%)</td>--}}
@@ -191,8 +190,8 @@
         </tr>
         <tr>
             <td colspan="2" class="letter_txt">NET AMOUNT</td>
-            {{--            <td colspan="2" class="right_txt letter_txt">{{round($net_amount)}}</td>--}}
-            <td colspan="2" class="right_txt letter_txt">500</td>
+            <td colspan="2" class="right_txt letter_txt">{{round($net_amount+$gst)}}</td>
+            {{--<td colspan="2" class="right_txt letter_txt">500</td>--}}
         </tr>
         <tr>
             <td colspan="4">
