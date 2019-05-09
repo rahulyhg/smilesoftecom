@@ -1907,7 +1907,8 @@
         });
     }
     $("#search_product").blur(function () {
-        $.get('{{ url('getProductRowScan') }}', {barcode: $(this).val()}, function (data) {
+//        alert('blur');
+        $.get('{{ url('getProductRowScan') }}', {barcode: $(this).val().trim()}, function (data) {
 //            $('#product_list_body').html(data);
 //            console.log(data);
             if (data != 'Not Available') {

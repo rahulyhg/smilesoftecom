@@ -86,20 +86,22 @@ class POSController extends Controller
     {
         $pid = request('barcode');
 
-        $barcode = BarcodeModel::where(['barcode' => $pid])->first();
-        if (isset($barcode)) {
-            $products = DB::selectOne("select * from products_description WHERE products_id = $barcode->product_id");
-            return view('pos.pro_tr')->with(['products' => $products]);
-        } /*elseif (preg_match('~[0-9]~', $pid) == false) {
+        if ($pid != null) {
+            $barcode = BarcodeModel::where(['barcode' => $pid])->first();
+            if (isset($barcode)) {
+                $products = DB::selectOne("select * from products_description WHERE products_id = $barcode->product_id");
+                return view('pos.pro_tr')->with(['products' => $products]);
+            } /*elseif (preg_match('~[0-9]~', $pid) == false) {
             $products = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
             return view('pos.pro_tr')->with(['products' => $products]);
         }*/
-        $desc = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
-        if (isset($desc)) {
-            $products = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
-            return view('pos.pro_tr')->with(['products' => $products]);
-        } else {
-            return 'Not Available';
+            $desc = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
+            if (isset($desc)) {
+                $products = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
+                return view('pos.pro_tr')->with(['products' => $products]);
+            } else {
+                return 'Not Available';
+            }
         }
     }
 
@@ -110,7 +112,6 @@ class POSController extends Controller
             if ($count > 0) {
                 try {
                     $stock = new POSModel();
-
                     $stock->invoice_no = "SP" . rand(1000, 9999);
                     $stock->invoice_date = Carbon::now('Asia/Kolkata');
                     $stock->customer_id = request('customer_id');
@@ -122,7 +123,7 @@ class POSController extends Controller
                     $this->addNewRows($stock->id, $count);
                     $pos = $stock->id;
 //                    return redirect('invoice')->with('message', 'POS has been added...!');
-                    return view('pos.invoice')->with(['pos' => $pos]);
+                    return view('pos.invoice')->with(['pos_main' => $stock]);
                 } catch (\Exception $e) {
                     echo $e;
                 }
@@ -220,7 +221,7 @@ class POSController extends Controller
     {
         $pos_main = POSModel::find($id);
         $pos_info = POSInfoModel::where(['pos_id' => $id])->get();
-        return view('pos.invoice')->with(['pos_main' => $pos_main, 'pos_info' => $pos_info]);
+        return view('pos.print_invoice')->with(['pos_main' => $pos_main, 'pos_info' => $pos_info]);
     }
 
 //    public function autoComplete(Request $request)

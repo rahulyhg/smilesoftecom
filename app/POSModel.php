@@ -12,11 +12,11 @@ class POSModel extends Model
 
     public function warehouse()
     {
-        return $this->belongsTo('/App/WarehouseModel','wid');
+        return $this->belongsTo('App/WarehouseModel','wid');
     }
     public function staff()
     {
-        return $this->belongsTo('/App/WarehouseStaffModel','sid');
+        return $this->belongsTo('App\WarehouseStaffModel','sid');
     }
     public function customer()
     {

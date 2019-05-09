@@ -12,6 +12,19 @@
             </ol>
         </section>
 
+        @php
+            $products = DB::table('products')
+              ->leftJoin('products_description', 'products_description.products_id', '=', 'products.products_id')
+              ->where('products_description.language_id', '=', 1)
+              ->orderBy('products.products_id', 'DESC')
+              ->get();
+
+        $customers = DB::table('customers')
+            ->LeftJoin('customers_info', 'customers_info.customers_info_id', '=', 'customers.customers_id')
+            ->orderBy('customers_info.customers_info_date_account_created', 'DESC')
+            ->get();
+        @endphp
+
         <!-- Main content -->
         <section class="content">
             <div class="row" style="display: none">
@@ -89,7 +102,7 @@
                         <div class="icon">
                             <i class="ion ion-bag"></i>
                         </div>
-                        <a href="{{ URL::to('admin/orders')}}" class="small-box-footer" data-toggle="tooltip"
+                        <a href="{{ URL::to('orders')}}" class="small-box-footer" data-toggle="tooltip"
                            data-placement="bottom"
                            title="{{ trans('labels.viewAllOrders') }}">{{ trans('labels.viewAllOrders') }} <i
                                     class="fa fa-arrow-circle-right"></i></a>
@@ -100,13 +113,13 @@
 
                     <div class="small-box bg-red">
                         <div class="inner">
-                            <h3>Out of Stock </h3>
+                            <h3>{{count($products)}} </h3>
                             <p>Out of Stock</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
                         </div>
-                        <a href="{{ URL::to('admin/outofstock')}}" class="small-box-footer" data-toggle="tooltip"
+                        <a href="{{ URL::to('#')}}" class="small-box-footer" data-toggle="tooltip"
                            data-placement="bottom"
                            title="{{ trans('labels.outOfStock') }}">{{ trans('labels.outOfStock') }} <i
                                     class="fa fa-arrow-circle-right"></i></a>
@@ -117,7 +130,7 @@
                     <!-- small box -->
                     <div class="small-box bg-yellow">
                         <div class="inner">
-                            <h3>Total Customer</h3>
+                            <h3>{{count($customers)}}</h3>
 
                             <p>{{ trans('labels.customerRegistrations') }}</p>
                         </div>
@@ -135,14 +148,14 @@
                     <!-- small box -->
                     <div class="small-box bg-green">
                         <div class="inner">
-                            <h3>Total Product</h3>
+                            <h3>{{count($products)}}</h3>
 
                             <p>Total Product</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-pie-graph"></i>
                         </div>
-                        <a href="{{ URL::to('admin/products')}}" class="small-box-footer" data-toggle="tooltip"
+                        <a href="{{ URL::to('products')}}" class="small-box-footer" data-toggle="tooltip"
                            data-placement="bottom"
                            title="{{ trans('labels.viewAllProducts') }}">{{ trans('labels.viewAllProducts') }} <i
                                     class="fa fa-arrow-circle-right"></i></a>
@@ -155,12 +168,6 @@
         </section>
     </div>
 
-    <!-- /.col -->
-    </div>
-    <!-- /.row -->
-    </section>
-    <!-- /.content -->
-    </div>
     <script src="{!! asset('resources/views/admin/plugins/jQuery/jQuery-2.2.0.min.js') !!}"></script>
 
     <script src="{!! asset('resources/views/admin/dist/js/pages/dashboard2.js') !!}"></script>

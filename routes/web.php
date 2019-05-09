@@ -1007,6 +1007,9 @@ Route::group(['middleware' => 'warehouse'], function ()
     Route::post('/insert_warehouse', 'WarehouseManufacturerController@insert_warehouse');
     Route::get('/ViewStock/{id}', 'AdminManufacturerController@viewstock');
 
+    Route::get('/ViewStock/{id}', 'AdminManufacturerController@viewstock');
+
+
 });
 
 Route::group(['middleware' => 'staff'], function () {
