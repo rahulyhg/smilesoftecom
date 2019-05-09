@@ -179,7 +179,8 @@
                                                     {{--</td>--}}
                                                     <td>
                                                         @php
-                                                            $inventory = \App\Warehouse_Inventory_Model::where('pid',$product->products_id)->sum('stock')
+                                                            $inventory = \App\Warehouse_Inventory_Model::
+                                                            where(['pid'=>$product->products_id, 'w_id'=>session('warehouse')->id])->sum('stock')
                                                             //$inventory = \App\Warehouse_Inventory_Model::where('pid',2638)->sum('stock');
                                                             //dd($inventory->stock);
                                                         @endphp
