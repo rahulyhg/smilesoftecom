@@ -68,6 +68,7 @@
   <body class="hold-transition login-page">
   <!-- wrapper -->
 </head>
+<body>
 <div class="hold-transition login-page">
     <div class="wrapper">
 
@@ -92,7 +93,8 @@
 
                 <div style="
     font-size: 25px;
-"><b> Welcome </b> To Staff Panel</div>
+"><b> Welcome </b> To Staff Panel
+                </div>
             </div>
             <!-- /.login-logo -->
             <div class="login-box-body">

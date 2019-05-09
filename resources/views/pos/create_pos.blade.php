@@ -56,10 +56,14 @@
 <!-- app css -->
     <link rel="stylesheet" href="{{url('public/pos/css/app.css?v=35')}}">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    {{--    <link rel="stylesheet" href="{{url('/resources/demos/style.css')}}">--}}
+    {{--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>--}}
+    {{--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>--}}
 
+
+    <link href="http://demo.expertphp.in/css/jquery.ui.autocomplete.css" rel="stylesheet">
+    <script src="http://demo.expertphp.in/js/jquery.js"></script>
+    <script src="http://demo.expertphp.in/js/jquery-ui.min.js"></script>
     <style type="text/css">
         .content {
             padding-bottom: 0px !important;
@@ -215,7 +219,7 @@
                                                     <select class="form-control"
                                                             name="customer_id"
                                                             style="width: 100%;"
-                                                    required>
+                                                            required>
                                                         <option value="0">Select Customer</option>
                                                         @foreach($customer as $cust)
                                                             <option value="{{$cust->id}}">{{$cust->name}}
@@ -242,7 +246,7 @@
 										<i class="fa fa-barcode"></i>
 									</span>
                                                     <input class="form-control mousetrap"
-                                                           onchange="getProductRowScan(this);" id="search_product"
+                                                           {{-- onchange="getProductRowScan(this);"--}} id="search_product"
                                                            placeholder="Enter Product name / SKU / Scan bar code"
                                                            autofocus name="search_product"
                                                            type="text">
@@ -1442,7 +1446,7 @@
                                     <div class="eq-height-row" id="product_list_body"></div>
                                 </div>
                                 <div class="col-md-12 text-center" id="suggestion_page_loader" style="display: none;">
-                                    {{--<i class="fa fa-spinner fa-spin fa-2x"></i>--}}
+                                    <i class="fa fa-spinner fa-spin fa-2x"></i>
                                 </div>
                             </div>
                         </div>
@@ -1666,6 +1670,8 @@
             <b>7 EYE IT Solutions | Copyright &copy; 2019 All rights reserved.</b>
         </small>
     </footer>
+    <input type="hidden" id="see_id" value="20"/>
+
     <audio id="success-audio">
         <source src="https://pos.ultimatefosters.com/audio/success.ogg?v=35" type="audio/ogg">
         <source src="https://pos.ultimatefosters.com/audio/success.mp3?v=35" type="audio/mpeg">
@@ -1793,8 +1799,56 @@
 <script src="https://pos.ultimatefosters.com/plugins/mousetrap/mousetrap.min.js?v=35"></script>
 
 <script type="text/javascript">
+    $('div#product_list_body').on('scroll', function () {
+        if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+            var page = parseInt($('#see_id').val());
+            page += 1;
+            $('#see_id').val(page);
+//            var location_id = $('input#location_id').val();
+//            var category_id = $('select#product_category').val();
+//            var brand_id = $('select#product_brand').val();
+            getmoreItems();
+            //get_product_suggestion_list(category_id, brand_id, location_id);
+        }
+    });
+
+    $(window).scroll(function () {
+        console.log('%c color:green', 'Scrool Value');
+        console.log($(window).scrollTop());
+        $('#scroollvalue').html('Wondow scroll and height--->' + $(window).scrollTop() + $(window).height() + 'Document heaight-->' + $(document).height());
+        if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+            if (parseFloat($('#see_id').val()) < parseFloat($('#products_count').val())) {
+                getmoreItems();
+            }
+        }
+    });
     var append_norecord_e = '<div class="col-sm-12 no_block" id="no_record_found_block_e"><div class="adver_list_row"><span class="list_no_record">' +
-        '< No Record Available ></span></div></div>';
+            '< No Record Available ></span></div></div>';
+    function getmoreItems() {
+        cp = 1;
+        cp += parseFloat($('#see_id').val());
+        $('#see_id').val(cp);
+//        var category_id = $('#category_id').val();
+//        var popularity = $('#popularity').attr('class') == 'type_brics brics_selected' ? 1 : 0;
+        $.ajax({
+            type: "get",
+            contentType: "application/json; charset=utf-8",
+            url: "{{url('product_list_body')}}",
+            data: {page: cp},
+            beforeSend: function () {
+                $('#suggestion_page_loader').fadeIn(700);
+            },
+            success: function (data) {
+                $('#suggestion_page_loader').fadeOut(700);
+                $("#product_list_body").append(data);
+            },
+            error: function (xhr, status, error) {
+                $('#product_all').html(xhr.responseText);
+            }
+        });
+    }
+
+
     function getBuyEItem() {
         var check_rowcount = $('.target').length;
         if (check_rowcount > 0) {
@@ -1819,8 +1873,9 @@
     }
 
     function product_list_body() {
-        $.get('{{ url('product_list_body') }}', {tid: 1}, function (data) {
+        $.get('{{ url('product_list_body') }}', {page: 20}, function (data) {
             $('#product_list_body').html(data);
+            $('#suggestion_page_loader').fadeOut(700);
         });
     }
 
@@ -1832,26 +1887,64 @@
 
     function getProductRow(pid) {
         $.get('{{ url('getProductRow') }}', {pid: pid}, function (data) {
-//            $('#product_list_body').html(data);
-            $('table#pos_table tbody').append(data).find('input.pos_quantity');
+            var ext_pro_qty = parseInt($('#qty' + pid).val());
+//            alert(ext_pro_qty);
+            if (isNaN(ext_pro_qty)) {
+//                alert("if");
+//                alert(data);
+                $('table#pos_table tbody').append(data).find('input.pos_quantity');
+//                pos_total_row();
+            } else {
+                qtt = parseFloat($('#qty' + pid).val()) + 1.00;
+//                alert(qtt);
+                $('#qty' + pid).val(qtt+'.00');
+            }
             pos_total_row();
+
+//            $('#product_list_body').html(data);
+//            $('table#pos_table tbody').append(data).find('input.pos_quantity');
+//            pos_total_row();
         });
     }
-    function getProductRowScan(dis) {
-        $.get('{{ url('getProductRowScan') }}', {barcode: $(dis).val()}, function (data) {
+    $("#search_product").blur(function () {
+        $.get('{{ url('getProductRowScan') }}', {barcode: $(this).val()}, function (data) {
 //            $('#product_list_body').html(data);
 //            console.log(data);
             if (data != 'Not Available') {
-                $(dis).val('');
+                $('#search_product').val('');
                 $('table#pos_table tbody').append(data).find('input.pos_quantity');
                 pos_total_row();
             } else {
                 toastr.error('Product Not Available');
             }
         });
+
+    });
+    function getProductRowScan(dis) {
+
     }
 
     $(document).ready(function () {
+
+        src = "{{ route('searchajax') }}";
+        $("#search_product").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: src,
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function (data) {
+                        response(data);
+
+                    }
+                });
+            },
+            minLength: 1,
+
+        });
+
         recent_invoice();
         product_list_body();
         //shortcut for express checkout

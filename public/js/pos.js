@@ -23,59 +23,59 @@ $(document).ready(function() {
     });
 
     //get customer
-    $('#customer_id').select2({
-        ajax: {
-            url: '/contacts/customers',
-            dataType: 'json',
-            delay: 250,
-            data: function(params) {
-                return {
-                    q: params.term, // search term
-                    page: params.page,
-                };
-            },
-            processResults: function(data) {
-                return {
-                    results: data,
-                };
-            },
-        },
-        templateResult: function (data) {
-            return data.text + "<br>" + LANG.mobile + ": " + data.mobile;
-        },
-        minimumInputLength: 1,
-        language: {
-            noResults: function() {
-                var name = $('#customer_id')
-                    .data('select2')
-                    .dropdown.$search.val();
-                return (
-                    '<button type="button" data-name="' +
-                    name +
-                    '" class="btn btn-link add_new_customer"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>&nbsp; ' +
-                    __translate('add_name_as_new_customer', { name: name }) +
-                    '</button>'
-                );
-            },
-        },
-        escapeMarkup: function(markup) {
-            return markup;
-        },
-    });
-    $('#customer_id').on('select2:select', function(e) {
-        var data = e.params.data;
-        if (data.pay_term_number) {
-            $('input#pay_term_number').val(data.pay_term_number);
-        } else {
-            $('input#pay_term_number').val('');
-        }
-
-        if (data.pay_term_type) {
-            $('#pay_term_type').val(data.pay_term_type);
-        } else {
-            $('#pay_term_type').val('');
-        }
-    });
+    // $('#customer_id').select2({
+    //     ajax: {
+    //         url: '/contacts/customers',
+    //         dataType: 'json',
+    //         delay: 250,
+    //         data: function(params) {
+    //             return {
+    //                 q: params.term, // search term
+    //                 page: params.page,
+    //             };
+    //         },
+    //         processResults: function(data) {
+    //             return {
+    //                 results: data,
+    //             };
+    //         },
+    //     },
+    //     templateResult: function (data) {
+    //         return data.text + "<br>" + LANG.mobile + ": " + data.mobile;
+    //     },
+    //     minimumInputLength: 1,
+    //     language: {
+    //         noResults: function() {
+    //             var name = $('#customer_id')
+    //                 .data('select2')
+    //                 .dropdown.$search.val();
+    //             return (
+    //                 '<button type="button" data-name="' +
+    //                 name +
+    //                 '" class="btn btn-link add_new_customer"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>&nbsp; ' +
+    //                 __translate('add_name_as_new_customer', { name: name }) +
+    //                 '</button>'
+    //             );
+    //         },
+    //     },
+    //     escapeMarkup: function(markup) {
+    //         return markup;
+    //     },
+    // });
+    // $('#customer_id').on('select2:select', function(e) {
+    //     var data = e.params.data;
+    //     if (data.pay_term_number) {
+    //         $('input#pay_term_number').val(data.pay_term_number);
+    //     } else {
+    //         $('input#pay_term_number').val('');
+    //     }
+    //
+    //     if (data.pay_term_type) {
+    //         $('#pay_term_type').val(data.pay_term_type);
+    //     } else {
+    //         $('#pay_term_type').val('');
+    //     }
+    // });
 
     set_default_customer();
 
@@ -381,21 +381,21 @@ $(document).ready(function() {
         data = data + '&status=draft';
         var url = pos_form_obj.attr('action');
 
-        $.ajax({
-            method: 'POST',
-            url: url,
-            data: data,
-            dataType: 'json',
-            success: function(result) {
-                if (result.success == 1) {
-                    reset_pos_form();
-                    toastr.success(result.msg);
-                    get_recent_transactions('draft', $('div#tab_draft'));
-                } else {
-                    toastr.error(result.msg);
-                }
-            },
-        });
+        // $.ajax({
+        //     method: 'POST',
+        //     url: url,
+        //     data: data,
+        //     dataType: 'json',
+        //     success: function(result) {
+        //         if (result.success == 1) {
+        //             reset_pos_form();
+        //             toastr.success(result.msg);
+        //             get_recent_transactions('draft', $('div#tab_draft'));
+        //         } else {
+        //             toastr.error(result.msg);
+        //         }
+        //     },
+        // });
     });
 
     //Save invoice as Quotation
@@ -415,27 +415,27 @@ $(document).ready(function() {
         data = data + '&status=quotation';
         var url = pos_form_obj.attr('action');
 
-        $.ajax({
-            method: 'POST',
-            url: url,
-            data: data,
-            dataType: 'json',
-            success: function(result) {
-                if (result.success == 1) {
-                    reset_pos_form();
-                    toastr.success(result.msg);
-
-                    //Check if enabled or not
-                    if (result.receipt.is_enabled) {
-                        pos_print(result.receipt);
-                    }
-
-                    get_recent_transactions('quotation', $('div#tab_quotation'));
-                } else {
-                    toastr.error(result.msg);
-                }
-            },
-        });
+        // $.ajax({
+        //     method: 'POST',
+        //     url: url,
+        //     data: data,
+        //     dataType: 'json',
+        //     success: function(result) {
+        //         if (result.success == 1) {
+        //             reset_pos_form();
+        //             toastr.success(result.msg);
+        //
+        //             //Check if enabled or not
+        //             if (result.receipt.is_enabled) {
+        //                 pos_print(result.receipt);
+        //             }
+        //
+        //             get_recent_transactions('quotation', $('div#tab_quotation'));
+        //         } else {
+        //             toastr.error(result.msg);
+        //         }
+        //     },
+        // });
     });
 
     //Finalize invoice, open payment modal
@@ -540,32 +540,32 @@ $(document).ready(function() {
 
     $('button#add-payment-row').click(function() {
         var row_index = $('#payment_row_index').val();
-        $.ajax({
-            method: 'POST',
-            url: '/sells/pos/get_payment_row',
-            data: { row_index: row_index },
-            dataType: 'html',
-            success: function(result) {
-                if (result) {
-                    var appended = $('#payment_rows_div').append(result);
-
-                    var total_payable = __read_number($('input#final_total_input'));
-                    var total_paying = __read_number($('input#total_paying_input'));
-                    var b_due = total_payable - total_paying;
-                    $(appended)
-                        .find('input.payment-amount')
-                        .focus();
-                    $(appended)
-                        .find('input.payment-amount')
-                        .last()
-                        .val(__currency_trans_from_en(b_due, false))
-                        .change()
-                        .select();
-                    __select2($(appended).find('.select2'));
-                    $('#payment_row_index').val(parseInt(row_index) + 1);
-                }
-            },
-        });
+        // $.ajax({
+        //     method: 'POST',
+        //     url: '/sells/pos/get_payment_row',
+        //     data: { row_index: row_index },
+        //     dataType: 'html',
+        //     success: function(result) {
+        //         if (result) {
+        //             var appended = $('#payment_rows_div').append(result);
+        //
+        //             var total_payable = __read_number($('input#final_total_input'));
+        //             var total_paying = __read_number($('input#total_paying_input'));
+        //             var b_due = total_payable - total_paying;
+        //             $(appended)
+        //                 .find('input.payment-amount')
+        //                 .focus();
+        //             $(appended)
+        //                 .find('input.payment-amount')
+        //                 .last()
+        //                 .val(__currency_trans_from_en(b_due, false))
+        //                 .change()
+        //                 .select();
+        //             __select2($(appended).find('.select2'));
+        //             $('#payment_row_index').val(parseInt(row_index) + 1);
+        //         }
+        //     },
+        // });
     });
 
     $(document).on('click', '.remove_payment_row', function() {
@@ -607,32 +607,32 @@ $(document).ready(function() {
                 var data = $(form).serialize();
                 data = data + '&status=final';
                 var url = $(form).attr('action');
-                $.ajax({
-                    method: 'POST',
-                    url: url,
-                    data: data,
-                    dataType: 'json',
-                    success: function(result) {
-                        if (result.success == 1) {
-                            $('#modal_payment').modal('hide');
-                            toastr.success(result.msg);
-
-                            reset_pos_form();
-
-                            //Check if enabled or not
-                            if (result.receipt.is_enabled) {
-                                pos_print(result.receipt);
-                            }
-
-                            get_recent_transactions('final', $('div#tab_final'));
-                        } else {
-                            toastr.error(result.msg);
-                        }
-
-                        $('div.pos-processing').hide();
-                        $('#pos-save').removeAttr('disabled');
-                    },
-                });
+                // $.ajax({
+                //     method: 'POST',
+                //     url: url,
+                //     data: data,
+                //     dataType: 'json',
+                //     success: function(result) {
+                //         if (result.success == 1) {
+                //             $('#modal_payment').modal('hide');
+                //             toastr.success(result.msg);
+                //
+                //             reset_pos_form();
+                //
+                //             //Check if enabled or not
+                //             if (result.receipt.is_enabled) {
+                //                 pos_print(result.receipt);
+                //             }
+                //
+                //             get_recent_transactions('final', $('div#tab_final'));
+                //         } else {
+                //             toastr.error(result.msg);
+                //         }
+                //
+                //         $('div.pos-processing').hide();
+                //         $('#pos-save').removeAttr('disabled');
+                //     },
+                // });
             }
             return false;
         },
@@ -756,26 +756,26 @@ $(document).ready(function() {
                     .find('button[type="submit"]')
                     .attr('disabled', true);
                 var data = $(form).serialize();
-                $.ajax({
-                    method: 'POST',
-                    url: $(form).attr('action'),
-                    dataType: 'json',
-                    data: data,
-                    success: function(result) {
-                        if (result.success == true) {
-                            $('select#customer_id').append(
-                                $('<option>', { value: result.data.id, text: result.data.name })
-                            );
-                            $('select#customer_id')
-                                .val(result.data.id)
-                                .trigger('change');
-                            $('div.contact_modal').modal('hide');
-                            toastr.success(result.msg);
-                        } else {
-                            toastr.error(result.msg);
-                        }
-                    },
-                });
+                // $.ajax({
+                //     method: 'POST',
+                //     url: $(form).attr('action'),
+                //     dataType: 'json',
+                //     data: data,
+                //     success: function(result) {
+                //         if (result.success == true) {
+                //             $('select#customer_id').append(
+                //                 $('<option>', { value: result.data.id, text: result.data.name })
+                //             );
+                //             $('select#customer_id')
+                //                 .val(result.data.id)
+                //                 .trigger('change');
+                //             $('div.contact_modal').modal('hide');
+                //             toastr.success(result.msg);
+                //         } else {
+                //             toastr.error(result.msg);
+                //         }
+                //     },
+                // });
             },
         });
     $('.contact_modal').on('hidden.bs.modal', function() {
@@ -930,20 +930,20 @@ $(document).ready(function() {
     $(document).on('click', 'button.pos_add_quick_product', function() {
         var url = $(this).data('href');
         var container = $(this).data('container');
-        $.ajax({
-            url: url + '?product_for=pos',
-            dataType: 'html',
-            success: function(result) {
-                $(container)
-                    .html(result)
-                    .modal('show');
-                $('.os_exp_date').datepicker({
-                    autoclose: true,
-                    format: 'dd-mm-yyyy',
-                    clearBtn: true,
-                });
-            },
-        });
+        // $.ajax({
+        //     url: url + '?product_for=pos',
+        //     dataType: 'html',
+        //     success: function(result) {
+        //         $(container)
+        //             .html(result)
+        //             .modal('show');
+        //         $('.os_exp_date').datepicker({
+        //             autoclose: true,
+        //             format: 'dd-mm-yyyy',
+        //             clearBtn: true,
+        //         });
+        //     },
+        // });
     });
 
     $(document).on('change', 'form#quick_add_product_form input#single_dpp', function() {
@@ -1031,108 +1031,108 @@ $(document).ready(function() {
 
 function get_product_suggestion_list(category_id, brand_id, location_id, url = null) {
 
-    if($('div#product_list_body').length == 0) {
-        return false;
-    }
-
-    if (url == null) {
-        url = '/sells/pos/get-product-suggestion';
-    }
-    $('#suggestion_page_loader').fadeIn(700);
-    var page = $('input#suggestion_page').val();
-    if (page == 1) {
-        $('div#product_list_body').html('');
-    }
-    if ($('div#product_list_body').find('input#no_products_found').length > 0) {
-        $('#suggestion_page_loader').fadeOut(700);
-        return false;
-    }
-    $.ajax({
-        method: 'GET',
-        url: url,
-        data: {
-            category_id: category_id,
-            brand_id: brand_id,
-            location_id: location_id,
-            page: page,
-        },
-        dataType: 'html',
-        success: function(result) {
-            $('div#product_list_body').append(result);
-            $('#suggestion_page_loader').fadeOut(700);
-        },
-    });
+    // if($('div#product_list_body').length == 0) {
+    //     return false;
+    // }
+    //
+    // if (url == null) {
+    //     url = '/sells/pos/get-product-suggestion';
+    // }
+    // $('#suggestion_page_loader').fadeIn(700);
+    // var page = $('input#suggestion_page').val();
+    // if (page == 1) {
+    //     $('div#product_list_body').html('');
+    // }
+    // if ($('div#product_list_body').find('input#no_products_found').length > 0) {
+    //     $('#suggestion_page_loader').fadeOut(700);
+    //     return false;
+    // }
+    // $.ajax({
+    //     method: 'GET',
+    //     url: url,
+    //     data: {
+    //         category_id: category_id,
+    //         brand_id: brand_id,
+    //         location_id: location_id,
+    //         page: page,
+    //     },
+    //     dataType: 'html',
+    //     success: function(result) {
+    //         $('div#product_list_body').append(result);
+    //         $('#suggestion_page_loader').fadeOut(700);
+    //     },
+    // });
 }
 
 //Get recent transactions
 function get_recent_transactions(status, element_obj) {
-    if (element_obj.length == 0) {
-        return false;
-    }
-
-    $.ajax({
-        method: 'GET',
-        url: '/sells/pos/get-recent-transactions',
-        data: { status: status },
-        dataType: 'html',
-        success: function(result) {
-            element_obj.html(result);
-            __currency_convert_recursively(element_obj);
-        },
-    });
+    // if (element_obj.length == 0) {
+    //     return false;
+    // }
+    //
+    // $.ajax({
+    //     method: 'GET',
+    //     url: '/sells/pos/get-recent-transactions',
+    //     data: { status: status },
+    //     dataType: 'html',
+    //     success: function(result) {
+    //         element_obj.html(result);
+    //         __currency_convert_recursively(element_obj);
+    //     },
+    // });
 }
 
 function pos_product_row(variation_id) {
     //Get item addition method
     var item_addtn_method = 0;
-    var add_via_ajax = true;
+        var add_via_ajax = true;
 
-    if ($('#item_addition_method').length) {
-        item_addtn_method = $('#item_addition_method').val();
-    }
+        if ($('#item_addition_method').length) {
+            item_addtn_method = $('#item_addition_method').val();
+        }
 
-    if (item_addtn_method == 0) {
-        add_via_ajax = true;
-    } else {
-        var is_added = false;
+        if (item_addtn_method == 0) {
+            add_via_ajax = true;
+        } else {
+            var is_added = false;
 
-        //Search for variation id in each row of pos table
-        $('#pos_table tbody')
-            .find('tr')
-            .each(function() {
-                var row_v_id = $(this)
-                    .find('.row_variation_id')
-                    .val();
-                var enable_sr_no = $(this)
-                    .find('.enable_sr_no')
-                    .val();
-                var modifiers_exist = false;
-                if ($(this).find('input.modifiers_exist').length > 0) {
-                    modifiers_exist = true;
-                }
+            //Search for variation id in each row of pos table
+            $('#pos_table tbody')
+                .find('tr')
+                .each(function() {
+                    var row_v_id = $(this)
+                        .find('.row_variation_id')
+                        .val();
+                    var enable_sr_no = $(this)
+                        .find('.enable_sr_no')
+                        .val();
+                    var modifiers_exist = false;
+                    if ($(this).find('input.modifiers_exist').length > 0) {
+                        modifiers_exist = true;
+                    }
 
-                if (
-                    row_v_id == variation_id &&
-                    enable_sr_no !== '1' &&
-                    !modifiers_exist &&
-                    !is_added
-                ) {
-                    add_via_ajax = false;
-                    is_added = true;
+                    if (
+                        row_v_id == variation_id &&
+                        enable_sr_no !== '1' &&
+                        !modifiers_exist &&
+                        !is_added
+                    ) {
+                        add_via_ajax = false;
+                        is_added = true;
 
-                    //Increment product quantity
-                    // qty_element = $(this).find('.pos_quantity');
-                    // var qty = __read_number(qty_element);
-                    // __write_number(qty_element, qty + 1);
-                    // qty_element.change();
+                        //Increment product quantity
+                        // qty_element = $(this).find('.pos_quantity');
+                        // var qty = __read_number(qty_element);
+                        // __write_number(qty_element, qty + 1);
+                        // qty_element.change();
 
-                    round_row_to_iraqi_dinnar($(this));
+                        round_row_to_iraqi_dinnar($(this));
 
-                    $('input#search_product')
-                        .focus()
-                        .select();
-                }
-            });
+                        $('input#search_product')
+                            .focus()
+                            .select();
+                    }
+                });
     }
 
     if (add_via_ajax) {
@@ -1152,64 +1152,64 @@ function pos_product_row(variation_id) {
             price_group = $('#price_group').val();
         }
 
-        $.ajax({
-            method: 'GET',
-            url: '/sells/pos/get_product_row/' + variation_id + '/' + location_id,
-            async: false,
-            data: {
-                product_row: product_row,
-                customer_id: customer_id,
-                is_direct_sell: is_direct_sell,
-                price_group: price_group,
-            },
-            dataType: 'json',
-            success: function(result) {
-                if (result.success) {
-                    $('table#pos_table tbody')
-                        .append(result.html_content)
-                        .find('input.pos_quantity');
-                    //increment row count
-                    $('input#product_row_count').val(parseInt(product_row) + 1);
-                    var this_row = $('table#pos_table tbody')
-                        .find('tr')
-                        .last();
-                    pos_each_row(this_row);
-
-                    //For initial discount if present
-                    var line_total = __read_number(this_row.find('input.pos_line_total'));
-                    this_row.find('span.pos_line_total_text').text(line_total);
-
-                    pos_total_row();
-                    if (result.enable_sr_no == '1') {
-                        var new_row = $('table#pos_table tbody')
-                            .find('tr')
-                            .last();
-                        new_row.find('.add-pos-row-description').trigger('click');
-                    }
-
-                    round_row_to_iraqi_dinnar(this_row);
-                    __currency_convert_recursively(this_row);
-
-                    $('input#search_product')
-                        .focus()
-                        .select();
-
-                    //Used in restaurant module
-                    if (result.html_modifier) {
-                        $('table#pos_table tbody')
-                            .find('tr')
-                            .last()
-                            .find('td:first')
-                            .append(result.html_modifier);
-                    }
-                } else {
-                    toastr.error(result.msg);
-                    $('input#search_product')
-                        .focus()
-                        .select();
-                }
-            },
-        });
+        // $.ajax({
+        //     method: 'GET',
+        //     url: '/sells/pos/get_product_row/' + variation_id + '/' + location_id,
+        //     async: false,
+        //     data: {
+        //         product_row: product_row,
+        //         customer_id: customer_id,
+        //         is_direct_sell: is_direct_sell,
+        //         price_group: price_group,
+        //     },
+        //     dataType: 'json',
+        //     success: function(result) {
+        //         if (result.success) {
+        //             $('table#pos_table tbody')
+        //                 .append(result.html_content)
+        //                 .find('input.pos_quantity');
+        //             //increment row count
+        //             $('input#product_row_count').val(parseInt(product_row) + 1);
+        //             var this_row = $('table#pos_table tbody')
+        //                 .find('tr')
+        //                 .last();
+        //             pos_each_row(this_row);
+        //
+        //             //For initial discount if present
+        //             var line_total = __read_number(this_row.find('input.pos_line_total'));
+        //             this_row.find('span.pos_line_total_text').text(line_total);
+        //
+        //             pos_total_row();
+        //             if (result.enable_sr_no == '1') {
+        //                 var new_row = $('table#pos_table tbody')
+        //                     .find('tr')
+        //                     .last();
+        //                 new_row.find('.add-pos-row-description').trigger('click');
+        //             }
+        //
+        //             round_row_to_iraqi_dinnar(this_row);
+        //             __currency_convert_recursively(this_row);
+        //
+        //             $('input#search_product')
+        //                 .focus()
+        //                 .select();
+        //
+        //             //Used in restaurant module
+        //             if (result.html_modifier) {
+        //                 $('table#pos_table tbody')
+        //                     .find('tr')
+        //                     .last()
+        //                     .find('td:first')
+        //                     .append(result.html_modifier);
+        //             }
+        //         } else {
+        //             toastr.error(result.msg);
+        //             $('input#search_product')
+        //                 .focus()
+        //                 .select();
+        //         }
+        //     },
+        // });
     }
 }
 
@@ -1362,22 +1362,22 @@ function calculate_balance_due() {
 }
 
 function isValidPosForm() {
-    flag = true;
-    $('span.error').remove();
-
-    if ($('select#customer_id').val() == null) {
-        flag = false;
-        error = '<span class="error">' + LANG.required + '</span>';
-        $(error).insertAfter($('select#customer_id').parent('div'));
-    }
-
-    if ($('tr.product_row').length == 0) {
-        flag = false;
-        error = '<span class="error">' + LANG.no_products + '</span>';
-        $(error).insertAfter($('input#search_product').parent('div'));
-    }
-
-    return flag;
+    // flag = true;
+    // $('span.error').remove();
+    //
+    // if ($('select#customer_id').val() == null) {
+    //     flag = false;
+    //     error = '<span class="error">' + LANG.required + '</span>';
+    //     $(error).insertAfter($('select#customer_id').parent('div'));
+    // }
+    //
+    // if ($('tr.product_row').length == 0) {
+    //     flag = false;
+    //     error = '<span class="error">' + LANG.no_products + '</span>';
+    //     $(error).insertAfter($('input#search_product').parent('div'));
+    // }
+    //
+    // return flag;
 }
 
 function reset_pos_form(){
@@ -1446,23 +1446,23 @@ function set_default_customer() {
 
 //Set the location and initialize printer
 function set_location() {
-    if ($('select#select_location_id').length == 1) {
-        $('input#location_id').val($('select#select_location_id').val());
-        $('input#location_id').data(
-            'receipt_printer_type',
-            $('select#select_location_id')
-                .find(':selected')
-                .data('receipt_printer_type')
-        );
-    }
-
-    if ($('input#location_id').val()) {
-        $('input#search_product')
-            .prop('disabled', false)
-            .focus();
-    } else {
-        $('input#search_product').prop('disabled', true);
-    }
+    // if ($('select#select_location_id').length == 1) {
+    //     $('input#location_id').val($('select#select_location_id').val());
+    //     $('input#location_id').data(
+    //         'receipt_printer_type',
+    //         $('select#select_location_id')
+    //             .find(':selected')
+    //             .data('receipt_printer_type')
+    //     );
+    // }
+    //
+    // if ($('input#location_id').val()) {
+    //     $('input#search_product')
+    //         .prop('disabled', false)
+    //         .focus();
+    // } else {
+    //     $('input#search_product').prop('disabled', true);
+    // }
 
     initialize_printer();
 }
@@ -1612,19 +1612,19 @@ $(document).on('click', '#select_all_service_staff', function() {
 
 $(document).on('click', '.print-invoice-link', function(e) {
     e.preventDefault();
-    $.ajax({
-        url: $(this).attr('href') + "?check_location=true",
-        dataType: 'json',
-        success: function(result) {
-            if (result.success == 1) {
-                //Check if enabled or not
-                if (result.receipt.is_enabled) {
-                    pos_print(result.receipt);
-                }
-            } else {
-                toastr.error(result.msg);
-            }
-
-        },
-    });
+    // $.ajax({
+    //     url: $(this).attr('href') + "?check_location=true",
+    //     dataType: 'json',
+    //     success: function(result) {
+    //         if (result.success == 1) {
+    //             //Check if enabled or not
+    //             if (result.receipt.is_enabled) {
+    //                 pos_print(result.receipt);
+    //             }
+    //         } else {
+    //             toastr.error(result.msg);
+    //         }
+    //
+    //     },
+    // });
 });

@@ -438,7 +438,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('pos', 'POSController@create_pos');
             Route::get('getproducts', 'POSController@getproducts');
 //            Route::get('product_list_body', 'POSController@product_list_body');
-            Route::get('recent_invoice', 'POSController@recent_invoice');
+//            Route::get('recent_invoice', 'POSController@recent_invoice');
             Route::get('getProductRow', 'POSController@getProductRow');
             Route::get('getProductRowScan', 'POSController@getProductRowScan');
 //            Route::post('store_pos', 'POSController@store_pos');
@@ -1014,15 +1014,19 @@ Route::group(['middleware' => 'staff'], function () {
     Route::get('/staff_logout', 'StaffController@logout');
     Route::get('/staff_staff', 'StaffController@warehouse_staff');
 
+
     /******************POS  Bijendra**********************/
     Route::get('pos', 'POSController@create_pos');
     Route::get('getproducts', 'POSController@getproducts');
     Route::get('product_list_body', 'POSController@product_list_body');
     Route::get('recent_invoice', 'POSController@recent_invoice');
+    Route::get('print_pos/{id}', 'POSController@print_pos');
     Route::get('getProductRow', 'POSController@getProductRow');
     Route::get('getProductRowScan', 'POSController@getProductRowScan');
     Route::post('store_pos', 'POSController@store_pos');
     Route::get('invoice', 'POSController@inv');
+
+    Route::get('searchajax',array('as'=>'searchajax','uses'=>'POSController@autoComplete'));
     /******************POS Bijendra**********************/
 
     /******************Customer Ashish **********************/
@@ -1037,6 +1041,10 @@ Route::get('/warehouse_login', 'WareHouseController@login');
 Route::post('/warehouse_loginCheck', 'WareHouseController@loginCheck');
 Route::get('/staff_login', 'StaffController@login');
 Route::post('/staff_loginCheck', 'StaffController@loginCheck');
+
+
+Route::get('/getCategoryid', 'POSController@getCategoryid');
+
 
 //--------------------------- Ashish --------------------------------
 

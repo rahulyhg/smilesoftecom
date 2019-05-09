@@ -23,7 +23,7 @@
 
 <div id="page-wrap">
     @php
-        $pos_main = \App\POSModel::find($pos);
+        $pos_main = \App\POSModel::find($pos_main->id);
         $sid = $pos_main->sid;
         $warehouse = \App\WarehouseModel::where(['id'=>$pos_main->wid])->first();
         $customer = \App\CustomerModel::where(['id'=>$pos_main->customer_id])->first();
@@ -78,10 +78,10 @@
             <th>Price</th>
         </tr>
         @php
-            $pos_description = \App\POSInfoModel::where(['pos_id'=>$pos])->get();
+            $pos_description = \App\POSInfoModel::where(['pos_id'=>$pos_main->id])->get();
             $total = 0;
         @endphp
-        @foreach($pos_description as $items => $pd)
+        @foreach($pos_info as $items => $pd)
             @php
                 $total += ($pd->price)*($pd->qty)
             @endphp

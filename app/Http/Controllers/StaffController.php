@@ -37,7 +37,8 @@ class StaffController extends Controller
                     $request->session()->put('staff', $staff);
                     return redirect('staff_dashboard');
                 } else {
-                    return redirect('staff_login')->with('message', 'Username / Password Invalid');
+//                    return redirect('staff_login')->withErrors('message', 'Username / Password Invalid');
+                    return redirect()->back()->withErrors(['Username / Password Invalid']);
                 }
             }
         }

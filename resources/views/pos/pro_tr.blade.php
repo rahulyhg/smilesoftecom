@@ -1,6 +1,7 @@
 {{--$prod = \App\BarcodeModel::whereproduct_id($product->products_id)->first();--}}
 @php
     $prod = \App\ProductsModel::find($products->products_id);
+
 @endphp
 <tr class="product_row" data-row_index="{{$products->products_id}}">
     <td>
@@ -28,7 +29,7 @@
         <div class="input-group input-number">
             <span class="input-group-btn"><button type="button" class="btn btn-default btn-flat quantity-down"><i
                             class="fa fa-minus text-danger"></i></button></span>
-            <input type="text" data-min="1" class="form-control pos_quantity input_number mousetrap input_quantity"
+            <input type="text" data-min="1" id="qty{{$products->products_id}}" class="form-control pos_quantity input_number mousetrap input_quantity"
                    value="1.00" name="quantity[]" data-allow-overselling="false" data-decimal="0"
                    data-rule-abs_digit="true" data-msg-abs_digit="Decimal value not allowed" data-rule-required="true"
                    data-msg-required="This field is required" data-rule-max-value="30.0000" data-qty_available="30.0000"
