@@ -855,7 +855,6 @@ Route::group(['middleware' => 'warehouse'], function ()
     Route::post('/staff_del', 'WareHouseController@staff_del');
     Route::get('/staff_report', 'WareHouseController@staff_report');
 
-
     //purchase
     Route::get('purchase', 'WarehouseProductController@purchase');
     Route::get('productChange', 'WarehouseProductController@productChange');
@@ -910,7 +909,7 @@ Route::group(['middleware' => 'warehouse'], function ()
     Route::get('/attributes', 'WarehouseProductController@attributes');
     Route::get('/addoptions', 'WarehouseProductController@addoptions');
     Route::post('/addnewoptions', 'WarehouseProductController@addnewoptions');
-    //
+    
 //    Route::post('/addnewattributes', 'WarehouseProductController@addnewattributes');
 //    Route::get('/editattributes/{id}/{language_id}', 'WarehouseProductController@editattributes');
     Route::get('/manage-options/{id}', 'WarehouseProductController@manageoptions');
@@ -926,7 +925,6 @@ Route::group(['middleware' => 'warehouse'], function ()
     Route::post('/checkattributeassociate', 'WarehouseProductController@checkattributeassociate');
     Route::post('/checkvalueassociate', 'WarehouseProductController@checkvalueassociate');
     Route::post('/deletevalue', 'WarehouseProductController@deletevalue');
-
 
     //alert setting
     Route::get('/alertsetting', 'WarehouseSiteSettingController@alertSetting');
