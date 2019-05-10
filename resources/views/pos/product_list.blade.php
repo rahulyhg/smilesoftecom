@@ -2,6 +2,7 @@
 
     @php
         $prod = \App\ProductsModel::find($product->products_id);
+        $barcode = \App\BarcodeModel::where(['product_id'=>$product->products_id])->first();
     @endphp
     <div class="col-md-3 col-xs-4 product_list no-print target" onclick="getProductRow('{{$product->products_id}}');">
         <div class="product_box bg-gray" data-toggle="tooltip" data-placement="bottom" data-variation_id="57" title=""
@@ -24,7 +25,7 @@
                 </small>
             </div>
             <small class="text-muted">
-                {{rand(10000,99999)}}
+                {{isset($barcode->barcode)?$barcode->barcode:'0'}}
             </small>
         </div>
     </div>
