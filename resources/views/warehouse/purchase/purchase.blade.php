@@ -153,7 +153,8 @@
                                                             <div class="col-sm-3">
                                                                 <label for="" class="pull-left">&nbsp;Vendor</label> {{-- <select class=" typeDD requireDD"
                                             name="vendor" style="width: 100%; height:150%"> --}}
-                                                                <select class="form-control typeDD requireDD" name="vendor"
+                                                                <select class="form-control typeDD requireDD"
+                                                                        name="vendor"
                                                                         style="width: 100%; height:150%">
                                                                     <option value="">Select Vendor</option>
                                                                     {{--@foreach ($vendor as $item)--}}
@@ -164,6 +165,29 @@
 
                                                         </div>
                                                         <hr>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-5">
+                                                                <span class="input-group-btn">
+                                                                    <button type="button"
+                                                                            class="btn btn-default bg-white btn-flat add_new_customer"
+                                                                            onclick="addProduct_modal();"
+                                                                            data-name="">
+                                                                        <i class="fa fa-plus-circle text-primary fa-lg"> Add New Product</i>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <script>
+                                                            function addProduct_modal() {
+                                                                var uid = 1;
+                                                                $('#my').modal('show');
+                                                                $.get('{{ url('purchase/addProduct_modal') }}', {uid: uid}, function (data) {
+                                                                    $('#mh').html('Create New Supplier');
+                                                                    $('#mb').html(data);
+                                                                });
+                                                            }
+                                                        </script>
                                                         <div class="row">
                                                             <div class="col-sm-5">
                                                                 <label for="" class="pull-left">&nbsp;Product
@@ -172,7 +196,7 @@
                                                                         name="p_name[]"
                                                                         id="p_name_1" onchange="productChange();">
                                                                     <option value="0">Select</option>
-                                                                    @foreach($productDesc as $item)
+                                                                    @foreach($product as $item)
                                                                         <option value="{{$item->products_id}}">{{$item->products_name}}</option>
                                                                     @endforeach
                                                                 </select>
@@ -286,16 +310,16 @@
                                                             </div>
 
                                                             {{--<div class="col-sm-4">--}}
-                                                                {{--<div class="form-group">--}}
-                                                                    {{--<label for="name" class="pull-left"--}}
-                                                                           {{--style="align: center">CP Excl--}}
-                                                                        {{--Tax(₹)</label>--}}
-                                                                    {{--<input type="text"--}}
-                                                                           {{--class="form-control numberOnly"--}}
-                                                                           {{--onkeyup="totamt(1)"--}}
-                                                                           {{--name="unit_price[]" id="unit_price1"--}}
-                                                                           {{--placeholder="Enter Price">--}}
-                                                                {{--</div>--}}
+                                                            {{--<div class="form-group">--}}
+                                                            {{--<label for="name" class="pull-left"--}}
+                                                            {{--style="align: center">CP Excl--}}
+                                                            {{--Tax(₹)</label>--}}
+                                                            {{--<input type="text"--}}
+                                                            {{--class="form-control numberOnly"--}}
+                                                            {{--onkeyup="totamt(1)"--}}
+                                                            {{--name="unit_price[]" id="unit_price1"--}}
+                                                            {{--placeholder="Enter Price">--}}
+                                                            {{--</div>--}}
                                                             {{--</div>--}}
 
                                                             <div class="col-sm-2">

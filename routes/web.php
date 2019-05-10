@@ -857,6 +857,8 @@ Route::group(['middleware' => 'warehouse'], function ()
 
     //purchase
     Route::get('purchase', 'WarehouseProductController@purchase');
+    Route::any('purchase/addProduct_modal', 'WarehouseProductController@addProduct_modal');
+    Route::any('purchase/product_upload', 'WarehouseProductController@product_upload');
     Route::get('productChange', 'WarehouseProductController@productChange');
     Route::get('addnewrow', 'WarehouseProductController@addnewrow');
     Route::post('addpurchase', 'WarehouseProductController@addpurchase');
@@ -909,7 +911,7 @@ Route::group(['middleware' => 'warehouse'], function ()
     Route::get('/attributes', 'WarehouseProductController@attributes');
     Route::get('/addoptions', 'WarehouseProductController@addoptions');
     Route::post('/addnewoptions', 'WarehouseProductController@addnewoptions');
-    
+
 //    Route::post('/addnewattributes', 'WarehouseProductController@addnewattributes');
 //    Route::get('/editattributes/{id}/{language_id}', 'WarehouseProductController@editattributes');
     Route::get('/manage-options/{id}', 'WarehouseProductController@manageoptions');

@@ -20,6 +20,7 @@ use App\Warehouse_inventory_history_Model;
 use App\Warehouse_Inventory_Model;
 use App\WarehouseModel;
 //use Barryvdh\DomPDF\PDF;
+use Carbon\Carbon;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -2606,7 +2607,11 @@ class WarehouseProductController extends Controller
 //---------------------------------------- Purchaser Start ----------------------------------------
     public function purchase()
     {
-        $productDesc = Products_Description::all();
+        $productDesc = Products_Description::distinct()->get();
+        $collection = collect($productDesc);
+        $product_name = $collection->unique('products_name');
+        $product = $product_name->values()->all();
+
 //        $brand = ManufacturerModel::where(['is_del'=>0])->get();
 //        $unit = UnitsModel::where(['is_active'=>1])->get();
 //        $catlist = CategoryDescriptionModel::where(['is_active'=>1])->orderBy('categories_id', 'desc')->get();
@@ -2614,9 +2619,133 @@ class WarehouseProductController extends Controller
 //        $catlist = Category::whereis_del(0)->whereparent_id(0)->orderBy('id', 'desc')->get();
 //        return view('purchase.purchase')->with(['brand' => $brand, 'unit' => $unit, 'catlist' => $catlist, 'vendor' => $vendor]);
 //        return view('warehouse.purchase.purchase')->with(['brand' => $brand, 'unit' => $unit, 'catlist' => $catlist]);
-        return view('warehouse.purchase.purchase')->with(['productDesc'=>$productDesc]);
+        return view('warehouse.purchase.purchase')->with(['product'=>$product]);
     }
 
+    public function addProduct_modal()
+    {
+//        $brand = ManufacturerModel::orderBy('manufacturers_name', 'desc');
+        $brand = DB::table('manufacturers')
+            ->leftJoin('manufacturers_info', 'manufacturers_info.manufacturers_id', '=', 'manufacturers.manufacturers_id')
+            ->select('manufacturers.manufacturers_id as id', 'manufacturers.manufacturers_image as image', 'manufacturers.manufacturers_name as name', 'manufacturers_info.manufacturers_url as url', 'manufacturers_info.url_clicked', 'manufacturers_info.date_last_click as clik_date')
+            ->orderBy('manufacturers_name', 'ASC')
+            ->get();
+//        return $brand;
+        $category = CategoryModel::where(['parent_id'=>0])->get();
+        $tax_class = TaxClassModel::get();
+//        $subcategory = CategoryModel::where(['sabcategory_id'=>0])->get();
+        return view('warehouse.purchase.purchase_modal')->with(['brand'=>$brand,'category'=>$category, 'tax_class'=>$tax_class]);
+    }
+
+    public function product_upload(Request $request)
+    {
+        if ($request->hasFile('products_image') and in_array($request->products_image->extension(), $extensions)) {
+            $image = $request->products_image;
+            $fileName = time() . '.' . $image->getClientOriginalName();
+            $image->move('resources/assets/images/product_images/', $fileName);
+            $uploadImage = 'resources/assets/images/product_images/' . $fileName;
+        } else {
+            $uploadImage = '';
+        }
+
+        $products_id = DB::table('products')->insertGetId([
+            'products_image' => $uploadImage,
+            'manufacturers_id' => $request->manufacturers_id,
+            'products_quantity' => 0,
+            'products_model' => $request->products_model,
+            'products_price' => $request->selling_price,
+            // 'products_purchase_price' => $request->products_purchase_price,
+            'products_date_added' => Carbon::now(),
+            'products_weight' => $request->products_weight,
+            'products_status' => $request->products_status,
+            'products_tax_class_id' => $request->tax_class_id,
+            'products_weight_unit' => $request->products_weight_unit,
+            'low_limit' => 0,
+            'products_type' => $request->products_type
+        ]);
+
+        $barcode = new BarcodeModel();
+        $barcode->product_id = $products_id;
+        $barcode->cost_price = $request->products_purchase_price;
+        $barcode->selling_price = $request->selling_price;
+        $barcode->barcode = request('barcode');
+        $barcode->save();
+
+        $data = WarehouseModel::whereis_del(0)->get();
+        foreach ($data as $obj) {
+            $warehouse_inventory = new Warehouse_Inventory_Model();
+            $warehouse_inventory->w_id = $obj->id;
+            $warehouse_inventory->pid = $products_id;
+            $warehouse_inventory->stock = 0;
+            $warehouse_inventory->save();
+        }
+
+        $slug_flag = false;
+
+        if ($slug_flag == false) {
+            $slug_flag = true;
+
+            $slug = $request->products_name;
+            $old_slug = $request->products_name;
+
+            $slug_count = 0;
+            do {
+                if ($slug_count == 0) {
+                    $currentSlug = slugify($slug);
+                } else {
+                    $currentSlug = slugify($old_slug . '-' . $slug_count);
+                }
+                $slug = $currentSlug;
+                $checkSlug = DB::table('products')->where('products_slug', $currentSlug)->get();
+                $slug_count++;
+            } while (count($checkSlug) > 0);
+            DB::table('products')->where('products_id', $products_id)->update([
+                'products_slug' => $slug,
+            ]);
+        }
+
+        DB::table('products_description')->insert([
+            'products_name' => $request->products_name,
+            'language_id' => 1,
+            'products_id' => $products_id,
+            'products_url' => $request->products_url_,
+            'products_left_banner' => '',
+            'products_left_banner_start_date' => '',
+            'products_left_banner_expire_date' => '',
+            'products_right_banner' => '',
+            'products_right_banner_start_date' => '',
+            'products_right_banner_expire_date' => '',
+            'products_description' => addslashes($request->products_description),
+        ]);
+    }
+    public function slugify($slug){
+
+        // replace non letter or digits by -
+        $slug = preg_replace('~[^\pL\d]+~u', '-', $slug);
+
+        // transliterate
+        if (function_exists('iconv')){
+            $slug = iconv('utf-8', 'us-ascii//TRANSLIT', $slug);
+        }
+
+        // remove unwanted characters
+        $slug = preg_replace('~[^-\w]+~', '', $slug);
+
+        // trim
+        $slug = trim($slug, '-');
+
+        // remove duplicate -
+        $slug = preg_replace('~-+~', '-', $slug);
+
+        // lowercase
+        $slug = strtolower($slug);
+
+        if (empty($slug)) {
+            return 'n-a';
+        }
+
+        return $slug;
+    }
     public function addnewrow()
     {
         $uid = request('uid');
