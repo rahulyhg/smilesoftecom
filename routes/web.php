@@ -845,12 +845,15 @@ Route::group(['middleware' => 'warehouse'], function ()
 {
     Route::get('/warehouse_dashboard', 'WareHouseController@warehouse_dashboard');
     Route::get('/warehouse_logout', 'WareHouseController@logout');
+
+    //Staff in Warehouse
     Route::get('/warehouse_staff', 'WareHouseController@warehouse_staff');
     Route::get('/add_staff', 'WareHouseController@add_staff');
     Route::post('/insert_staff', 'WareHouseController@insert_staff');
     Route::get('/staff_edit/{id}', 'WareHouseController@staff_edit');
     Route::post('/staff_update', 'WareHouseController@staff_update');
     Route::post('/staff_del', 'WareHouseController@staff_del');
+    Route::get('/staff_report', 'WareHouseController@staff_report');
 
 
     //purchase

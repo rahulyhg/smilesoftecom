@@ -18,7 +18,7 @@
     <!-- Font Awesome -->
     <link href="{!! asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css') !!}"
           media="all" rel="stylesheet" type="text/css"/>
-    <title>Warehouse Panel | Login</title>
+    <title>Staff Panel | Login</title>
     <link href="{!! asset('resources/views/admin/bootstrap/css/bootstrap.min.css') !!}" media="all" rel="stylesheet"
           type="text/css"/>
     <link href="{!! asset('resources/views/admin/bootstrap/css/styles.css') !!}" media="all" rel="stylesheet"

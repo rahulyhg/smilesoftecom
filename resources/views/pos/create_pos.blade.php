@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="aVMpzwECPpX04VJ7m6cZfcnnGQyy6bicxVym2RYP">
 
-    <title>POS - Smile Shop</title>
+    <title>Staff | POS | Smile Shop</title>
 
     <link rel="stylesheet" href="{{url('public/pos/css/pace.css?v=35')}}">
 
@@ -531,46 +531,66 @@
 
                                                         <tr>
                                                             <td>
-                                                                {{--<div class="col-sm-2 col-xs-6 col-2px-padding">--}}
+                                                                <div class="col-sm-2 col-xs-6 col-2px-padding">
 
-                                                                {{--<button type="button"--}}
-                                                                {{--class="btn btn-warning btn-block btn-flat "--}}
-                                                                {{--id="pos-draft">Draft</button>--}}
+                                                                    {{--<button type="button"--}}
+                                                                            {{--class="btn btn-warning btn-block btn-flat "--}}
+                                                                            {{--id="pos-draft">Draft--}}
+                                                                    {{--</button>--}}
 
-                                                                {{--<button type="button"--}}
-                                                                {{--class="btn btn-info btn-block btn-flat"--}}
-                                                                {{--id="pos-quotation">Quotation</button>--}}
-                                                                {{--</div>--}}
-                                                                {{--<div class="col-sm-3 col-xs-6 col-2px-padding">--}}
-                                                                {{--<button type="button"--}}
-                                                                {{--class="btn bg-maroon btn-block btn-flat no-print  pos-express-finalize"--}}
-                                                                {{--data-pay_method="card"--}}
-                                                                {{--title="Express checkout using card" >--}}
-                                                                {{--<div class="text-center">--}}
-                                                                {{--<i class="fa fa-check" aria-hidden="true"></i>--}}
-                                                                {{--<b>Card</b>--}}
-                                                                {{--</div>--}}
-                                                                {{--</button>--}}
-                                                                {{--<button type="button"--}}
-                                                                {{--class="btn bg-red btn-block btn-flat no-print pos-express-finalize"--}}
-                                                                {{--data-pay_method="suspend"--}}
-                                                                {{--title="Suspend Sales (pause)" >--}}
-                                                                {{--<div class="text-center">--}}
-                                                                {{--<i class="fa fa-pause" aria-hidden="true"></i>--}}
-                                                                {{--<b>Suspend</b>--}}
-                                                                {{--</div>--}}
-                                                                {{--</button>--}}
-                                                                {{--</div>--}}
-                                                                {{--<div class="col-sm-4 col-xs-12 col-2px-padding">--}}
-                                                                {{--<button type="button" class="btn bg-navy  btn-block btn-flat btn-lg no-print  pos-express-btn" id="pos-finalize" title="Checkout using multiple payment methods">--}}
-                                                                {{--<div class="text-center">--}}
-                                                                {{--<i class="fa fa-check" aria-hidden="true"></i>--}}
-                                                                {{--<b>Multiple Pay</b>--}}
-                                                                {{--</div>--}}
-                                                                {{--</button>--}}
-                                                                {{--</div>--}}
+                                                                    {{--<button type="button"--}}
+                                                                            {{--class="btn btn-info btn-block btn-flat"--}}
+                                                                            {{--id="pos-quotation">Quotation--}}
+                                                                    {{--</button>--}}
+                                                                </div>
+                                                                <div class="col-sm-3 col-xs-6 col-2px-padding">
+                                                                    <lable>Payment Mode</lable>
+                                                                    <select class="btn btn-success btn-block btn-flat" required name="payment_mode" id="payment_mode">
+                                                                        <option value="cash" class="btn btn-info btn-block btn-flat">
+                                                                            Cash
+                                                                        </option>
+                                                                        <option value="card" class="btn btn-info btn-block btn-flat">
+                                                                            Card
+                                                                        </option>
+                                                                        {{--<option value="" class="btn btn-info btn-block btn-flat">--}}
+                                                                            {{--Payment Wallet--}}
+                                                                        {{--</option>--}}
+                                                                    </select>
+                                                                    {{--<button type="button"--}}
+                                                                            {{--class="btn bg-maroon btn-block btn-flat no-print  pos-express-finalize"--}}
+                                                                            {{--data-pay_method="card"--}}
+                                                                            {{--title="Express checkout using card">--}}
+                                                                        {{--<div class="text-center">--}}
+                                                                            {{--<i class="fa fa-check"--}}
+                                                                               {{--aria-hidden="true"></i>--}}
+                                                                            {{--<b>Card</b>--}}
+                                                                        {{--</div>--}}
+                                                                    {{--</button>--}}
+                                                                    {{--<button type="button"--}}
+                                                                            {{--class="btn bg-red btn-block btn-flat no-print pos-express-finalize"--}}
+                                                                            {{--data-pay_method="suspend"--}}
+                                                                            {{--title="Suspend Sales (pause)">--}}
+                                                                        {{--<div class="text-center">--}}
+                                                                            {{--<i class="fa fa-pause"--}}
+                                                                               {{--aria-hidden="true"></i>--}}
+                                                                            {{--<b>Suspend</b>--}}
+                                                                        {{--</div>--}}
+                                                                    {{--</button>--}}
+                                                                </div>
+                                                                <div class="col-sm-4 col-xs-12 col-2px-padding">
+                                                                    {{--<button type="button"--}}
+                                                                            {{--class="btn bg-navy  btn-block btn-flat btn-lg no-print  pos-express-btn"--}}
+                                                                            {{--id="pos-finalize"--}}
+                                                                            {{--title="Checkout using multiple payment methods">--}}
+                                                                        {{--<div class="text-center">--}}
+                                                                            {{--<i class="fa fa-check"--}}
+                                                                               {{--aria-hidden="true"></i>--}}
+                                                                            {{--<b>Multiple Pay</b>--}}
+                                                                        {{--</div>--}}
+                                                                    {{--</button>--}}
+                                                                </div>
                                                                 <div class="col-sm-3 col-xs-12 col-2px-padding">
-                                                                    <button type="submit" id="btnStorePOS"
+                                                                    <button type="submit" targ id="btnStorePOS"
                                                                             class="btn btn-success btn-block btn-flat btn-lg no-print  pos-express-btn pos-express-finalize"
                                                                             {{--onclick="checkoutfun($('#final_total_input').val());"--}}
                                                                             data-pay_method="cash"
@@ -578,7 +598,7 @@
                                                                         <div class="text-center">
                                                                             <i class="fa fa-check"
                                                                                aria-hidden="true"></i>
-                                                                            <b>Cash</b>
+                                                                            <b>Pay Now</b>
                                                                         </div>
                                                                     </button>
                                                                 </div>
