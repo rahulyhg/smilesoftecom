@@ -79,7 +79,12 @@ class POSController extends Controller
     {
         $pid = request('pid');
         $products = DB::selectOne("select * from products_description WHERE products_id = $pid");
-        return view('pos.pro_tr')->with(['products' => $products]);
+        $ware_inv = Warehouse_Inventory_Model::where(['pid' => $pid, 'w_id' => session('staff')->warehouse_id])->first();
+        if ($ware_inv->stock > 0){
+            return view('pos.pro_tr')->with(['products' => $products, 'stock' => $ware_inv->stock]);
+        }else{
+            return 'Stock Not Available';
+        }
     }
 
     public function getProductRowScan()
@@ -90,7 +95,13 @@ class POSController extends Controller
             $barcode = BarcodeModel::where(['barcode' => $pid])->first();
             if (isset($barcode)) {
                 $products = DB::selectOne("select * from products_description WHERE products_id = $barcode->product_id");
-                return view('pos.pro_tr')->with(['products' => $products]);
+                $ware_inv = Warehouse_Inventory_Model::where(['pid' => $barcode->products_id, 'w_id' => session('staff')->warehouse_id])->first();
+
+                if ($ware_inv->stock > 0) {
+                    return view('pos.pro_tr')->with(['products' => $products, 'stock' => $ware_inv->stock]);
+                } else {
+                    return 'Stock Not Available';
+                }
             } /*elseif (preg_match('~[0-9]~', $pid) == false) {
             $products = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
             return view('pos.pro_tr')->with(['products' => $products]);
@@ -98,7 +109,12 @@ class POSController extends Controller
             $desc = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
             if (isset($desc)) {
                 $products = DB::selectOne("select * from products_description WHERE products_name like '%$pid%'");
-                return view('pos.pro_tr')->with(['products' => $products]);
+                $ware_inv = Warehouse_Inventory_Model::where(['pid' => $products->products_id, 'w_id' => session('staff')->warehouse_id])->first();
+                if ($ware_inv->stock > 0) {
+                    return view('pos.pro_tr')->with(['products' => $products, 'stock' => $ware_inv->stock]);
+                } else {
+                    return 'Stock Not Available';
+                }
             } else {
                 return 'Not Available';
             }
@@ -217,6 +233,7 @@ class POSController extends Controller
     {
         return view('pos.print_invoice');
     }
+
     public function print_pos($id)
     {
         $pos_main = POSModel::find($id);
@@ -241,7 +258,10 @@ class POSController extends Controller
 
         $data = array();
         foreach ($products as $product) {
-            $data[] = array('value' => $product->products_name, 'id' => $product->products_id);
+            $ware_inv = Warehouse_Inventory_Model::where(['pid' => $product->products_id, 'w_id' => session('staff')->warehouse_id])->first();
+            $pro = $product->products_name /*. " - Stock " .$ware_inv->stock */
+            ;
+            $data[] = array('value' => $pro, 'id' => $product->products_id);
         }
         if (count($data))
             return $data;
