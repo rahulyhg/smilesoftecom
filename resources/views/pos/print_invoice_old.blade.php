@@ -114,7 +114,7 @@
             <td >Particular</td>
             <td class="">GST</td>
             <td class="">Qty</td>
-            {{--<td class="">MRP</td>--}}
+            <td class="">MRP</td>
             <td class="">Rate</td>
             <td class="">Total</td>
         </tr>
@@ -141,9 +141,9 @@
                 {{--<td>5</td>--}}
                 {{--                <td class="letter_txt">{!!"KJGKJG"!!}</td>--}}
                 <td class="letter_txt">{!!$pro->products_name!!}</td>
-                <td class=" letter_txt">{{ round(isset($tax_rate)?$tax_rate->tax_rate:'0')."%" }}</td>
+                <td class=" letter_txt">{{ round(isset($tax_rate)?$tax_rate->tax_rate:'0') }}</td>
                 <td class=" letter_txt">{{ $item->qty }}</td>
-{{--                <td class="letter_txt">{{ $item->price }}</td>--}}
+                <td class="letter_txt">{{ $item->price }}</td>
                 <td class=" letter_txt">{{  $actual_price}}</td>
                 <td class=" letter_txt">{{ $item->qty * $actual_price}}</td>
             </tr>
@@ -163,18 +163,18 @@
         </tr>
 
         <tr>
-            <td colspan="2" class="letter_txt">NET AMOUNT</td>
+            <td colspan="2" class="letter_txt">BILL AMOUNT</td>
             {{--<td colspan="2" class="right_txt letter_txt">{{$net_amount}}</td>--}}
             <td colspan="4" class="right_txt letter_txt">{{round($net_amount,2)}}</td>
         </tr>
 
         <tr>
-            <td colspan="2" class="letter_txt">SGST </td>
+            <td colspan="2" class="letter_txt">SGST ({{isset($tax_rate)?$tax_rate->tax_rate/2:'0'}}%)</td>
             <td colspan="4" class="right_txt letter_txt">{{round(($gst/2),2)}}</td>
         </tr>
 
         <tr>
-            <td colspan="2" class="letter_txt">CGST </td>
+            <td colspan="2" class="letter_txt">CGST ({{isset($tax_rate)?$tax_rate->tax_rate/2:'0'}}%)</td>
             <td colspan="4" class="right_txt letter_txt">{{round(($gst/2),2)}}</td>
         </tr>
 
@@ -192,7 +192,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2" class="letter_txt">BILL AMOUNT</td>
+            <td colspan="2" class="letter_txt">NET AMOUNT</td>
             <td colspan="4" class="right_txt letter_txt">{{round($net_amount+$gst)}}</td>
             {{--<td colspan="2" class="right_txt letter_txt">500</td>--}}
         </tr>

@@ -139,7 +139,7 @@ class POSController extends Controller
                     $this->addNewRows($stock->id, $count);
                     $pos = $stock->id;
 //                    return redirect('invoice')->with('message', 'POS has been added...!');
-                    return view('pos.invoice')->with(['pos_main' => $stock]);
+                    return view('pos.print_invoice')->with(['pos_main' => $stock]);
                 } catch (\Exception $e) {
                     echo $e;
                 }
