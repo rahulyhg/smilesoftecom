@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\POSModel;
 use App\WarehouseModel;
 use App\WarehouseStaffModel;
 use Carbon\Carbon;
@@ -119,5 +120,12 @@ class WareHouseController extends Controller
         $staff->is_del = 1;
         $staff->save();
         return redirect()->back()->withErrors('Staff member has been deleted!');
+    }
+    function staff_report()
+    {
+        $warehouse_id = session('warehouse')->id;
+        $grand = \App\POSModel::where(['wid'=>$warehouse_id])->sum('grand_total');
+        $staff = WarehouseStaffModel::where('warehouse_id', $warehouse_id)->get();
+        return view('warehouse/staff/staff_report_view')->with(['staff'=>$staff, 'grand'=>$grand]);
     }
 }

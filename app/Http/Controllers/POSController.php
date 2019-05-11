@@ -132,6 +132,7 @@ class POSController extends Controller
                     $stock->invoice_date = Carbon::now('Asia/Kolkata');
                     $stock->customer_id = request('customer_id');
                     $stock->grand_total = request('final_total');
+                    $stock->payment_mode = request('payment_mode');
                     $stock->wid = session('staff')->warehouse_id;
                     $stock->sid = session('staff')->id;
                     $stock->created_time = Carbon::now('Asia/Kolkata');

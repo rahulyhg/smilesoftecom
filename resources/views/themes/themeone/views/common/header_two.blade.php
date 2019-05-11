@@ -6,11 +6,12 @@
                 
                 	<nav id="navbar_0" class="navbar navbar-expand-md navbar-dark navbar-0 p-0">
                         <div class="navbar-brand">
-                            <select name="change_language" id="change_language" class="change-language">
-                            @foreach($languages as $languages_data)                               
-                                <option value="{{$languages_data->code}}" data-class="{{$languages_data->code}}" data-style="background-image: url({{asset('').$languages_data->image}});" @if(session('locale')==$languages_data->code) selected @endif>{{$languages_data->name}}</option>
-                            @endforeach 
-                            </select>
+                            {{--<select name="change_language" id="change_language" class="change-language">--}}
+                            {{--@foreach($languages as $languages_data)--}}
+                                {{--<option value="{{$languages_data->code}}" data-class="{{$languages_data->code}}"--}}
+                                        {{--data-style="background-image: url({{asset('').$languages_data->image}});" @if(session('locale')==$languages_data->code) selected @endif>{{$languages_data->name}}</option>--}}
+                            {{--@endforeach--}}
+                            {{--</select>--}}
                         </div>
                     
                     
@@ -152,30 +153,30 @@
                                     <li> <a class="dropdown-item" href="{{ URL::to('/setStyle?style=three')}}">@lang('website.homePage3')</a> </li>
                                 </ul>
                             </li>-->
-                            <li class="nav-item"> <a class="nav-link" href="{{ URL::to('/shop')}}">@lang('website.Shop')</a> </li>
+                            {{--<li class="nav-item"> <a class="nav-link" href="{{ URL::to('/shop')}}">@lang('website.Shop')</a> </li>--}}
                             <li class="nav-item dropdown open">
-                                <a class="nav-link dropdown-toggle" href="{{ URL::to('/news/')}}">@lang('website.News')</a>
+                                {{--<a class="nav-link dropdown-toggle" href="{{ URL::to('/news/')}}">@lang('website.News')</a>--}}
                     
-                                <ul class="dropdown-menu" > 
-                                @foreach($result['commonContent']['newsCategories'] as $categories)             	
-                                    <li>                
-                                        <a class="dropdown-item" href="{{ URL::to('/news?category='.$categories->slug)}}">{{$categories->name}}</a>                 
-                                    </li>
-                                @endforeach
-                                </ul> 
+                                {{--<ul class="dropdown-menu" >--}}
+                                {{--@foreach($result['commonContent']['newsCategories'] as $categories)--}}
+                                    {{--<li>--}}
+                                        {{--<a class="dropdown-item" href="{{ URL::to('/news?category='.$categories->slug)}}">{{$categories->name}}</a>--}}
+                                    {{--</li>--}}
+                                {{--@endforeach--}}
+                                {{--</ul>--}}
                             </li>
-                            <li class="nav-item dropdown open">
-                                <a href="" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@lang('website.infoPages')</a>
-                            
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink02">
-                                    @if(count($result['commonContent']['pages']))
-                                    @foreach($result['commonContent']['pages'] as $page)
-                                        <li> <a class="dropdown-item" href="{{ URL::to('/page?name='.$page->slug)}}">{{$page->name}}</a> </li>
-                                    @endforeach
-                                    @endif  
-                                </ul>
-                            </li>
-                            <li class="nav-item"> <a class="nav-link" href="{{ URL::to('/contact-us')}}">@lang('website.Contact Us')</a> </li>
+                            {{--<li class="nav-item dropdown open">--}}
+                                {{--<a href="" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@lang('website.infoPages')</a>--}}
+                            {{----}}
+                                {{--<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink02">--}}
+                                    {{--@if(count($result['commonContent']['pages']))--}}
+                                    {{--@foreach($result['commonContent']['pages'] as $page)--}}
+                                        {{--<li> <a class="dropdown-item" href="{{ URL::to('/page?name='.$page->slug)}}">{{$page->name}}</a> </li>--}}
+                                    {{--@endforeach--}}
+                                    {{--@endif  --}}
+                                {{--</ul>--}}
+                            {{--</li>--}}
+                            {{--<li class="nav-item"> <a class="nav-link" href="{{ URL::to('/contact-us')}}">@lang('website.Contact Us')</a> </li>--}}
                            <li class="nav-item last"><a class="nav-link"><span>@lang('website.hotline')</span>({{$result['commonContent']['setting'][11]->value}})</a></li>
                           </ul>
                         </div>

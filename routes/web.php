@@ -845,16 +845,20 @@ Route::group(['middleware' => 'warehouse'], function ()
 {
     Route::get('/warehouse_dashboard', 'WareHouseController@warehouse_dashboard');
     Route::get('/warehouse_logout', 'WareHouseController@logout');
+
+    //Staff in Warehouse
     Route::get('/warehouse_staff', 'WareHouseController@warehouse_staff');
     Route::get('/add_staff', 'WareHouseController@add_staff');
     Route::post('/insert_staff', 'WareHouseController@insert_staff');
     Route::get('/staff_edit/{id}', 'WareHouseController@staff_edit');
     Route::post('/staff_update', 'WareHouseController@staff_update');
     Route::post('/staff_del', 'WareHouseController@staff_del');
-
+    Route::get('/staff_report', 'WareHouseController@staff_report');
 
     //purchase
     Route::get('purchase', 'WarehouseProductController@purchase');
+    Route::any('purchase/addProduct_modal', 'WarehouseProductController@addProduct_modal');
+    Route::any('purchase/product_upload', 'WarehouseProductController@product_upload');
     Route::get('productChange', 'WarehouseProductController@productChange');
     Route::get('addnewrow', 'WarehouseProductController@addnewrow');
     Route::post('addpurchase', 'WarehouseProductController@addpurchase');
@@ -907,7 +911,7 @@ Route::group(['middleware' => 'warehouse'], function ()
     Route::get('/attributes', 'WarehouseProductController@attributes');
     Route::get('/addoptions', 'WarehouseProductController@addoptions');
     Route::post('/addnewoptions', 'WarehouseProductController@addnewoptions');
-    //
+
 //    Route::post('/addnewattributes', 'WarehouseProductController@addnewattributes');
 //    Route::get('/editattributes/{id}/{language_id}', 'WarehouseProductController@editattributes');
     Route::get('/manage-options/{id}', 'WarehouseProductController@manageoptions');
@@ -923,7 +927,6 @@ Route::group(['middleware' => 'warehouse'], function ()
     Route::post('/checkattributeassociate', 'WarehouseProductController@checkattributeassociate');
     Route::post('/checkvalueassociate', 'WarehouseProductController@checkvalueassociate');
     Route::post('/deletevalue', 'WarehouseProductController@deletevalue');
-
 
     //alert setting
     Route::get('/alertsetting', 'WarehouseSiteSettingController@alertSetting');

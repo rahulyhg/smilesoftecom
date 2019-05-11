@@ -52,6 +52,11 @@
                     <i class="fa fa-industry"></i> <span>Stocks</span>
                 </a>
             </li>
+            <li class="treeview">
+                <a href="{{ url('staff_report')}}">
+                    <i class="fa fa-user-md"></i> <span>Staff Report</span>
+                </a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->
