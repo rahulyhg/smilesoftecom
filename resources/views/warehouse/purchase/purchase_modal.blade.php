@@ -1,7 +1,7 @@
 <script src="{{ url('js/validate.js') }}" xmlns="http://www.w3.org/1999/html"></script>
 <h3>Create New Product</h3>
 <hr>
-<form action="{{url('purchase/product_upload')}}" id="holiday" method="post" enctype="multipart/form-data">w
+<form action="{{url('purchase/product_upload')}}" id="holiday" method="post" enctype="multipart/form-data">
     {{--@csrf--}}
     <div class="sparkline12-graph">
         <div class="input-knob-dial-wrap">
@@ -38,12 +38,12 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="input-mark-inner mg-b-22">
-                        <label>Select Subcategory *</label>
+                        <label>Select Catgeory *</label>
                         <select class="form-control typeDD requireDD" required id="category" name="category">
                             <option value="0">-Select Subcategory-</option>
-                            {{--@foreach($subcategory as $brands)--}}
-                            {{--<option value="{{$brands->categories_id}}">{{$brands->categories_slug}}</option>--}}
-                            {{--@endforeach--}}
+                            @foreach($category as $brands)
+                            <option value="{{$brands->categories_id}}">{{$brands->categories_slug}}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
 
                 <div class="col-lg-4">
                     <div class="input-mark-inner mg-b-22">
-                        <label>Select Category *</label>
+                        <label>Select Sub-Category *</label>
                         <select class="form-control typeDD requireDD" required id="category" name="category">
                             <option value="0">-Select Category-</option>
                             @foreach($category as $brands)
@@ -126,7 +126,7 @@
                     <div class="input-mark-inner mg-b-22">
                         <label>Product Weight</label>
                         <input class="form-control" required
-                               type="text" placeholder="10"
+                               type="text" placeholder="e.g. 10"
                                name="products_weight" id="products_weight">
                     </div>
                 </div>

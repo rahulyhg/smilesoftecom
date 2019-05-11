@@ -2637,8 +2637,15 @@ class WarehouseProductController extends Controller
         return view('warehouse.purchase.purchase_modal')->with(['brand'=>$brand,'category'=>$category, 'tax_class'=>$tax_class]);
     }
 
+    public function imageType(){
+        $extensions = array('gif','jpg','jpeg','png');
+        return $extensions;
+    }
+
     public function product_upload(Request $request)
     {
+//        dd($_REQUEST);
+        $extensions = $this->imageType();
         if ($request->hasFile('products_image') and in_array($request->products_image->extension(), $extensions)) {
             $image = $request->products_image;
             $fileName = time() . '.' . $image->getClientOriginalName();
@@ -2657,6 +2664,7 @@ class WarehouseProductController extends Controller
             // 'products_purchase_price' => $request->products_purchase_price,
             'products_date_added' => Carbon::now(),
             'products_weight' => $request->products_weight,
+            'products_status' => 1,
             'products_status' => $request->products_status,
             'products_tax_class_id' => $request->tax_class_id,
             'products_weight_unit' => $request->products_weight_unit,
