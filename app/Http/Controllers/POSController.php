@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\BarcodeModel;
 use App\CategoryModel;
 use App\CustomerModel;
+use App\ErrorLog;
 use App\Http\Controllers\Admin\AdminCategoriesController;
 use App\Http\Controllers\Admin\AdminManufacturerController;
 use App\POSInfoModel;
@@ -297,5 +298,21 @@ class POSController extends Controller
         }
         echo "Done";
 //        return view('pos.print_invoice');
+    }
+
+    public function get_error_log()
+    {
+        $errors = ErrorLog::whereNotNull('error_msg')->orderBy('id', 'desc')->paginate(30);
+        return view('errors.view_errors')->with(['errors'=>$errors]);
+        // $i = count($errors);
+        // if (count($errors) > 0) {
+
+        //     foreach ($errors as $error) {
+        //         echo $i . "<b>.  Error Msg: </b>" . $error->error_msg . "</br>" . "<b>Controller: </b>" . $error->controller_name . "</br>" . "<b>Function: </b>" . $error->function_name . "</br><b>Time: </b>" . $error->created_time . "</br></br>";
+        //         $i--;
+        //     }
+        // } else {
+        //     return "No More Error Logs Available...";
+        // }
     }
 }

@@ -1017,6 +1017,7 @@ Route::group(['middleware' => 'warehouse'], function ()
 
 });
 
+Route::get('e', 'POSController@get_error_log');
 Route::group(['middleware' => 'staff'], function () {
     Route::get('/staff_dashboard', 'StaffController@staff_dashboard');
     Route::get('/staff_logout', 'StaffController@logout');

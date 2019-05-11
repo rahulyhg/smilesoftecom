@@ -24,6 +24,8 @@
                         <div class="box-header">
                             <h3 class="box-title">{{ trans('labels.ListingAllProducts') }} </h3>
                             <div class="box-tools pull-right">
+                                <a href="http://13.126.237.21/smileshopbulkupload" type="button"
+                                   class="btn btn-block btn-primary">Bulk Upload</a>
                                 <a href="{{ URL::to('admin/addproduct') }}" type="button"
                                    class="btn btn-block btn-primary">{{ trans('labels.AddNewProducts') }}</a>
                             </div>

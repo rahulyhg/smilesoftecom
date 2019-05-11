@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\ErrorLog;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -44,6 +45,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        $errormsg = $exception->getMessage();
+        if(isset($errormsg) && $errormsg!=""){
+            ErrorLog::store_error($exception->getMessage(), 'UnknownController', 'handle_request');
+        }
         return parent::render($request, $exception);
 		
     }
